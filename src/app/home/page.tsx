@@ -2,7 +2,8 @@ import DateSumInput from "../components/input";
 
 
 export default function Home() {   
-    <div className="flex justify-center items-center">
-    <DateSumInput />
-  </div>
+    return (
+        <div className="flex justify-center items-center min-h-screen">
+      <DateSumInput />
+    </div>)
 }
