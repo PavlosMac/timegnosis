@@ -1,4 +1,5 @@
 'use client'
+import Link from 'next/link';
 import { useState } from 'react'
 
 export default function DateSumInput() {
@@ -61,13 +62,19 @@ export default function DateSumInput() {
       {sumYear !== null && (
         <div className="grid grid-cols-3 gap-4 text-lg font-semibold">
         <div className="flex flex-col items-center">
-          <span>Day {sumDay}</span>
+        <Link href={`/day/${sumDay}`} className="text-blue-500 hover:underline">
+          Day {sumDay}
+        </Link>
         </div>
         <div className="flex flex-col items-center">
-          <span>Month {sumMonth}</span>
+        <Link href={`/month/${sumMonth}`} className="text-blue-500 hover:underline">
+          Month {sumMonth}
+        </Link>
         </div>
         <div className="flex flex-col items-center">
-          <span>Year {sumYear}</span>
+        <Link href={`/year/${sumYear}`} className="text-blue-500 hover:underline">
+          Year {sumYear}
+        </Link>
         </div>
       </div>
       )}
