@@ -1,44 +1,54 @@
-'use client'
-import Link from 'next/link';
-import { useState } from 'react'
+"use client";
+import { useState } from "react";
+import Link from "next/link";
 
-export default function DateSumInput() {
-
+export default function DateSumInput({ setDay, setMonth, setYear }) {
   const [selectedDate, setSelectedDate] = useState("");
-  const [sumYear, setYear] = useState(null);
-  const [sumMonth, setMonth] = useState(null);
-  const [sumDay, setDay] = useState(null);
 
   const sumDigitsDouble = (num) => {
     while (num > 9) {
-      num = num.toString().split("").reduce((acc, digit) => acc + parseInt(digit), 0);
+      num = num
+        .toString()
+        .split("")
+        .reduce((acc, digit) => acc + parseInt(digit), 0);
     }
     return num;
   };
+
   const calculateSums = (dateString) => {
     if (!dateString) return;
-    
+
     const date = new Date(dateString);
     const day = date.getDate();
-    const month = date.getMonth() + 1;
+    const month = date.getMonth() +1;
     const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth()
-    const currentDay = new Date().getDate()
-    console.log("month ",currentMonth)
-    console.log("currentDay ",currentDay)
+    const currentMonth = new Date().getMonth();
+    const currentDay = new Date().getDate();
 
+    const sumDigits = (num) =>
+      num
+        .toString()
+        .split("")
+        .reduce((acc, digit) => acc + parseInt(digit), 0);
 
-    
-    const sumDigits = (num) => num.toString().split("").reduce((acc, digit) => acc + parseInt(digit), 0);
-    
+    console.log( '' + month)
+
     const sumYear = sumDigits(day) + sumDigits(month) + sumDigits(currentYear);
-    const personalYear =  (sumYear !== 22 && sumYear !== 11) ? sumDigitsDouble(sumYear) : sumYear;
+    const personalYear =
+      sumYear !== 22 && sumYear !== 11 ? sumDigitsDouble(sumYear) : sumYear;
+
     const sumMonth = sumDigits(day) + sumDigits(month) + sumDigits(currentMonth) + 2;
-    const personalMonth =  (sumMonth !== 22 && sumMonth !== 11) ? sumDigitsDouble(sumMonth) : sumMonth;
+    console.log(sumMonth)
+    const personalMonth =
+      sumMonth !== 22 && sumMonth !== 11 ? sumDigitsDouble(sumMonth) : sumMonth;
+
     const sumDay = sumMonth + currentDay;
-    const personalDay =  (sumDay !== 22 && sumDay !== 11) ? sumDigitsDouble(sumDay) : sumDay;
+    const personalDay =
+      sumDay !== 22 && sumDay !== 11 ? sumDigitsDouble(sumDay) : sumDay;
+
+    // Update parent state
     setYear(personalYear);
-    setMonth(personalMonth)
+    setMonth(personalMonth);
     setDay(personalDay);
   };
 
@@ -58,26 +68,6 @@ export default function DateSumInput() {
         onChange={handleChange}
         className="p-2 border rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
-            <h1 className='text-lg font-semibold text-blue-900'>Personal</h1>
-      {sumYear !== null && (
-        <div className="grid grid-cols-3 gap-4 text-lg font-semibold">
-        <div className="flex flex-col items-center">
-        <Link href={`/day/${sumDay}`} className="text-blue-500 hover:underline">
-          Day {sumDay}
-        </Link>
-        </div>
-        <div className="flex flex-col items-center">
-        <Link href={`/month/${sumMonth}`} className="text-blue-500 hover:underline">
-          Month {sumMonth}
-        </Link>
-        </div>
-        <div className="flex flex-col items-center">
-        <Link href={`/year/${sumYear}`} className="text-blue-500 hover:underline">
-          Year {sumYear}
-        </Link>
-        </div>
-      </div>
-      )}
     </div>
   );
 }

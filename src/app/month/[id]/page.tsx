@@ -1,18 +1,17 @@
 
 'use server'
-import { fetchGnosis } from "./actions";
+import { fetchMonthGnosis } from "./actions";
 
-export default async function MonthPage({ params }: { params?: { id?: number } }) {
-    const p = await params;
-    if (!p || !p.id) {
-        return <p>Invalid ID</p>;
-    }
 
-    const body = await fetchGnosis(p.id);
-    console.log(body)
-    if (!body) {
-        return <p>No data found for this time_id</p>;
-    }
+export default async function MonthPage({ params }: { params: { id: number } }) {
+  const energy = await params;
+  const data = await fetchMonthGnosis(energy.id);
 
-    return <p>{body}</p>;
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">Month {energy.id}</h1>
+      <h2 className="text-2xl font-bold">{data.subtitle}</h2>
+      <p className="mt-4">{data}</p>
+    </div>
+  );
 }

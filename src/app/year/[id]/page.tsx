@@ -1,7 +1,8 @@
 import { fetchGnosis } from "@/mongo/fetchGnosis";
 
 export default async function YearPage({ params }: { params: { id: string } }) {
-  const energy = parseInt(params.id, 10);
+  const y = params.id;
+  const energy = parseInt(y, 10);
   const data = await fetchGnosis(energy, "year");
 
   return (

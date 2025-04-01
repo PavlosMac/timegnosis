@@ -1,14 +1,11 @@
 "use server";
-import dbConnect from "@/lib/mongodb";
-import gnosis from "@/models/gnosis";
 
-await dbConnect();
+import { fetchGnosis } from "@/mongo/fetchGnosis";
 
-export const fetchGnosis = async (timeId: string)  => {
+export const fetchMonthGnosis = async (timeId: number)  => {
     try {
-        const g = await gnosis.findOne({ mode: "month", energy: 1 });
-        console.log(g.body)
-        return g.body
+        const body = await fetchGnosis(timeId, 'month');
+        return body;
     
     } catch(e) {
         console.error(e)
