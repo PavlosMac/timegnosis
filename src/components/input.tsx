@@ -1,16 +1,18 @@
-"use client";
-import { useState } from "react";
-import Link from "next/link";
+'use client';
+import { useState } from 'react';
 
 export default function DateSumInput({ setDay, setMonth, setYear }) {
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState('');
 
-  const sumDigitsDouble = (num) => {
-    while (num > 9) {
-      num = num
-        .toString()
-        .split("")
-        .reduce((acc, digit) => acc + parseInt(digit), 0);
+  const sumDigits = (num) =>
+    num
+      .toString()
+      .split('')
+      .reduce((acc, digit) => acc + parseInt(digit), 0);
+
+  const reduceToSingleDigit = (num) => {
+    while (num > 9 && num !== 11 && num !== 22) {
+      num = sumDigits(num);
     }
     return num;
   };
@@ -18,50 +20,43 @@ export default function DateSumInput({ setDay, setMonth, setYear }) {
   const calculateSums = (dateString) => {
     if (!dateString) return;
 
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = date.getMonth() +1;
-    const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth();
-    const currentDay = new Date().getDate();
+    const birthDate = new Date(dateString);
+    const today = new Date();
 
-    const sumDigits = (num) =>
-      num
-        .toString()
-        .split("")
-        .reduce((acc, digit) => acc + parseInt(digit), 0);
+    const birthDay = birthDate.getDate();
+    const birthMonth = birthDate.getMonth() + 1;
 
-    console.log( '' + month)
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth() + 1; // 1-indexed
+    const currentDay = today.getDate();
 
-    const sumYear = sumDigits(day) + sumDigits(month) + sumDigits(currentYear);
-    const personalYear =
-      sumYear !== 22 && sumYear !== 11 ? sumDigitsDouble(sumYear) : sumYear;
+    // Step 1: Personal Year = sum(birthDay) + sum(birthMonth) + sum(currentYear)
+    const rawYear =
+      sumDigits(birthDay) + sumDigits(birthMonth) + sumDigits(currentYear);
+    const personalYear = reduceToSingleDigit(rawYear);
 
-    const sumMonth = sumDigits(day) + sumDigits(month) + sumDigits(currentMonth) + 2;
-    console.log(sumMonth)
-    const personalMonth =
-      sumMonth !== 22 && sumMonth !== 11 ? sumDigitsDouble(sumMonth) : sumMonth;
+    // Step 2: Personal Month = personalYear + sum(currentMonth)
+    const rawMonth = personalYear + sumDigits(currentMonth);
+    const personalMonth = reduceToSingleDigit(rawMonth);
 
-    const sumDay = sumMonth + currentDay;
-    const personalDay =
-      sumDay !== 22 && sumDay !== 11 ? sumDigitsDouble(sumDay) : sumDay;
+    // Step 3: Personal Day = personalMonth + sum(currentDay)
+    const rawDay = personalMonth + sumDigits(currentDay);
+    const personalDay = reduceToSingleDigit(rawDay);
 
-    // Update parent state
     setYear(personalYear);
     setMonth(personalMonth);
     setDay(personalDay);
   };
 
   const handleChange = (event) => {
-    const rawDate = event.target.value;
-    const formattedDate = new Date(rawDate).toISOString().split("T")[0]; // Ensures YYYY-MM-DD format
-    setSelectedDate(formattedDate);
-    calculateSums(formattedDate);
+    const inputDate = event.target.value;
+    setSelectedDate(inputDate);
+    calculateSums(inputDate);
   };
 
   return (
-    <div className="flex flex-col items-center gap-4 p-4 max-w-sm mx-auto border rounded-lg shadow-md">
-      <label className="text-gray-700 font-medium">Enter your birthday</label>
+    <div className="flex flex-col items-center p-4 border rounded-md shadow-md bg-gray-100">
+      <label className="text-gray-700 font-medium mb-2">Enter your birthday</label>
       <input
         type="date"
         value={selectedDate}

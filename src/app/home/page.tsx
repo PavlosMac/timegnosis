@@ -17,6 +17,7 @@ export default function Home() {
     <main className="flex flex-col items-center gap-8 p-6">
       <NavBar />
       <PersonalNumerology />
+      <DateSumInput setDay={setDay} setMonth={setMonth} setYear={setYear} />
 
       {/* Display the calculated values */}
       <div className="flex flex-col items-center p-4 border rounded-md shadow-md bg-gray-100">
@@ -35,7 +36,6 @@ export default function Home() {
       </div>
 
       <Planets day={day} month={month} year={year} />
-      <DateSumInput setDay={setDay} setMonth={setMonth} setYear={setYear} />
     </main>
   );
 }
