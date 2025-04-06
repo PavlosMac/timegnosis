@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="symbols" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28.35 28.35">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #1d1d1b;
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+        stroke-width: .5px;
+      }
+    </style>
+  </defs>
+  <g>
+    <line class="cls-1" x1="18.96" y1="19.59" x2="10.33" y2="19.59"/>
+    <line class="cls-1" x1="14.64" y1="11.46" x2="14.64" y2="24.17"/>
+  </g>
+  <path class="cls-1" d="M14.61,15.52h-6.03s-.26-9.37-5.36-11.58"/>
+  <path class="cls-1" d="M14.61,15.52h6.03s.26-9.37,5.36-11.58"/>
+  <circle class="cls-1" cx="14.61" cy="7.61" r=".65"/>
+</svg>
