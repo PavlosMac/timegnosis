@@ -9,7 +9,9 @@ const planets = [
   { name: "Uranus", color: "blue-300", energy: 22, file: "/planets/Uranus.svg" },
   { name: "Neptune", color: "blue-700", energy: 9, file: "/planets/Neptune.svg" },
   { name: "Pluto", color: "purple-800", energy: 2, file: "/planets/Pluto.svg" },
-  { name: "Moon", color: "blue-gray-200", energy: 7, file: "/planets/moon.svg" }
+  { name: "Moon", color: "blue-gray-200", energy: 7, file: "/planets/moon.svg" },
+  { name: "Jupiter", color: "orange-800", energy: 6, file: "/planets/Jupiter.svg" }
+
 ];
 
 const tailwindColors = {
@@ -22,7 +24,8 @@ const tailwindColors = {
   "blue-700": "#1d4ed8",
   "purple-800": "#5b21b6",
   "blue-gray-200":"#f4f4f5",
-  "pink-400": "#f472b6"
+  "pink-400": "#f472b6",
+  "orange-800": "#9a3412"
 };
 
 export default function Planets({ day, month, year }: { day: number; month: number; year: number }) {
