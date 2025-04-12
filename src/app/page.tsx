@@ -35,25 +35,42 @@ export default function Home() {
     <main className="flex flex-col items-center gap-8 p-6">
       <NavBar />
       <PersonalNumerology />
-      <DateSumInput setDay={setDay} setMonth={setMonth} setYear={setYear} />
 
-      {/* Display the calculated values */}
-      <div className="flex flex-col items-center p-4 border rounded-md shadow-md bg-gray-100">
-        <h2 className="text-lg font-semibold text-gray-700">Your Personal Numbers</h2>
-        <p className="text-md text-gray-800 mt-2">
-        <Link href={`/day/${day}`} className="text-blue-500 hover:underline">
-          <span className="font-bold">Day:</span> {day} | 
-          </Link>
-          <Link href={`/month/${month}`} className="text-blue-500 hover:underline">
-          <span className="font-bold"> Month:</span> {month} | 
-          </Link>
-          <Link href={`/year/${year}`} className="text-blue-500 hover:underline">
-          <span className="font-bold"> Year:</span> {year}
-         </Link>
-        </p>
+      <div className="max-w-4xl w-full mx-auto">
+        <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-2xl">
+          <h2 className="text-2xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+            Your Personal Numbers
+          </h2>
+          
+          <div className="mb-8">
+            <DateSumInput setDay={setDay} setMonth={setMonth} setYear={setYear} />
+          </div>
+
+          {(day || month || year) && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Link href={`/day/${day}`} 
+              className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all duration-300 text-center">
+              <div className="text-blue-400 text-lg font-medium mb-2">Personal Day</div>
+              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{day}</div>
+            </Link>
+            <Link href={`/month/${month}`}
+              className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 text-center">
+              <div className="text-purple-400 text-lg font-medium mb-2">Personal Month</div>
+              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{month}</div>
+            </Link>
+            <Link href={`/year/${year}`}
+              className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-pink-500 transition-all duration-300 text-center">
+              <div className="text-pink-400 text-lg font-medium mb-2">Personal Year</div>
+              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{year}</div>
+            </Link>
+          </div>
+          )}
+        </div>
       </div>
 
-      <Planets day={day} month={month} year={year} />
+      {(day || month || year) && (
+        <Planets day={day} month={month} year={year} />
+      )}
     </main>
   );
 }

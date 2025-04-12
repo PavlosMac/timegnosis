@@ -18,9 +18,20 @@ export default function DateSumInput({ setDay, setMonth, setYear }) {
   };
 
   const calculateSums = (dateString) => {
-    if (!dateString) return;
+    if (!dateString || dateString.length < 10) {
+      // Reset values if date is incomplete
+      setYear(0);
+      setMonth(0);
+      setDay(0);
+      return;
+    }
 
     const birthDate = new Date(dateString);
+    // Validate the date is valid
+    if (isNaN(birthDate.getTime())) {
+      return;
+    }
+    
     const today = new Date();
 
     const birthDay = birthDate.getDate();
@@ -55,14 +66,21 @@ export default function DateSumInput({ setDay, setMonth, setYear }) {
   };
 
   return (
-    <div className="flex flex-col items-center p-4 border rounded-md shadow-md bg-gray-100">
-      <label className="text-gray-700 font-medium mb-2">Enter your birthday</label>
-      <input
-        type="date"
-        value={selectedDate}
-        onChange={handleChange}
-        className="p-2 border rounded-md text-gray-800 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
+    <div className="flex flex-col items-center p-8 max-w-2xl mx-auto">
+      <div className="w-full max-w-md bg-gray-900/50 backdrop-blur-sm p-8 rounded-xl shadow-2xl border border-gray-700">
+        <h2 className="text-2xl font-bold text-white mb-6 text-center">Enter Your Birth Date</h2>
+        <div className="relative">
+          <input
+            type="date"
+            value={selectedDate}
+            onChange={handleChange}
+            className="w-full p-4 bg-gray-800/50 border border-gray-600 rounded-lg text-white
+                     text-lg font-medium shadow-inner focus:outline-none focus:ring-2
+                     focus:ring-blue-500 focus:border-transparent
+                     placeholder-gray-400"
+          />
+        </div>
+      </div>
     </div>
   );
 }
