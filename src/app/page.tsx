@@ -68,9 +68,8 @@ export default function Home() {
         </div>
       </div>
 
-      {(day || month || year) && (
-        <Planets day={day} month={month} year={year} />
-      )}
+      <Planets day={day} month={month} year={year} />
+      
     </main>
   );
 }

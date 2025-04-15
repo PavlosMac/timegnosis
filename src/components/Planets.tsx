@@ -75,7 +75,12 @@ export default function Planets({ day, month, year }: { day: number; month: numb
                     />
                   </div>
                 </motion.div>
-                <span className="text-base font-medium text-white mb-1">{planet.name}</span>
+                <a 
+                  href={`/planet/${planet.name.toLowerCase()}`} 
+                  className="text-base font-medium text-white hover:text-blue-400 transition-colors"
+                >
+                  {planet.name}
+                </a>
                 <span className="text-sm text-gray-400">
                   {planet.name === "Moon" ? "7/11" : planet.energy}
                 </span>

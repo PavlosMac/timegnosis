@@ -39,3 +39,13 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Features
 - each energy should have a pulsing planet on the payload pay
+
+
+
+## Plan 
+
+1. Add text for all planets
+2. decide whether to add the planets on render next to the numbers that are rendererd
+3. add icon to the top
+4. fix navigation
+5. add section text for seo optimizatiton

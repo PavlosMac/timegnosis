@@ -1,16 +1,17 @@
 "use server";
 
-import { fetchGnosis } from "@/mongo/fetchGnosis";
+import { fetchGnosis, GnosisData } from "@/mongo/fetchGnosis";
 
-export const fetchMonthGnosis = async (timeId: number)  => {
-    try {
-        const body = await fetchGnosis(timeId, 'month');
-        return body;
-    
-    } catch(e) {
-        console.error(e)
-    }
-
-    return null;
-
+export async function fetchMonthGnosis(monthId: number): Promise<GnosisData> {
+  try {
+    return await fetchGnosis(monthId, "month");
+  } catch(e) {
+    console.error(e);
+    return {
+      title: "Error",
+      subtitle: "Error loading month data",
+      body: "An error occurred while loading the month data.",
+      energy: monthId
+    };
+  }
 }
