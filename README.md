@@ -49,3 +49,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 3. add icon to the top
 4. fix navigation
 5. add section text for seo optimizatiton
+
+https://cloud.mongodb.com/v2/67d704e2df34917462c982b4#/security/network/accessList

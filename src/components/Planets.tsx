@@ -36,25 +36,62 @@ const planets: Planet[] = [
   { name: "Jupiter", color: "orange-800", energy: 6, file: "/planets/Jupiter.svg" }
 ];
 
-export default function Planets({ day, month, year }: { day: number; month: number; year: number }) {
-  const hasValidInput = day > 0 || month > 0 || year > 0;
+import { useSearchParams } from 'next/navigation';
 
-  if (!hasValidInput) {
-    return (
-      <div className="flex justify-center p-8 text-gray-400 text-lg font-medium">
-        Enter your birth date to discover your planetary alignments
-      </div>
-    );
+function sumDigits(num: number): number {
+  return num
+    .toString()
+    .split('')
+    .reduce((acc, digit) => acc + parseInt(digit), 0);
+}
+
+function reduceToSingleDigit(num: number): number {
+  while (num > 9 && num !== 11 && num !== 22) {
+    num = sumDigits(num);
   }
+  return num;
+}
+
+function getPersonalYear(birthDay: number, birthMonth: number, todayYear: number): number {
+  const rawYear = sumDigits(birthDay) + sumDigits(birthMonth) + sumDigits(todayYear);
+  return reduceToSingleDigit(rawYear);
+}
+
+export default function Planets() {
+  const searchParams = useSearchParams();
+  const day = Number(searchParams.get('day'));
+  const month = Number(searchParams.get('month'));
+  const year = Number(searchParams.get('year'));
+  const today = new Date();
+
+  // Main page logic: Personal Month = reduce(birth month + reduce(current year))
+  function getPersonalMonth(birthMonth: number, todayYear: number): number {
+    return reduceToSingleDigit(birthMonth + reduceToSingleDigit(todayYear));
+  }
+  // Personal Day = reduce(today.getDate() + personalMonth)
+  function getPersonalDay(personalMonth: number, todayDay: number): number {
+    return reduceToSingleDigit(todayDay + personalMonth);
+  }
+  function getPersonalYear(birthDay: number, birthMonth: number, todayYear: number): number {
+    const rawYear = sumDigits(birthDay) + sumDigits(birthMonth) + sumDigits(todayYear);
+    return reduceToSingleDigit(rawYear);
+  }
+
+  // Calculate correct values
+  const todayYear = today.getFullYear();
+  const todayDay = today.getDate();
+  const personalMonth = month ? getPersonalMonth(month, todayYear) : undefined;
+  const personalDay = month ? getPersonalDay(personalMonth!, todayDay) : undefined;
+  const personalYear = (day && month) ? getPersonalYear(day, month, todayYear) : undefined;
 
   return (
     <div className="max-w-4xl mx-auto p-8">
       <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 shadow-2xl">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6 p-4">
           {planets.map((planet, index) => {
-            const isActive = planet.name === "Moon" ?
-              (day === 7 || day === 11 || month === 7 || month === 11 || year === 7 || year === 11) :
-              (planet.energy === day || planet.energy === month || planet.energy === year);
+            const isActive = planet.name === "Moon"
+              ? (personalDay === 7 || personalDay === 11 || personalMonth === 7 || personalMonth === 11 || personalYear === 7 || personalYear === 11)
+              : (planet.energy === personalDay || planet.energy === personalMonth || planet.energy === personalYear);
             return (
               <div 
                 key={index} 
