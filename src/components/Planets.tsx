@@ -64,9 +64,14 @@ export default function Planets() {
   const year = Number(searchParams.get('year'));
   const today = new Date();
 
-  // Main page logic: Personal Month = reduce(birth month + reduce(current year))
-  function getPersonalMonth(birthMonth: number, todayYear: number): number {
-    return reduceToSingleDigit(birthMonth + reduceToSingleDigit(todayYear));
+  // Corrected: Personal Month = reduce(personalYear + currentMonth)
+  function getPersonalMonth(personalYear: number, todayMonth: number, todayDay: number): number {
+    // If today is before the 21st, use current month. If on/after 21st, use next month (wrap to 1 if December)
+    let month = todayMonth;
+    if (todayDay >= 21) {
+      month = todayMonth === 12 ? 1 : todayMonth + 1;
+    }
+    return reduceToSingleDigit(personalYear + month);
   }
   // Personal Day = reduce(today.getDate() + personalMonth)
   function getPersonalDay(personalMonth: number, todayDay: number): number {
@@ -79,10 +84,11 @@ export default function Planets() {
 
   // Calculate correct values
   const todayYear = today.getFullYear();
+  const todayMonth = today.getMonth() + 1; // getMonth() is 0-based
   const todayDay = today.getDate();
-  const personalMonth = month ? getPersonalMonth(month, todayYear) : undefined;
-  const personalDay = month ? getPersonalDay(personalMonth!, todayDay) : undefined;
   const personalYear = (day && month) ? getPersonalYear(day, month, todayYear) : undefined;
+  const personalMonth = (personalYear !== undefined) ? getPersonalMonth(personalYear, todayMonth, todayDay) : undefined;
+  const personalDay = (personalMonth !== undefined) ? getPersonalDay(personalMonth, todayDay) : undefined;
 
   return (
     <div className="max-w-4xl mx-auto p-8">

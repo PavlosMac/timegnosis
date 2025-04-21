@@ -48,8 +48,16 @@ export default function Home() {
     }
     return num;
   }
-  function getPersonalMonth(birthMonth: number, todayYear: number): number {
-    return reduceToSingleDigit(birthMonth + reduceToSingleDigit(todayYear));
+  // Corrected: Personal Month = reduce(personalYear + currentMonth)
+  function getPersonalMonth(birthDay: number, birthMonth: number, todayYear: number, todayMonth: number, todayDay: number): number {
+    // Calculate personal year first
+    const personalYear = getPersonalYear(birthDay, birthMonth, todayYear);
+    // If today is before the 21st, use current month. If on/after 21st, use next month (wrap to 1 if December)
+    let month = todayMonth;
+    if (todayDay >= 21) {
+      month = todayMonth === 12 ? 1 : todayMonth + 1;
+    }
+    return reduceToSingleDigit(personalYear + month);
   }
   function getPersonalDay(personalMonth: number, todayDay: number): number {
     return reduceToSingleDigit(todayDay + personalMonth);
@@ -111,15 +119,15 @@ export default function Home() {
             </div>
             {(birthDay && birthMonth && birthYear) && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                <Link href={`/day/${getPersonalDay(getPersonalMonth(Number(birthMonth), today.getFullYear()), today.getDate())}`} 
+                <Link href={`/day/${getPersonalDay(getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate()), today.getDate())}`} 
                   className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all duration-300 text-center">
                   <div className="text-blue-400 text-lg font-medium mb-2">Personal Day</div>
-                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalDay(getPersonalMonth(Number(birthMonth), today.getFullYear()), today.getDate())}</div>
+                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalDay(getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate()), today.getDate())}</div>
                 </Link>
-                <Link href={`/month/${getPersonalMonth(Number(birthMonth), today.getFullYear())}`}
+                <Link href={`/month/${getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate())}`}
                   className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 text-center">
                   <div className="text-purple-400 text-lg font-medium mb-2">Personal Month</div>
-                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalMonth(Number(birthMonth), today.getFullYear())}</div>
+                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate())}</div>
                 </Link>
                 <Link href={`/year/${getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}`}
                   className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-pink-500 transition-all duration-300 text-center">

@@ -27,7 +27,18 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="relative min-h-screen w-full overflow-x-hidden">
+          {/* Subtle astrology wheel background */}
+          <img 
+            src="/planets/astro_wheel.svg" 
+            alt="Astro Wheel Background" 
+            className="pointer-events-none select-none fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-15 w-[90vw] h-auto max-w-none"
+            aria-hidden="true"
+          />
+          <div className="relative z-10">
+            {children}
+          </div>
+        </div>
       </body>
     </html>
   );
