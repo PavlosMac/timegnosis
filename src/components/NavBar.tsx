@@ -11,12 +11,12 @@ export default function NavBar() {
               <defs>
                 <radialGradient id="grad" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
                   <stop offset="0%" stopColor="#ffffff"/>
-                  <stop offset="55%" stopColor="#e0eaff"/>
-                  <stop offset="80%" stopColor="#60a5fa"/>
+                  <stop offset="50%" stopColor="#e0eaff"/>
+                  <stop offset="80%" stopColor="#2563eb"/>
                   <stop offset="100%" stopColor="#1e3a8a"/>
                 </radialGradient>
               </defs>
-              <circle cx="40" cy="40" r="36" fill="url(#grad)" stroke="white" strokeWidth="4" />
+              <circle cx="40" cy="40" r="36" fill="url(#grad)" stroke="black" strokeWidth="4" />
             </svg>
             {/* Solar eclipse SVG centered on top, bigger */}
             <img src="/planets/solar_eclipse.svg" alt="Solar Eclipse" className="absolute w-20 h-20" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} />
