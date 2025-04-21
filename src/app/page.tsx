@@ -91,42 +91,47 @@ export default function Home() {
   return (
     <main className="flex flex-col items-center gap-8 p-6">
       <NavBar />
-      <PersonalNumerology />
-
-      <div className="max-w-4xl w-full mx-auto">
-        <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-2xl">
-          <h2 className="text-2xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-            Your Personal Numbers
-          </h2>
-          
-          <div className="mb-8">
-            <DateSumInput date={birthDate} onDateChange={handleDateChange} />
+      <div className="max-w-4xl mx-auto p-8">
+        <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-2xl">
+          <div className="absolute inset-0 z-0 opacity-20">
+            <img src="/planets/astro.svg" alt="Background" className="object-cover w-full h-full scale-200" />
           </div>
-
-          {(birthDay && birthMonth && birthYear) && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link href={`/day/${getPersonalDay(getPersonalMonth(Number(birthMonth), today.getFullYear()), today.getDate())}`} 
-              className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all duration-300 text-center">
-              <div className="text-blue-400 text-lg font-medium mb-2">Personal Day</div>
-              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalDay(getPersonalMonth(Number(birthMonth), today.getFullYear()), today.getDate())}</div>
-            </Link>
-            <Link href={`/month/${getPersonalMonth(Number(birthMonth), today.getFullYear())}`}
-              className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 text-center">
-              <div className="text-purple-400 text-lg font-medium mb-2">Personal Month</div>
-              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalMonth(Number(birthMonth), today.getFullYear())}</div>
-            </Link>
-            <Link href={`/year/${getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}`}
-              className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-pink-500 transition-all duration-300 text-center">
-              <div className="text-pink-400 text-lg font-medium mb-2">Personal Year</div>
-              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}</div>
-            </Link>
+          <div className="relative z-10 text-center">
+            <h2 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+              Personal Numerology & Numbers
+            </h2>
+            <p className="text-xl text-gray-300 mb-4 max-w-2xl mx-auto leading-relaxed">
+              Numerology is one of the 4 mystical arts and has been used by spiritual traditions for millennia. Numbers are woven into reality and represent archetypal forces that shadow the self. Harness the gnosis of time to assist your decision making and deepen the understanding of your life.
+            </p>
+            <p className="text-xl text-gray-300 mb-6 max-w-2xl mx-auto leading-relaxed">
+              Enter your birth date to discover your personal numerology and planetary assignments.
+            </p>
+            <div className="mb-8">
+              <DateSumInput date={birthDate} onDateChange={handleDateChange} />
+            </div>
+            {(birthDay && birthMonth && birthYear) && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                <Link href={`/day/${getPersonalDay(getPersonalMonth(Number(birthMonth), today.getFullYear()), today.getDate())}`} 
+                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all duration-300 text-center">
+                  <div className="text-blue-400 text-lg font-medium mb-2">Personal Day</div>
+                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalDay(getPersonalMonth(Number(birthMonth), today.getFullYear()), today.getDate())}</div>
+                </Link>
+                <Link href={`/month/${getPersonalMonth(Number(birthMonth), today.getFullYear())}`}
+                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 text-center">
+                  <div className="text-purple-400 text-lg font-medium mb-2">Personal Month</div>
+                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalMonth(Number(birthMonth), today.getFullYear())}</div>
+                </Link>
+                <Link href={`/year/${getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}`}
+                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-pink-500 transition-all duration-300 text-center">
+                  <div className="text-pink-400 text-lg font-medium mb-2">Personal Year</div>
+                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}</div>
+                </Link>
+              </div>
+            )}
           </div>
-          )}
         </div>
       </div>
-
       <Planets />
-      
     </main>
   );
 }
