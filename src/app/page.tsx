@@ -17,9 +17,23 @@ export default function Home() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
-  const day = searchParams.get('day');
-  const month = searchParams.get('month');
-  const year = searchParams.get('year');
+  // New: keep birth date in local state
+  const [birthDate, setBirthDate] = React.useState<string>("");
+  const [birthDay, setBirthDay] = React.useState<string>("");
+  const [birthMonth, setBirthMonth] = React.useState<string>("");
+  const [birthYear, setBirthYear] = React.useState<string>("");
+
+  // On mount, initialize from URL if present
+  React.useEffect(() => {
+    // If URL has valid birthdate, use it
+    if (searchParams.has('birth') && searchParams.get('birth')) {
+      setBirthDate(searchParams.get('birth')!);
+      const [y, m, d] = searchParams.get('birth')!.split('-');
+      setBirthYear(y);
+      setBirthMonth(m);
+      setBirthDay(d);
+    }
+  }, []);
 
   // Numerology helpers
   function sumDigits(num: number): number {
@@ -48,42 +62,31 @@ export default function Home() {
   // Get today's date for calculations
   const today = new Date();
 
-  // Use local state for the input value to prevent reload/focus loss
-  const [inputDate, setInputDate] = React.useState(() => {
-    let initial = '';
-    if (year) initial += year;
-    if (month) initial += (initial ? '-' : '') + String(month).padStart(2, '0');
-    if (day) initial += (initial.length === 7 ? '-' : '') + String(day).padStart(2, '0');
-    return initial;
-  });
+  // Remove old inputDate logic
 
-  // Sync input state with URL params if they change (e.g. back/forward navigation)
-  React.useEffect(() => {
-    let newDate = '';
-    if (year) newDate += year;
-    if (month) newDate += (newDate ? '-' : '') + String(month).padStart(2, '0');
-    if (day) newDate += (newDate.length === 7 ? '-' : '') + String(day).padStart(2, '0');
-    setInputDate(newDate);
-  }, [year, month, day]);
-
+  // When user changes date input
   const handleDateChange = (dateString: string) => {
+    setBirthDate(dateString);
     if (!dateString) {
-      router.replace('/', { shallow: true, scroll: false });
+      router.replace('/', { scroll: false });
       return;
     }
-    // Only update URL if complete date (YYYY-MM-DD)
     if (dateString.length === 10) {
       const [y, m, d] = dateString.split('-');
+      setBirthYear(y);
+      setBirthMonth(m);
+      setBirthDay(d);
       // Calculate personal year
       const personalYear = getPersonalYear(Number(d), Number(m), today.getFullYear());
-      if (String(personalYear) === year && m === month && d === day) return; // Already set, do nothing
       const params = new URLSearchParams();
+      params.set('birth', dateString); // keep birthdate in URL for deep links
       params.set('year', String(personalYear));
       params.set('month', m);
       params.set('day', d);
-      router.replace(`/?${params.toString()}`, undefined, { shallow: true, scroll: false });
+      router.replace(`/?${params.toString()}`, { scroll: false });
     }
   };
+
 
   return (
     <main className="flex flex-col items-center gap-8 p-6">
@@ -97,28 +100,25 @@ export default function Home() {
           </h2>
           
           <div className="mb-8">
-            <DateSumInput date={inputDate} onDateChange={(value) => {
-              setInputDate(value);
-              handleDateChange(value);
-            }} />
+            <DateSumInput date={birthDate} onDateChange={handleDateChange} />
           </div>
 
-          {(day || month || year) && (
+          {(birthDay && birthMonth && birthYear) && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Link href={`/day/${month ? getPersonalDay(getPersonalMonth(Number(month), today.getFullYear()), today.getDate()) : ''}`} 
+            <Link href={`/day/${getPersonalDay(getPersonalMonth(Number(birthMonth), today.getFullYear()), today.getDate())}`} 
               className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all duration-300 text-center">
               <div className="text-blue-400 text-lg font-medium mb-2">Personal Day</div>
-              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{month ? getPersonalDay(getPersonalMonth(Number(month), today.getFullYear()), today.getDate()) : ''}</div>
+              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalDay(getPersonalMonth(Number(birthMonth), today.getFullYear()), today.getDate())}</div>
             </Link>
-            <Link href={`/month/${month ? getPersonalMonth(Number(month), today.getFullYear()) : ''}`}
+            <Link href={`/month/${getPersonalMonth(Number(birthMonth), today.getFullYear())}`}
               className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 text-center">
               <div className="text-purple-400 text-lg font-medium mb-2">Personal Month</div>
-              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{month ? getPersonalMonth(Number(month), today.getFullYear()) : ''}</div>
+              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalMonth(Number(birthMonth), today.getFullYear())}</div>
             </Link>
-            <Link href={`/year/${day && month ? getPersonalYear(Number(day), Number(month), new Date().getFullYear()) : ''}`}
+            <Link href={`/year/${getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}`}
               className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-pink-500 transition-all duration-300 text-center">
               <div className="text-pink-400 text-lg font-medium mb-2">Personal Year</div>
-              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{day && month ? getPersonalYear(Number(day), Number(month), new Date().getFullYear()) : ''}</div>
+              <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}</div>
             </Link>
           </div>
           )}
