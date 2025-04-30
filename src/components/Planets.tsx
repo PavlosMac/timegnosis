@@ -52,16 +52,10 @@ function reduceToSingleDigit(num: number): number {
   return num;
 }
 
-function getPersonalYear(birthDay: number, birthMonth: number, todayYear: number): number {
-  const rawYear = sumDigits(birthDay) + sumDigits(birthMonth) + sumDigits(todayYear);
-  return reduceToSingleDigit(rawYear);
-}
-
 export default function Planets() {
   const searchParams = useSearchParams();
   const day = Number(searchParams.get('day'));
   const month = Number(searchParams.get('month'));
-  const year = Number(searchParams.get('year'));
   const today = new Date();
 
   // Corrected: Personal Month = reduce(personalYear + currentMonth)

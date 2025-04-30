@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 import fs from "fs"
 import { dirname } from 'path';
 // Replace with your actual MongoDB connection string
-const MONGO_URI = 'mongodb+srv://pavlosmacdonald:CYRwyXDkOxvkqoQI@cluster0.ieezo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const MONGO_URI = 'mongodb+srv://pavlosmacdonald:XBZt2oNtID0Ailsx@cluster0.ieezo.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
 
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
