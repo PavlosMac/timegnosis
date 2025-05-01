@@ -1,18 +1,11 @@
-
 'use client'
-import React from "react";
+import React, { useState } from "react";
 import DateSumInput from "@/components/DateInput";
 import NavBar from "@/components/NavBar";
-import PersonalNumerology from "@/components/PersonalNumberology";
 import Planets from "@/components/Planets";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
-
 export default function Home() {
-  // const [day, setDay] = useState(0);
-  // const [month, setMonth] = useState(0);
-  // const [year, setYear] = useState(0);
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -22,6 +15,8 @@ export default function Home() {
   const [birthDay, setBirthDay] = React.useState<string>("");
   const [birthMonth, setBirthMonth] = React.useState<string>("");
   const [birthYear, setBirthYear] = React.useState<string>("");
+
+  const [isLoading, setIsLoading] = useState(false);
 
   // On mount, initialize from URL if present
   React.useEffect(() => {
@@ -95,6 +90,10 @@ export default function Home() {
     }
   };
 
+  const handleNavigation = (path: string) => {
+    setIsLoading(true);
+    router.push(path);
+  };
 
   return (
     <main className="flex flex-col items-center gap-8 p-6">
@@ -119,26 +118,40 @@ export default function Home() {
             </div>
             {(birthDay && birthMonth && birthYear) && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                <Link href={`/day/${getPersonalDay(getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate()), today.getDate())}`} 
-                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all duration-300 text-center">
+                <button 
+                  onClick={() => handleNavigation(`/day/${getPersonalDay(getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate()), today.getDate())}`)}
+                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all duration-300 text-center relative">
                   <div className="text-blue-400 text-lg font-medium mb-2">Personal Day</div>
-                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalDay(getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate()), today.getDate())}</div>
-                </Link>
-                <Link href={`/month/${getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate())}`}
-                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 text-center">
+                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                    {getPersonalDay(getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate()), today.getDate())}
+                  </div>
+                </button>
+                <button
+                  onClick={() => handleNavigation(`/month/${getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate())}`)}
+                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 text-center relative">
                   <div className="text-purple-400 text-lg font-medium mb-2">Personal Month</div>
-                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate())}</div>
-                </Link>
-                <Link href={`/year/${getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}`}
-                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-pink-500 transition-all duration-300 text-center">
+                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                    {getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate())}
+                  </div>
+                </button>
+                <button
+                  onClick={() => handleNavigation(`/year/${getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}`)}
+                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-pink-500 transition-all duration-300 text-center relative">
                   <div className="text-pink-400 text-lg font-medium mb-2">Personal Year</div>
-                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}</div>
-                </Link>
+                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                    {getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}
+                  </div>
+                </button>
               </div>
             )}
           </div>
         </div>
       </div>
+      {isLoading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900/70 z-50">
+          <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      )}
       <Planets />
     </main>
   );
