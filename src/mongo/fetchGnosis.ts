@@ -16,7 +16,7 @@ export type GnosisData = {
 export const fetchGnosis = async (num: number, time: "day" | "month" | "year"): Promise<GnosisData> => {
   try {
     const g = await gnosis.findOne({ mode: time, energy: num });
-
+    
     if (!g) {
       return {
         title: "Not Found",

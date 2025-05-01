@@ -1,3 +1,4 @@
+export const dynamic = "force-static";
 import StaticPlanet from "@/components/StaticPlanet";
 import { fetchGnosis } from "@/mongo/fetchGnosis";
 

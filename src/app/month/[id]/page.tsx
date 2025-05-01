@@ -1,5 +1,5 @@
 
-'use server'
+export const dynamic = "force-static";
 import StaticPlanet from "@/components/StaticPlanet";
 import { fetchMonthGnosis } from "./actions";
 
