@@ -53,7 +53,9 @@ export default function StaticPlanet({ energy }: { energy: number }) {
         />
       </div>
       <div className="mt-2 text-center">
-        <Link href={`/planet/${planet.name.toLowerCase()}`} className="text-sm font-semibold text-gray-200 hover:text-gray-100 transition-colors">
+        <Link href={`/planet/${planet.name.toLowerCase()}`}
+          className="text-xl font-bold text-gray-100 hover:text-blue-400 hover:underline transition-all duration-200 cursor-pointer"
+        >
           {planet.name}
         </Link>
         <div className="text-xs text-gray-400">Energy: {planet.energy}</div>
