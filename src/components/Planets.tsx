@@ -1,6 +1,8 @@
 'use client';
 
 import { motion } from "framer-motion";
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 type Planet = {
   name: string;
@@ -36,7 +38,6 @@ const planets: Planet[] = [
   { name: "Jupiter", color: "orange-800", energy: 6, file: "/planets/Jupiter.svg" }
 ];
 
-import { useSearchParams } from 'next/navigation';
 
 function sumDigits(num: number): number {
   return num
@@ -56,7 +57,21 @@ export default function Planets() {
   const searchParams = useSearchParams();
   const day = Number(searchParams.get('day'));
   const month = Number(searchParams.get('month'));
-  const today = new Date();
+  const [today, setToday] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setToday(new Date());
+  }, []);
+
+  const router = useRouter();
+  const [loadingPlanet, setLoadingPlanet] = useState<string | null>(null);
+
+
+  if (!today) return null; // Or a spinner/loading indicator
+
+  const todayYear = today.getFullYear();
+  const todayMonth = today.getMonth() + 1;
+  const todayDay = today.getDate();
 
   // Corrected: Personal Month = reduce(personalYear + currentMonth)
   function getPersonalMonth(personalYear: number, todayMonth: number, todayDay: number): number {
@@ -77,12 +92,13 @@ export default function Planets() {
   }
 
   // Calculate correct values
-  const todayYear = today.getFullYear();
-  const todayMonth = today.getMonth() + 1; // getMonth() is 0-based
-  const todayDay = today.getDate();
+  // const todayYear = today.getFullYear();
+  // const todayMonth = today.getMonth() + 1; // getMonth() is 0-based
+  // const todayDay = today.getDate();
   const personalYear = (day && month) ? getPersonalYear(day, month, todayYear) : undefined;
   const personalMonth = (personalYear !== undefined) ? getPersonalMonth(personalYear, todayMonth, todayDay) : undefined;
   const personalDay = (personalMonth !== undefined) ? getPersonalDay(personalMonth, todayDay) : undefined;
+
 
   return (
     <div className="max-w-4xl mx-auto p-8">
@@ -98,6 +114,7 @@ export default function Planets() {
             const isActive = planet.name === "Moon"
               ? (personalDay === 7 || personalDay === 11 || personalMonth === 7 || personalMonth === 11 || personalYear === 7 || personalYear === 11)
               : (planet.energy === personalDay || planet.energy === personalMonth || planet.energy === personalYear);
+            const isLoading = loadingPlanet === planet.name;
             return (
               <div 
                 key={index} 
@@ -118,12 +135,23 @@ export default function Planets() {
                     />
                   </div>
                 </motion.div>
-                <a 
-                  href={`/planet/${planet.name.toLowerCase()}`} 
-                  className="text-base font-medium text-white hover:text-blue-400 transition-colors"
+                <button
+                  onClick={() => {
+                    setLoadingPlanet(planet.name);
+                    router.push(`/planet/${planet.name.toLowerCase()}`);
+                  }}
+                  className={`text-base font-medium text-white hover:text-blue-400 transition-colors focus:outline-none flex items-center justify-center ${isLoading ? 'opacity-60 cursor-wait' : ''}`}
+                  disabled={isLoading}
+                  aria-busy={isLoading}
                 >
                   {planet.name}
-                </a>
+                  {isLoading && (
+                    <svg className="ml-2 w-4 h-4 animate-spin text-blue-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                    </svg>
+                  )}
+                </button>
                 <span className="text-sm text-gray-400">
                   {planet.name === "Moon" ? "7/11" : planet.energy}
                 </span>

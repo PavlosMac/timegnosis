@@ -40,7 +40,7 @@ export default async function PlanetPage({ params }: { params: { name: string } 
           <h1 className="text-3xl font-bold mb-2 text-white text-center">{data.title}</h1>
           <StaticPlanet energy={data.energy} />
           <div className="prose prose-invert max-w-none mt-6">
-            <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">{data.body}</p>
+            <p className="text-gray-100 whitespace-pre-wrap leading-relaxed">{data.body}</p>
           </div>
         </div>
       </div>
