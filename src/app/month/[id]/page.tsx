@@ -4,7 +4,9 @@ import StaticPlanet from "@/components/StaticPlanet";
 import { fetchMonthGnosis } from "./actions";
 
 
-export default async function MonthPage({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string }>
+
+export default async function MonthPage({ params }: { params: Params }) {
   const resolvedParams = await params;
   const monthId = parseInt(resolvedParams.id);
   const data = await fetchMonthGnosis(monthId);

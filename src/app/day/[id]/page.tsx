@@ -2,7 +2,9 @@ export const dynamic = "force-static";
 import StaticPlanet from "@/components/StaticPlanet";
 import { fetchGnosis } from "@/mongo/fetchGnosis";
 
-export default async function DayPage({ params }: { params: { id: string } }) {
+type Params = Promise<{ id: string }>
+
+export default async function DayPage({ params }: { params: Params }) {
   const resolvedParams = await params;
   const energy = parseInt(resolvedParams.id, 10);
   const data = await fetchGnosis(energy, "day");

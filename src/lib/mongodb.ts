@@ -1,6 +1,12 @@
 // lib/mongodb.js
 import mongoose from 'mongoose';
 
+declare global {
+  // eslint-disable-next-line no-var
+  var mongoose: { conn: unknown, promise: Promise<unknown> | null } | undefined;
+}
+
+
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
@@ -10,11 +16,9 @@ if (!MONGODB_URI) {
 /** 
  * Cached connection for MongoDB.
  */
-let cached = global.mongoose;
+type MongooseCache = { conn: unknown, promise: Promise<unknown> | null };
 
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
+const cached: MongooseCache = (globalThis as unknown as { mongoose: MongooseCache }).mongoose || ((globalThis as unknown as { mongoose: MongooseCache }).mongoose = { conn: null, promise: null });
 
 export async function dbConnect() {
   if (cached.conn) {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Image from 'next/image';
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,11 +30,14 @@ export default function RootLayout({
       >
         <div className="relative min-h-screen w-full overflow-x-hidden">
           {/* Subtle astrology wheel background */}
-          <img 
-            src="/planets/astro_wheel.svg" 
-            alt="Astro Wheel Background" 
-            className="pointer-events-none select-none fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-40 w-[90vw] h-auto max-w-none"
+          <Image
+            src="/planets/astro_wheel.svg"
+            alt="Astro Wheel Background"
+            fill
+            className="pointer-events-none select-none fixed top-0 left-0 z-0 opacity-70 w-[70vw] h-auto max-w-none"
             aria-hidden="true"
+            priority={false}
+            style={{ objectFit: 'contain' }}
           />
           <div className="relative z-10">
             {children}

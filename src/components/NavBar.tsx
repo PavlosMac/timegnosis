@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from 'next/image';
 
 export default function NavBar() {
   return (
@@ -19,7 +20,7 @@ export default function NavBar() {
             <circle cx="45" cy="45" r="40" fill="url(#grad)" stroke="rgba(0,0,0,0.85)" strokeWidth="5" />
           </svg>
           {/* Solar eclipse SVG centered on top, bigger */}
-          <img src="/planets/solar_eclipse.svg" alt="Solar Eclipse" className="absolute w-24 h-24" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)', filter: 'drop-shadow(0 2px 12px #1e3a8a44)' }} />
+          <Image src="/planets/solar_eclipse.svg" alt="Solar Eclipse" width={96} height={96} className="absolute w-24 h-24" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)', filter: 'drop-shadow(0 2px 12px #1e3a8a44)' }} priority={false} />
         </div>
         <Link href="/" className="hover:text-gray-300 text-xl mt-4 tracking-wider">TimeGnosis</Link>
       </div>

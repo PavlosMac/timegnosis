@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 type PlanetColor = keyof typeof tailwindColors;
 
@@ -44,12 +45,15 @@ export default function StaticPlanet({ energy }: { energy: number }) {
     <div className="flex flex-col items-center mt-6">
       <div
         className="flex items-center justify-center rounded-full w-20 h-20"
-        style={{ backgroundColor: tailwindColors[planetColor] }}
+        style={{ backgroundColor: tailwindColors[planetColor as keyof typeof tailwindColors] }}
       >
-        <img
+        <Image
           src={planet.file}
           alt={planet.name}
+          width={40}
+          height={40}
           className="w-10 h-10 filter brightness-200 contrast-200 drop-shadow-md"
+          priority={false}
         />
       </div>
       <div className="mt-2 text-center">

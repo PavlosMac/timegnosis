@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from "framer-motion";
+import Image from 'next/image';
 
 const planets = [
   { name: "Mercury", color: "green-500", energy: 8, file: "/planets/Mercury.svg" },
@@ -38,14 +39,17 @@ export default function Planet({ energy }: { energy: number }) {
     <div className="flex flex-col items-center mt-6">
       <motion.div
         className="flex items-center justify-center rounded-full w-20 h-20"
-        style={{ backgroundColor: tailwindColors[planet.color] }}
+        style={{ backgroundColor: tailwindColors[planet.color as keyof typeof tailwindColors] }}
         animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
         transition={{ repeat: Infinity, duration: 1 }}
       >
-        <img
+        <Image
           src={planet.file}
           alt={planet.name}
+          width={40}
+          height={40}
           className="w-10 h-10 filter brightness-200 contrast-200 drop-shadow-md"
+          priority={false}
         />
       </motion.div>
       <div className="mt-2 text-center">

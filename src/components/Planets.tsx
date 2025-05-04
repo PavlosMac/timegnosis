@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 type Planet = {
   name: string;
@@ -127,11 +128,14 @@ export default function Planets() {
                   transition={isActive ? { repeat: Infinity, duration: 1.5 } : {}}
                 >
                   <div className="flex items-center justify-center">
-                    <img
+                    <Image
                       src={planet.file}
                       alt={planet.name}
+                      width={40}
+                      height={40}
                       className="w-10 h-10 filter brightness-200 contrast-200 drop-shadow-lg"
                       onError={() => console.error(`Failed to load ${planet.file}`)}
+                      priority={false}
                     />
                   </div>
                 </motion.div>
