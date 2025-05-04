@@ -1,5 +1,6 @@
 "use server";
 
+import { cache } from "react";
 import dbConnect from "@/lib/mongodb";
 import gnosis from "@/models/gnosis";
 import planet from "@/models/planet";
@@ -13,7 +14,7 @@ export type GnosisData = {
   energy: number;
 };
 
-export const fetchGnosis = async (num: number, time: "day" | "month" | "year"): Promise<GnosisData> => {
+export const fetchGnosis = cache(async (num: number, time: "day" | "month" | "year"): Promise<GnosisData> => {
   try {
     const g = await gnosis.findOne({ mode: time, energy: num });
     
@@ -41,14 +42,14 @@ export const fetchGnosis = async (num: number, time: "day" | "month" | "year"): 
       energy: num
     };
   }
-};
+});
 
 export type PlanetDescription = {
   title: string;
   body: string;
 };
 
-export const fetchPlanetDescription = async (planetName: string): Promise<PlanetDescription> => {
+export const fetchPlanetDescription = cache(async (planetName: string): Promise<PlanetDescription> => {
   try {
     const p = await planet.findOne({ planet: planetName.toLowerCase() });
 
@@ -67,4 +68,4 @@ export const fetchPlanetDescription = async (planetName: string): Promise<Planet
       body: "Error fetching planet description." 
     };
   }
-};
+});
