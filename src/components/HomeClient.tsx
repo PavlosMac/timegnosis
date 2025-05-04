@@ -31,20 +31,20 @@ export default function HomeClient() {
   }, [searchParams]);
 
   // Numerology helpers
-  function sumDigits(num: number): number {
+  const sumDigits = (num: number): number => {
     return num
       .toString()
       .split('')
       .reduce((acc, digit) => acc + parseInt(digit), 0);
   }
-  function reduceToSingleDigit(num: number): number {
+  const reduceToSingleDigit = (num: number): number => {
     while (num > 9 && num !== 11 && num !== 22) {
       num = sumDigits(num);
     }
     return num;
   }
   // Corrected: Personal Month = reduce(personalYear + currentMonth)
-  function getPersonalMonth(birthDay: number, birthMonth: number, todayYear: number, todayMonth: number, todayDay: number): number {
+  const getPersonalMonth = (birthDay: number, birthMonth: number, todayYear: number, todayMonth: number, todayDay: number): number => {
     // Calculate personal year first
     const personalYear = getPersonalYear(birthDay, birthMonth, todayYear);
     // If today is before the 21st, use current month. If on/after 21st, use next month (wrap to 1 if December)
@@ -54,10 +54,11 @@ export default function HomeClient() {
     }
     return reduceToSingleDigit(personalYear + month);
   }
-  function getPersonalDay(personalMonth: number, todayDay: number): number {
+  const getPersonalDay = (personalMonth: number, todayDay: number): number => {
     return reduceToSingleDigit(todayDay + personalMonth);
   }
-  function getPersonalYear(birthDay: number, birthMonth: number, todayYear: number): number {
+
+  const getPersonalYear = (birthDay: number, birthMonth: number, todayYear: number): number => {
     const rawYear = sumDigits(birthDay) + sumDigits(birthMonth) + sumDigits(todayYear);
     return reduceToSingleDigit(rawYear);
   }
