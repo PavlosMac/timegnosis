@@ -8,7 +8,7 @@ type PlanetColor = keyof typeof tailwindColors;
 const planets = [
   { name: "Mercury", color: "green-500", energy: 8, file: "/planets/Mercury.svg" },
   { name: "Venus", color: "pink-400", energy: 3, file: "/planets/Venus.svg" },
-  { name: "Mars", color: "red-600", energy: 4, file: "/planets/Mars.svg" },
+  { name: "Mars", color: "red-600", energy: 4, file: "/planets/mars.svg" },
   { name: "Sun", color: "yellow-500", energy: 1, file: "/planets/Sun.svg" },
   { name: "Saturn", color: "gray-800", energy: 5, file: "/planets/Saturn.svg" },
   { name: "Uranus", color: "blue-300", energy: 22, file: "/planets/Uranus.svg" },

@@ -5,7 +5,7 @@ import Image from 'next/image';
 const planets = [
   { name: "mercury", color: "green-500", energy: 8, file: "/planets/Mercury.svg" },
   { name: "venus", color: "pink-400", energy: 3, file: "/planets/Venus.svg" },
-  { name: "mars", color: "red-600", energy: 4, file: "/planets/Mars.svg" },
+  { name: "mars", color: "red-600", energy: 4, file: "/planets/mars.svg" },
   { name: "sun", color: "yellow-500", energy: 1, file: "/planets/Sun.svg" },
   { name: "saturn", color: "gray-800", energy: 5, file: "/planets/Saturn.svg" },
   { name: "uranus", color: "blue-300", energy: 22, file: "/planets/Uranus.svg" },
