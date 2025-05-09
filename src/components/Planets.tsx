@@ -29,7 +29,7 @@ const tailwindColors = {
 const planets: Planet[] = [
   { name: "Mercury", color: "green-500", energy: 8, file: "/planets/Mercury.svg" },
   { name: "Venus", color: "pink-400", energy: 3, file: "/planets/Venus.svg" },
-  { name: "Mars", color: "red-600", energy: 4, file: "/planets/mars.svg" },
+  { name: "Mars", color: "red-600", energy: 4, file: "/planets/Mars.svg" },
   { name: "Sun", color: "yellow-500", energy: 1, file: "/planets/Sun.svg" },
   { name: "Saturn", color: "gray-800", energy: 5, file: "/planets/Saturn.svg" },
   { name: "Uranus", color: "blue-300", energy: 22, file: "/planets/Uranus.svg" },
@@ -102,7 +102,7 @@ export default function Planets() {
 
 
   return (
-    <div className="max-w-4xl mx-auto p-8">
+    <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 flex flex-col items-center">
       <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 shadow-2xl">
         <h2 className="text-2xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
           Planetary Assignment
@@ -119,7 +119,7 @@ export default function Planets() {
             return (
               <div 
                 key={index} 
-                className={`flex flex-col items-center p-4 rounded-lg transition-all duration-300 ${isActive ? 'bg-gray-800/50 scale-105' : ''}`}
+                className={`relative flex flex-col items-center p-4 rounded-lg transition-all duration-300 ${isActive ? 'bg-gray-800/50 scale-105' : ''}`}
               >
                 <motion.div
                   className="flex items-center justify-center rounded-full w-16 h-16 mb-3"
@@ -149,16 +149,18 @@ export default function Planets() {
                   aria-busy={isLoading}
                 >
                   {planet.name}
-                  {isLoading && (
-                    <svg className="ml-2 w-4 h-4 animate-spin text-blue-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-                    </svg>
-                  )}
                 </button>
                 <span className="text-sm text-gray-400">
                   {planet.name === "Moon" ? "7/11" : planet.energy}
                 </span>
+                {isLoading && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20 rounded-lg">
+                    <svg className="w-8 h-8 animate-spin text-blue-400" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                    </svg>
+                  </div>
+                )}
               </div>
             );
           })}

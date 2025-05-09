@@ -97,9 +97,9 @@ export default function HomeClient() {
   return (
     <main className="flex flex-col items-center gap-8 p-6">
       <NavBar />
-      <div className="max-w-4xl mx-auto p-8">
-        <div className="relative overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-xl p-8 border border-gray-700 shadow-2xl">
-          <div className="absolute inset-0 z-0 opacity-20">
+      <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 flex flex-col items-center">
+        <div className="relative w-full max-w-xl mx-auto overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-gray-700 shadow-2xl">
+          <div className="absolute inset-0 z-0 opacity-20 hidden md:block">
             <Image src="/planets/astro.svg" alt="Background" fill className="object-cover w-full h-full scale-200" priority={false} style={{ objectFit: 'cover' }} />
           </div>
           <div className="relative z-10 text-center">
