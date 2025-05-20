@@ -29,11 +29,11 @@ const tailwindColors = {
 const planets: Planet[] = [
   { name: "Mercury", color: "green-500", energy: 8, file: "/planets/Mercury.svg" },
   { name: "Venus", color: "pink-400", energy: 3, file: "/planets/Venus.svg" },
-  { name: "Mars", color: "red-600", energy: 4, file: "/planets/Mars2.svg" },
   { name: "Sun", color: "yellow-500", energy: 1, file: "/planets/Sun.svg" },
   { name: "Saturn", color: "gray-800", energy: 5, file: "/planets/Saturn.svg" },
   { name: "Uranus", color: "blue-300", energy: 22, file: "/planets/Uranus.svg" },
   { name: "Neptune", color: "blue-700", energy: 9, file: "/planets/Neptune.svg" },
+  { name: "Mars", color: "red-600", energy: 4, file: "/planets/Annoy.svg" },
   { name: "Pluto", color: "purple-800", energy: 2, file: "/planets/Pluto.svg" },
   { name: "Moon", color: "blue-gray-200", energy: 7, file: "/planets/moon.svg" },
   { name: "Jupiter", color: "orange-800", energy: 6, file: "/planets/Jupiter.svg" }
