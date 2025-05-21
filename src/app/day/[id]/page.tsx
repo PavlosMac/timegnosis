@@ -1,5 +1,6 @@
 export const dynamic = "force-static";
 import StaticPlanet from "@/components/StaticPlanet";
+import { gnosisBodyTextClass } from "@/styles/textClassNames";
 import { fetchGnosis } from "@/mongo/fetchGnosis";
 
 type Params = Promise<{ id: string }>
@@ -34,7 +35,7 @@ export default async function DayPage({ params }: { params: Params }) {
         <div className="mt-6">
           <h2 className="text-xl font-semibold mb-4 text-gray-200">{data.subtitle}</h2>
           <div className="prose prose-invert max-w-none">
-            <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">{data.body}</p>
+            <p className={gnosisBodyTextClass}>{data.body}</p>
           </div>
         </div>
       </div>
