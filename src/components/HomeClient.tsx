@@ -103,11 +103,11 @@ export default function HomeClient() {
             <Image src="/planets/astro.svg" alt="Background" fill className="object-cover w-full h-full scale-200" priority={false} style={{ objectFit: 'cover' }} />
           </div>
           <div className="relative z-10 text-center">
-            <h2 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+            <h2 className="text-3xl font-bold mb-4 text-purple-500">
               Personal Numerology & Numbers
             </h2>
             <p className="text-xl text-white mb-4 max-w-2xl mx-auto leading-relaxed">
-              Numerology is one of the 4 mystical arts and has been used by spiritual traditions for millennia. Numbers are woven into reality and represent archetypal forces that shadow the self. Harness the gnosis of time to assist your decision making and deepen the understanding of your life.
+              Numerology is one of the 4 mystical arts - used by spiritual traditions for millennia. Numbers are woven into reality and represent archetypal forces that shape the self, an eternal dance of creation and transformation. Harness the time gnosis to assist your decision making and deepen the understanding of your life.
             </p>
             <p className="text-xl text-gray-300 mb-6 max-w-2xl mx-auto leading-relaxed">
               Enter your birth date to discover your personal numerology and planetary assignments.
