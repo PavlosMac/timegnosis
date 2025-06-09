@@ -1,18 +1,12 @@
+import { TarotCardData } from "@/app/tarot/models";
 import Image from "next/image";
 import React from "react";
-
-export interface TarotCardData {
-  name: string;
-  imageUrl: string;
-  meaning: string;
-  reversedMeaning?: string;
-  reversed?: boolean;
-}
 
 interface TarotCardProps {
   card: TarotCardData;
   showMeaning?: boolean;
 }
+
 
 export default function TarotCard({ card, showMeaning = true }: TarotCardProps) {
   return (
