@@ -22,7 +22,7 @@ const shuffleDeck = (deck: TarotCardData[]): TarotCardData[] => {
   return arr;
 };
 
-const ShuffledDeck: React.FC<ShuffledDeckProps> = ({ numCards, selectedCards, onSelectCard }) => {
+export default function ShuffledDeck({ numCards, selectedCards, onSelectCard }: ShuffledDeckProps) {
   const [shuffledDeck, setShuffledDeck] = useState<TarotCardData[]>([]);
 
   useEffect(() => {
@@ -37,17 +37,18 @@ const ShuffledDeck: React.FC<ShuffledDeckProps> = ({ numCards, selectedCards, on
   };
 
   return (
-    <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-      {shuffledDeck.slice(0, 12).map((card, idx) => {
+    <div className="grid grid-cols-6 sm:grid-cols-13 gap-1 overflow-x-auto">
+      {shuffledDeck.slice(0, 78).map((card, idx) => {
         const isSelected = selectedCards.find((c) => c.idx === idx);
         return (
           <button
             key={idx}
-            className={`w-36 h-[216px] min-w-[90px] min-h-[140px] border border-gray-700 rounded-lg shadow bg-gray-800/70 flex items-center justify-center relative transition-transform duration-200 ${isSelected ? "opacity-30 grayscale" : "hover:scale-105 hover:border-yellow-400"}`}
+            className={`w-12 h-20 min-w-[48px] min-h-[80px] border border-gray-700 rounded shadow bg-gray-800/70 flex items-center justify-center relative transition-transform duration-200 text-lg ${isSelected ? "opacity-30 grayscale" : "hover:scale-105 hover:border-yellow-400"}`}
             onClick={() => handleSelect(idx)}
             disabled={!!isSelected || selectedCards.length >= numCards}
             aria-label="Pick card"
           >
+            {/* Optionally use TarotCard here for visual consistency */}
             <span className="text-2xl">🃏</span>
           </button>
         );
@@ -56,4 +57,3 @@ const ShuffledDeck: React.FC<ShuffledDeckProps> = ({ numCards, selectedCards, on
   );
 };
 
-export default ShuffledDeck;

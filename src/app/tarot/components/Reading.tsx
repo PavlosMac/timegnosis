@@ -12,12 +12,10 @@ interface ReadingProps {
 }
 
 const Reading: React.FC<ReadingProps> = ({ selectedCards }) => (
-  <div className="flex flex-col gap-6 min-w-[140px] items-center">
-    {selectedCards.length === 0 ? (
-      <div className="text-gray-400 italic text-center">No cards selected</div>
-    ) : (
-      selectedCards.map((card, i) => <TarotCard key={i} card={card} />)
-    )}
+  <div className="flex flex-row gap-2 justify-center items-center">
+    {selectedCards.map((card, i) => (
+      <TarotCard key={i} card={card} small={true} />
+    ))}
   </div>
 );
 

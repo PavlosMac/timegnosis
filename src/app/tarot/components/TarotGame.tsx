@@ -72,22 +72,20 @@ export default function TarotGame() {
           <div className="mb-4 text-center mt-2">
             <span className="font-semibold">Select {numCards} card{numCards > 1 ? "s" : ""}:</span>
           </div>
-          <div className={`grid gap-8 justify-center items-start mt-4 ${selectedCards.length > 0 ? 'grid-cols-1 md:grid-cols-[2fr_1fr]' : 'grid-cols-1'}`}>
-            {/* Shuffled Deck Component */}
-            <div className={selectedCards.length > 0 ? "flex justify-center" : "flex justify-center col-span-full"}>
-              <ShuffledDeck
-                numCards={numCards}
-                selectedCards={selectedCards}
-                onSelectCard={handleSelectCard}
-              />
-            </div>
-            {/* Only show Reading when there are selected cards */}
-            {selectedCards.length > 0 && (
-              <div className="flex justify-center">
-                <Reading selectedCards={selectedCards} />
-              </div>
-            )}
+          {/* Shuffled Deck at the top */}
+          <div className="flex justify-center">
+            <ShuffledDeck
+              numCards={numCards}
+              selectedCards={selectedCards}
+              onSelectCard={handleSelectCard}
+            />
           </div>
+          {/* Reading component below the deck, showing selected cards as a small horizontal row */}
+          {selectedCards.length > 0 && (
+            <div className="mt-6 flex justify-center">
+              <Reading selectedCards={selectedCards} />
+            </div>
+          )}
           {selectedCards.length === numCards && (
             <button
               className="mt-6 px-6 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition-all font-semibold mx-auto block"
