@@ -44,13 +44,41 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Plan 
 
-1. Add text for all planets
-2. decide whether to add the planets on render next to the numbers that are rendererd
-3. add icon to the top
-4. fix navigation
-5. add section text for seo optimizatiton
 
-https://cloud.mongodb.com/v2/67d704e2df34917462c982b4#/security/network/accessList
+Tarot:
+1. Create 'readings config' .json
+
+1 Card 
+'Sinlge card'
+
+2 cards
+'Present situation, How to Proceed?'
+
+3 cards
+'Past, Present, Future'
+
+Objects should be pulled into reading selection:
+
+e.g
+select: '2 cards - Present Situation, How to Proceed?'
 
 
-## Add domain to robot.txt and sitemap.txt
+         <select
+            className="border rounded px-2 py-1"
+            value={numCards}
+            onChange={(e) => setNumCards(Number(e.target.value))}
+          >
+
+Pass to <Reading />  component
+And persist to reading descrption:
+
+const Reading: React.FC<ReadingProps> = ({ selectedCards }) => (
+  <div className="flex flex-row gap-2 justify-center items-center">
+    {selectedCards.map((card, i) => (
+      <TarotCard key={i} card={card} small={true} />
+    ))}
+  </div>
+);
+
+
+
