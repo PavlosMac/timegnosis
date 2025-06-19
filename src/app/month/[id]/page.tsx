@@ -7,6 +7,19 @@ import { fetchMonthGnosis } from "./actions";
 
 type Params = Promise<{ id: string }>
 
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const monthId = parseInt(params.id);
+  const data = await fetchMonthGnosis(monthId);
+  return {
+    title: data.title || `Month ${params.id} | TimeGnosis`,
+    description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for month energy ${params.id}`,
+    openGraph: {
+      title: data.title || `Month ${params.id} | TimeGnosis`,
+      description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for month energy ${params.id}`,
+    }
+  };
+}
+
 export default async function MonthPage({ params }: { params: Params }) {
   const resolvedParams = await params;
   const monthId = parseInt(resolvedParams.id);

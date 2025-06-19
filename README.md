@@ -51,3 +51,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 5. add section text for seo optimizatiton
 
 https://cloud.mongodb.com/v2/67d704e2df34917462c982b4#/security/network/accessList
+
+
+## Add domain to robot.txt and sitemap.txt
