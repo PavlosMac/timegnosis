@@ -31,6 +31,18 @@ const tailwindColors = {
 
 type Params = Promise<{ name: string }>
 
+export async function generateMetadata({ params }: { params: { name: string } }) {
+  const data = await fetchPlanet(params.name);
+  return {
+    title: data.title || `${params.name} | TimeGnosis`,
+    description: data.body?.slice(0, 160) || `Astrology and numerology for planet ${params.name}`,
+    openGraph: {
+      title: data.title || `${params.name} | TimeGnosis`,
+      description: data.body?.slice(0, 160) || `Astrology and numerology for planet ${params.name}`,
+    }
+  };
+}
+
 export default async function PlanetPage({ params }: { params: Params }) {
   const resolvedParams = await params;
   const data = await fetchPlanet(resolvedParams.name);

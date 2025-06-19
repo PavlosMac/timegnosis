@@ -5,6 +5,19 @@ import { fetchGnosis } from "@/mongo/fetchGnosis";
 
 type Params = Promise<{ id: string }>
 
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const energy = parseInt(params.id, 10);
+  const data = await fetchGnosis(energy, "year");
+  return {
+    title: data.title || `Year ${params.id} | TimeGnosis`,
+    description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for year energy ${params.id}`,
+    openGraph: {
+      title: data.title || `Year ${params.id} | TimeGnosis`,
+      description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for year energy ${params.id}`,
+    }
+  };
+}
+
 export default async function YearPage({ params }: { params: Params }) {
   const resolvedParams = await params;
   const energy = parseInt(resolvedParams.id, 10);
