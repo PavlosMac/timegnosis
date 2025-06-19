@@ -17,7 +17,7 @@ export default function PersonalNumerology() {
         </div>
         
         <div className="relative z-10 text-center">
-          <h2 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+          <h2 className="text-3xl font-bold mb-4 text-[#4B2067]">
             Personal Numerology
           </h2>
           <p className="text-xl text-gray-300 mb-6 max-w-2xl mx-auto leading-relaxed">

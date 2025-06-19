@@ -103,8 +103,8 @@ export default function HomeClient() {
             <Image src="/planets/astro.svg" alt="Background" fill className="object-cover w-full h-full scale-200" priority={false} style={{ objectFit: 'cover' }} />
           </div>
           <div className="relative z-10 text-center">
-            <h2 className="text-3xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
-              Personal Numerology & Numbers
+            <h2 className="text-3xl font-bold mb-4 text-[#4B2067]">
+              Personal Numerology
             </h2>
             <p className="text-xl text-white mb-4 max-w-2xl mx-auto leading-relaxed">
               Numerology is one of the 4 mystical arts and has been used by spiritual traditions for millennia. Numbers are woven into reality and represent archetypal forces that shadow the self. Harness the gnosis of time to assist your decision making and deepen the understanding of your life.

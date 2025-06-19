@@ -1,4 +1,3 @@
-
 export const dynamic = "force-static";
 import StaticPlanet from "@/components/StaticPlanet";
 import { gnosisBodyTextClass } from "@/styles/textClassNames";
@@ -7,15 +6,16 @@ import { fetchMonthGnosis } from "./actions";
 
 type Params = Promise<{ id: string }>
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const monthId = parseInt(params.id);
+export async function generateMetadata({ params }: { params: Params }) {
+  const resolvedParams = await params;
+  const monthId = parseInt(resolvedParams.id);
   const data = await fetchMonthGnosis(monthId);
   return {
-    title: data.title || `Month ${params.id} | TimeGnosis`,
-    description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for month energy ${params.id}`,
+    title: data.title || `Month ${resolvedParams.id} | TimeGnosis`,
+    description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for month energy ${resolvedParams.id}`,
     openGraph: {
-      title: data.title || `Month ${params.id} | TimeGnosis`,
-      description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for month energy ${params.id}`,
+      title: data.title || `Month ${resolvedParams.id} | TimeGnosis`,
+      description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for month energy ${resolvedParams.id}`,
     }
   };
 }

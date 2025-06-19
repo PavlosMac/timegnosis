@@ -104,7 +104,7 @@ export default function Planets() {
   return (
     <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 flex flex-col items-center">
       <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 shadow-2xl">
-        <h2 className="text-2xl font-bold text-center mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+        <h2 className="text-2xl font-bold text-center mb-4 text-[#4B2067]">
           Planetary Assignment
         </h2>
         <p className="text-lg text-gray-300 mb-6 max-w-2xl mx-auto text-center">
@@ -117,9 +117,16 @@ export default function Planets() {
               : (planet.energy === personalDay || planet.energy === personalMonth || planet.energy === personalYear);
             const isLoading = loadingPlanet === planet.name;
             return (
-              <div 
-                key={index} 
-                className={`relative flex flex-col items-center p-4 rounded-lg transition-all duration-300 ${isActive ? 'bg-gray-800/50 scale-105' : ''}`}
+              <button
+                key={index}
+                onClick={() => {
+                  setLoadingPlanet(planet.name);
+                  router.push(`/planet/${planet.name.toLowerCase()}`);
+                }}
+                className={`relative flex flex-col items-center p-4 rounded-lg transition-all duration-300 w-full h-full focus:outline-none ${isActive ? 'bg-gray-800/50 scale-105' : ''} ${isLoading ? 'opacity-60 cursor-wait' : 'cursor-pointer hover:border-blue-400 border border-gray-700'}`}
+                disabled={isLoading}
+                aria-busy={isLoading}
+                type="button"
               >
                 <motion.div
                   className="flex items-center justify-center rounded-full w-16 h-16 mb-3"
@@ -139,17 +146,7 @@ export default function Planets() {
                     />
                   </div>
                 </motion.div>
-                <button
-                  onClick={() => {
-                    setLoadingPlanet(planet.name);
-                    router.push(`/planet/${planet.name.toLowerCase()}`);
-                  }}
-                  className={`text-base font-medium text-white hover:text-blue-400 transition-colors focus:outline-none flex items-center justify-center ${isLoading ? 'opacity-60 cursor-wait' : ''}`}
-                  disabled={isLoading}
-                  aria-busy={isLoading}
-                >
-                  {planet.name}
-                </button>
+                <span className="text-base font-medium text-white mb-1">{planet.name}</span>
                 <span className="text-sm text-gray-400">
                   {planet.name === "Moon" ? "7/11" : planet.energy}
                 </span>
@@ -161,7 +158,7 @@ export default function Planets() {
                     </svg>
                   </div>
                 )}
-              </div>
+              </button>
             );
           })}
         </div>
