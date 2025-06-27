@@ -3,22 +3,23 @@ import StaticPlanet from "@/components/StaticPlanet";
 import { gnosisBodyTextClass } from "@/styles/textClassNames";
 import { fetchGnosis } from "@/mongo/fetchGnosis";
 
-type Params = Promise<{ id: string }>
+type Props = { params: Promise<{ id: string }> };
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const energy = parseInt(params.id, 10);
+export async function generateMetadata({ params }: Props) {
+  const resolvedParams = await params;
+  const energy = parseInt(resolvedParams.id, 10);
   const data = await fetchGnosis(energy, "day");
   return {
-    title: data.title || `Day ${params.id} | TimeGnosis`,
-    description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for day energy ${params.id}`,
+    title: data.title || `Day ${resolvedParams.id} | TimeGnosis`,
+    description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for day energy ${resolvedParams.id}`,
     openGraph: {
-      title: data.title || `Day ${params.id} | TimeGnosis`,
-      description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for day energy ${params.id}`,
+      title: data.title || `Day ${resolvedParams.id} | TimeGnosis`,
+      description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for day energy ${resolvedParams.id}`,
     }
   };
 }
 
-export default async function DayPage({ params }: { params: Params }) {
+export default async function DayPage({ params }: Props) {
   const resolvedParams = await params;
   const energy = parseInt(resolvedParams.id, 10);
   const data = await fetchGnosis(energy, "day");

@@ -3,12 +3,12 @@ import StaticPlanet from "@/components/StaticPlanet";
 import { gnosisBodyTextClass } from "@/styles/textClassNames";
 import { fetchMonthGnosis } from "./actions";
 
+type Props = { params: Promise<{ id: string }> };
 
-type Params = Promise<{ id: string }>
 
-export async function generateMetadata({ params }: { params: Params }) {
-  const resolvedParams = await params;
-  const monthId = parseInt(resolvedParams.id);
+export async function generateMetadata({ params }: Props) {
+  const resolvedParams = await Promise.resolve(params);
+  const monthId = parseInt(resolvedParams.id, 10);
   const data = await fetchMonthGnosis(monthId);
   return {
     title: data.title || `Month ${resolvedParams.id} | TimeGnosis`,
@@ -20,9 +20,9 @@ export async function generateMetadata({ params }: { params: Params }) {
   };
 }
 
-export default async function MonthPage({ params }: { params: Params }) {
-  const resolvedParams = await params;
-  const monthId = parseInt(resolvedParams.id);
+export default async function MonthPage({ params }: Props) {
+  const resolvedParams = await Promise.resolve(params);
+  const monthId = parseInt(resolvedParams.id, 10);
   const data = await fetchMonthGnosis(monthId);
 
   if (!monthId) {

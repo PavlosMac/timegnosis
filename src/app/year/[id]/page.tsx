@@ -2,24 +2,25 @@ export const dynamic = "force-static";
 import StaticPlanet from "@/components/StaticPlanet";
 import { gnosisBodyTextClass } from "@/styles/textClassNames";
 import { fetchGnosis } from "@/mongo/fetchGnosis";
+type Props = { params: Promise<{ id: string }> };
 
-type Params = Promise<{ id: string }>
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const energy = parseInt(params.id, 10);
+export async function generateMetadata({ params }: Props) {
+  const resolvedParams = await Promise.resolve(params);
+  const energy = parseInt(resolvedParams.id, 10);
   const data = await fetchGnosis(energy, "year");
   return {
-    title: data.title || `Year ${params.id} | TimeGnosis`,
-    description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for year energy ${params.id}`,
+    title: data.title || `Year ${resolvedParams.id} | TimeGnosis`,
+    description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for year energy ${resolvedParams.id}`,
     openGraph: {
-      title: data.title || `Year ${params.id} | TimeGnosis`,
-      description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for year energy ${params.id}`,
+      title: data.title || `Year ${resolvedParams.id} | TimeGnosis`,
+      description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for year energy ${resolvedParams.id}`,
     }
   };
 }
 
-export default async function YearPage({ params }: { params: Params }) {
-  const resolvedParams = await params;
+export default async function YearPage({ params }: Props) {
+  const resolvedParams = await Promise.resolve(params);
   const energy = parseInt(resolvedParams.id, 10);
   const data = await fetchGnosis(energy, "year");
 
