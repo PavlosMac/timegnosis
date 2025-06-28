@@ -18,17 +18,38 @@ export default function HomeClient() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // On mount, initialize from URL if present
+  // initialise state either from URL (highest priority) or localStorage fallback
   useEffect(() => {
-    // If URL has valid birthdate, use it
-    if (searchParams.has('birth') && searchParams.get('birth')) {
-      setBirthDate(searchParams.get('birth')!);
-      const [y, m, d] = searchParams.get('birth')!.split('-');
-      setBirthYear(y);
-      setBirthMonth(m);
-      setBirthDay(d);
+    const yearQP = searchParams.get('year');
+    const monthQP = searchParams.get('month');
+    const dayQP = searchParams.get('day');
+
+    if (yearQP && monthQP && dayQP) {
+      // URL already has desired params; ensure they are stored for next visit
+      localStorage.setItem('tg-year', yearQP);
+      localStorage.setItem('tg-month', monthQP);
+      localStorage.setItem('tg-day', dayQP);
+      setBirthDay(dayQP);
+      setBirthMonth(monthQP);
+      setBirthYear("" /* unknown */);
+      return;
     }
-  }, [searchParams]);
+
+    // otherwise load from localStorage and push into URL
+    const storedYear = localStorage.getItem('tg-year');
+    const storedMonth = localStorage.getItem('tg-month');
+    const storedDay = localStorage.getItem('tg-day');
+
+    if (storedYear && storedMonth && storedDay) {
+      setBirthDay(storedDay);
+      setBirthMonth(storedMonth);
+      const params = new URLSearchParams();
+      params.set('year', storedYear);
+      params.set('month', storedMonth);
+      params.set('day', storedDay);
+      router.replace(`/?${params.toString()}`, { scroll: false });
+    }
+  }, []); // run once on mount
 
   // Numerology helpers
   const sumDigits = (num: number): number => {
@@ -79,13 +100,16 @@ export default function HomeClient() {
       setBirthMonth(m);
       setBirthDay(d);
       // Calculate personal year
-      const personalYear = getPersonalYear(Number(d), Number(m), today.getFullYear());
       const params = new URLSearchParams();
-      params.set('birth', dateString); // keep birthdate in URL for deep links
-      params.set('year', String(personalYear));
+      params.set('year', y); // use birth year directly per requirement
       params.set('month', m);
       params.set('day', d);
       router.replace(`/?${params.toString()}`, { scroll: false });
+      // persist to localStorage for future sessions
+      localStorage.setItem('tg-year', y);
+      localStorage.setItem('tg-month', m);
+      localStorage.setItem('tg-day', d);
+      localStorage.setItem('tg-birth', dateString);
     }
   };
 
@@ -115,7 +139,7 @@ export default function HomeClient() {
             <div className="mb-8">
               <DateSumInput date={birthDate} onDateChange={handleDateChange} />
             </div>
-            {(birthDay && birthMonth && birthYear) && (
+            {(birthDay && birthMonth) && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
                 <button 
                   onClick={() => handleNavigation(`/day/${getPersonalDay(getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate()), today.getDate())}`)}
