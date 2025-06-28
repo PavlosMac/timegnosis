@@ -14,7 +14,7 @@ export default function HomeClient() {
   const [birthDate, setBirthDate] = useState<string>("");
   const [birthDay, setBirthDay] = useState<string>("");
   const [birthMonth, setBirthMonth] = useState<string>("");
-  const [birthYear, setBirthYear] = useState<string>("");
+  const [, setBirthYear] = useState<string>("");
 
   const [isLoading, setIsLoading] = useState(false);
 
