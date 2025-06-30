@@ -34,7 +34,7 @@ export default function RootLayout({
             src="/planets/astro_wheel.svg"
             alt="Astro Wheel Background"
             fill
-            className="pointer-events-none select-none fixed top-0 left-0 z-0 opacity-70 w-[70vw] h-auto max-w-none"
+            className="hidden lg:block pointer-events-none select-none fixed top-0 left-0 z-0 opacity-70 w-[70vw] h-auto max-w-none"
             aria-hidden="true"
             priority={false}
             style={{ objectFit: 'contain' }}

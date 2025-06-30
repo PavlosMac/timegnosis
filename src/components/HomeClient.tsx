@@ -14,7 +14,7 @@ export default function HomeClient() {
   const [birthDate, setBirthDate] = useState<string>("");
   const [birthDay, setBirthDay] = useState<string>("");
   const [birthMonth, setBirthMonth] = useState<string>("");
-  const [, setBirthYear] = useState<string>("");
+  const [birthYear, setBirthYear] = useState<string>("");
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,9 +29,14 @@ export default function HomeClient() {
       localStorage.setItem('tg-year', yearQP);
       localStorage.setItem('tg-month', monthQP);
       localStorage.setItem('tg-day', dayQP);
+
+      // update local state so UI reflects persisted date
+      const paddedMonth = monthQP.padStart(2, '0');
+      const paddedDay = dayQP.padStart(2, '0');
+      setBirthDate(`${yearQP}-${paddedMonth}-${paddedDay}`);
       setBirthDay(dayQP);
       setBirthMonth(monthQP);
-      setBirthYear("" /* unknown */);
+      setBirthYear(yearQP);
       return;
     }
 
@@ -41,6 +46,9 @@ export default function HomeClient() {
     const storedDay = localStorage.getItem('tg-day');
 
     if (storedYear && storedMonth && storedDay) {
+      const paddedMonth = storedMonth.padStart(2, '0');
+      const paddedDay = storedDay.padStart(2, '0');
+      setBirthDate(`${storedYear}-${paddedMonth}-${paddedDay}`);
       setBirthDay(storedDay);
       setBirthMonth(storedMonth);
       const params = new URLSearchParams();
@@ -124,7 +132,7 @@ export default function HomeClient() {
       <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 flex flex-col items-center">
         <div className="relative w-full max-w-xl mx-auto overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 sm:p-8 border border-gray-700 shadow-2xl">
           <div className="absolute inset-0 z-0 opacity-20 hidden md:block">
-            <Image src="/planets/astro.svg" alt="Background" fill className="object-cover w-full h-full scale-200" priority={false} style={{ objectFit: 'cover' }} />
+            {/* <Image src="/planets/astro.svg" alt="Background" fill className="object-cover w-full h-full scale-200" priority={false} style={{ objectFit: 'cover' }} /> */}
           </div>
           <div className="relative z-10 text-center">
             <h2 className="text-3xl font-bold mb-4 text-[#4B2067]">
