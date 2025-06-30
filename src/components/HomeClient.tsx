@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import DateSumInput from "@/components/DateInput";
 import NavBar from "@/components/NavBar";
-import Image from 'next/image';
 import Planets from "@/components/Planets";
 import { useRouter, useSearchParams } from "next/navigation";
 
