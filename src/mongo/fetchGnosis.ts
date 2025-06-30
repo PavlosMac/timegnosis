@@ -1,11 +1,11 @@
 "use server";
 
 import { cache } from "react";
-import dbConnect from "@/lib/mongodb";
+import dbReady from "@/lib/dbReady";
 import gnosis from "@/models/gnosis";
 import planet from "@/models/planet";
 
-await dbConnect();
+await dbReady;
 
 export type GnosisData = {
   title: string;

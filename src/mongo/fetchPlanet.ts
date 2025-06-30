@@ -1,4 +1,4 @@
-import dbConnect from "@/lib/mongodb";
+import dbReady from "@/lib/dbReady";
 import Planet from "@/models/planet";
 
 export type PlanetData = {
@@ -10,9 +10,17 @@ export type PlanetData = {
 
 export const fetchPlanet = async (name: string): Promise<PlanetData> => {
   try {
-    await dbConnect();
-    const planet = await Planet.findOne({ planet: name.toLowerCase() });
-    
+    await dbReady; 
+    const planet = await Planet
+        .findOne({ planet: name.toLowerCase() })
+        .select('planet title body energy')
+        .lean<{
+          planet: string;
+          title: string;
+          body: string;
+          energy: number;
+        }>();
+        
     if (!planet) {
       return {
         name,
