@@ -92,10 +92,6 @@ export default function Planets() {
     return reduceToSingleDigit(rawYear);
   }
 
-  // Calculate correct values
-  // const todayYear = today.getFullYear();
-  // const todayMonth = today.getMonth() + 1; // getMonth() is 0-based
-  // const todayDay = today.getDate();
   const personalYear = (day && month) ? getPersonalYear(day, month, todayYear) : undefined;
   const personalMonth = (personalYear !== undefined) ? getPersonalMonth(personalYear, todayMonth, todayDay) : undefined;
   const personalDay = (personalMonth !== undefined) ? getPersonalDay(personalMonth, todayDay) : undefined;

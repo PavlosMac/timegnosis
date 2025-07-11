@@ -58,26 +58,7 @@ export default async function PlanetPage({ params }: { params: Params }) {
       <div className="relative bg-gray-900/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700 shadow-2xl overflow-hidden">
         <div className="relative z-10">
           <div className="flex items-center justify-center mb-2">
-            <div
-              className="flex items-center justify-center rounded-full mr-4"
-              style={{
-                backgroundColor: tailwindColors[planet.color as keyof typeof tailwindColors] || '#222',
-                width: 64,
-                height: 64,
-                minWidth: 64,
-                minHeight: 64,
-                boxShadow: '0 2px 12px 2px rgba(0,0,0,0.15)'
-              }}
-            >
-              <Image
-                src={planet.file}
-                alt={planet.name}
-                width={54}
-                height={54}
-                className="drop-shadow-none"
-                priority={false}
-              />
-            </div>
+
             <h1 className="text-3xl font-bold text-white">{data.title}</h1>
           </div>
           <StaticPlanet energy={data.energy} />
