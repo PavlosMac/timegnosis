@@ -2,6 +2,23 @@ import { NextRequest, NextResponse } from 'next/server';
 import { readFile, writeFile } from 'fs/promises';
 import path from 'path';
 
+interface GnosisItem {
+  id: number;
+  title: string;
+  energy: number;
+  mode: string;
+  subtitle: string;
+  body: string;
+}
+
+interface PlanetItem {
+  planet: string;
+  title: string;
+  energy: number;
+  image: string;
+  body: string;
+}
+
 const GNOSIS_SEED_PATH = path.join(process.cwd(), 'gnosis-seed.json');
 const PLANETS_SEED_PATH = path.join(process.cwd(), 'planets-seed.json');
 
@@ -22,8 +39,8 @@ export async function GET(request: NextRequest) {
     if (id) {
       // Return specific item
       const item = file === 'gnosis' 
-        ? data.find((item: any) => item.id === parseInt(id))
-        : data.find((item: any) => item.planet === id);
+        ? (data as GnosisItem[]).find((item) => item.id === parseInt(id))
+        : (data as PlanetItem[]).find((item) => item.planet === id);
       
       if (!item) {
         return NextResponse.json({ error: 'Item not found' }, { status: 404 });
@@ -58,8 +75,8 @@ export async function POST(request: NextRequest) {
     
     // Find and update the item
     const itemIndex = file === 'gnosis' 
-      ? data.findIndex((item: any) => item.id === parseInt(id))
-      : data.findIndex((item: any) => item.planet === id);
+      ? (data as GnosisItem[]).findIndex((item) => item.id === parseInt(id))
+      : (data as PlanetItem[]).findIndex((item) => item.planet === id);
     
     if (itemIndex === -1) {
       return NextResponse.json({ error: 'Item not found' }, { status: 404 });

@@ -1,7 +1,7 @@
 export const dynamic = "force-static";
 import StaticPlanet from "@/components/StaticPlanet";
 import { gnosisBodyTextClass } from "@/styles/textClassNames";
-import { fetchGnosis } from "@/mongo/fetchGnosis";
+import { fetchGnosis } from "@/lib/fetchLocalGnosis";
 type Props = { params: Promise<{ id: string }> };
 
 

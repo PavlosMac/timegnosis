@@ -1,6 +1,5 @@
-import { fetchPlanet } from '@/mongo/fetchPlanet';
+import { fetchPlanetByName } from '@/lib/fetchLocalPlanets';
 import StaticPlanet from '@/components/StaticPlanet';
-import Image from 'next/image';
 
 const planets = [
   { name: "mercury", color: "green-500", energy: 8, file: "/planets/Mercury.svg" },
@@ -15,25 +14,12 @@ const planets = [
   { name: "jupiter", color: "orange-800", energy: 6, file: "/planets/Jupiter.svg" }
 ];
 
-const tailwindColors = {
-  "green-500": "#22c55e",
-  "orange-600": "#ea580c",
-  "red-600": "#dc2626",
-  "yellow-500": "#eab308",
-  "gray-800": "#1f2937",
-  "blue-300": "#60a5fa",
-  "blue-700": "#1d4ed8",
-  "purple-800": "#5b21b6",
-  "blue-gray-200": "#f4f4f5",
-  "pink-400": "#f472b6",
-  "orange-800": "#9a3412"
-};
 
 type Params = Promise<{ name: string }>
 
 export async function generateMetadata({ params }: { params: Params }) {
   const resolvedParams = await params;
-  const data = await fetchPlanet(resolvedParams.name);
+  const data = await fetchPlanetByName(resolvedParams.name);
   return {
     title: data.title || `${resolvedParams.name} | TimeGnosis`,
     description: data.body?.slice(0, 160) || `Astrology and numerology for planet ${resolvedParams.name}`,
@@ -46,7 +32,7 @@ export async function generateMetadata({ params }: { params: Params }) {
 
 export default async function PlanetPage({ params }: { params: Params }) {
   const resolvedParams = await params;
-  const data = await fetchPlanet(resolvedParams.name);
+  const data = await fetchPlanetByName(resolvedParams.name);
   const planet = planets.find(p => p.name === resolvedParams.name.toLowerCase());
 
   if (!planet) return null;
