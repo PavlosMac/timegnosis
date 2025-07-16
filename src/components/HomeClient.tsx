@@ -71,6 +71,14 @@ export default function HomeClient() {
     }
     return num;
   }
+  
+  // Helper to get fully reduced version (ignores master numbers)
+  const getReducedValue = (num: number): number => {
+    while (num > 9) {
+      num = sumDigits(num);
+    }
+    return num;
+  }
   // Corrected: Personal Month = reduce(personalYear + currentMonth)
   const getPersonalMonth = (birthDay: number, birthMonth: number, todayYear: number, todayMonth: number, todayDay: number): number => {
     // Calculate personal year first
@@ -146,34 +154,78 @@ export default function HomeClient() {
             <div className="mb-8">
               <DateSumInput date={birthDate} onDateChange={handleDateChange} />
             </div>
-            {(birthDay && birthMonth) && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-                <button 
-                  onClick={() => handleNavigation(`/day/${getPersonalDay(getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate()), today.getDate())}`)}
-                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all duration-300 text-center relative">
-                  <div className="text-blue-400 text-lg font-medium mb-2">Personal Day</div>
-                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
-                    {getPersonalDay(getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate()), today.getDate())}
+            {(birthDay && birthMonth) && (() => {
+              const personalDay = getPersonalDay(getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate()), today.getDate());
+              const personalMonth = getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate());
+              const personalYear = getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear());
+              
+              return (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+                  <div className="flex flex-col gap-3">
+                    <div className="text-blue-400 text-lg font-medium mb-2">Personal Day</div>
+                    <button 
+                      onClick={() => handleNavigation(`/day/${personalDay}`)}
+                      className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-blue-500 transition-all duration-300 text-center relative">
+                      <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                        {personalDay}
+                      </div>
+                    </button>
+                    {(personalDay === 11 || personalDay === 22) && (
+                      <button 
+                        onClick={() => handleNavigation(`/day/${getReducedValue(personalDay)}`)}
+                        className="group bg-gray-700/50 p-4 rounded-lg border border-gray-600 hover:border-blue-400 transition-all duration-300 text-center relative">
+                        <div className="text-blue-300 text-sm font-medium mb-1"></div>
+                        <div className="text-2xl font-bold text-gray-100 group-hover:scale-110 transition-transform duration-300">
+                          {getReducedValue(personalDay)}
+                        </div>
+                      </button>
+                    )}
                   </div>
-                </button>
-                <button
-                  onClick={() => handleNavigation(`/month/${getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate())}`)}
-                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 text-center relative">
-                  <div className="text-purple-400 text-lg font-medium mb-2">Personal Month</div>
-                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
-                    {getPersonalMonth(Number(birthDay), Number(birthMonth), today.getFullYear(), today.getMonth() + 1, today.getDate())}
+                  
+                  <div className="flex flex-col gap-3">
+                    <div className="text-purple-400 text-lg font-medium mb-2">Personal Month</div>
+                    <button
+                      onClick={() => handleNavigation(`/month/${personalMonth}`)}
+                      className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-purple-500 transition-all duration-300 text-center relative">
+                      <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                        {personalMonth}
+                      </div>
+                    </button>
+                    {(personalMonth === 11 || personalMonth === 22) && (
+                      <button 
+                        onClick={() => handleNavigation(`/month/${getReducedValue(personalMonth)}`)}
+                        className="group bg-gray-700/50 p-4 rounded-lg border border-gray-600 hover:border-purple-400 transition-all duration-300 text-center relative">
+                        <div className="text-purple-300 text-sm font-medium mb-1"></div>
+                        <div className="text-2xl font-bold text-gray-100 group-hover:scale-110 transition-transform duration-300">
+                          {getReducedValue(personalMonth)}
+                        </div>
+                      </button>
+                    )}
                   </div>
-                </button>
-                <button
-                  onClick={() => handleNavigation(`/year/${getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}`)}
-                  className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-pink-500 transition-all duration-300 text-center relative">
-                  <div className="text-pink-400 text-lg font-medium mb-2">Personal Year</div>
-                  <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
-                    {getPersonalYear(Number(birthDay), Number(birthMonth), today.getFullYear())}
+                  
+                  <div className="flex flex-col gap-3">
+                    <div className="text-pink-400 text-lg font-medium mb-2">Personal Year</div>
+                    <button
+                      onClick={() => handleNavigation(`/year/${personalYear}`)}
+                      className="group bg-gray-800/50 p-6 rounded-lg border border-gray-700 hover:border-pink-500 transition-all duration-300 text-center relative">
+                      <div className="text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">
+                        {personalYear}
+                      </div>
+                    </button>
+                    {(personalYear === 11 || personalYear === 22) && (
+                      <button 
+                        onClick={() => handleNavigation(`/year/${getReducedValue(personalYear)}`)}
+                        className="group bg-gray-700/50 p-4 rounded-lg border border-gray-600 hover:border-pink-400 transition-all duration-300 text-center relative">
+                        <div className="text-pink-300 text-sm font-medium mb-1"></div>
+                        <div className="text-2xl font-bold text-gray-100 group-hover:scale-110 transition-transform duration-300">
+                          {getReducedValue(personalYear)}
+                        </div>
+                      </button>
+                    )}
                   </div>
-                </button>
-              </div>
-            )}
+                </div>
+              );
+            })()}
           </div>
         </div>
       </div>
