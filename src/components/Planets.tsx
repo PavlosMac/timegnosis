@@ -108,9 +108,31 @@ export default function Planets() {
         </p>
         <div className="grid grid-cols-2 md:grid-cols-5 gap-6 p-4">
           {planets.map((planet, index) => {
-            const isActive = planet.name === "Moon"
-              ? (personalDay === 7 || personalDay === 11 || personalMonth === 7 || personalMonth === 11 || personalYear === 7 || personalYear === 11)
-              : (planet.energy === personalDay || planet.energy === personalMonth || planet.energy === personalYear);
+            // Check if planet should be active
+            let isActive = false;
+            
+            if (planet.name === "Moon") {
+              // Moon is active for 7 and 11
+              isActive = (personalDay === 7 || personalDay === 11 || personalMonth === 7 || personalMonth === 11 || personalYear === 7 || personalYear === 11);
+            } else {
+              // Direct energy match
+              const directMatch = (planet.energy === personalDay || planet.energy === personalMonth || planet.energy === personalYear);
+              
+              // Master number reduction match
+              const masterReductionMatch = (
+                // If personal number is 22, then energy 4 should also animate
+                (personalDay === 22 && planet.energy === 4) ||
+                (personalMonth === 22 && planet.energy === 4) ||
+                (personalYear === 22 && planet.energy === 4) ||
+                // If personal number is 11, then energy 2 should also animate  
+                (personalDay === 11 && planet.energy === 2) ||
+                (personalMonth === 11 && planet.energy === 2) ||
+                (personalYear === 11 && planet.energy === 2)
+              );
+              
+              isActive = directMatch || masterReductionMatch;
+            }
+            
             const isLoading = loadingPlanet === planet.name;
             return (
               <button
