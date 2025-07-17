@@ -28,7 +28,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="relative min-h-screen w-full overflow-x-hidden">
+        <div className="relative min-h-screen w-full overflow-x-hidden" style={{backgroundColor: 'var(--background)'}}>
           {/* Subtle astrology wheel background */}
           <Image
             src="/planets/astro_wheel.svg"
