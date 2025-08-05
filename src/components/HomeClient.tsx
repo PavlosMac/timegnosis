@@ -146,8 +146,14 @@ export default function HomeClient() {
               Personal Numerology
             </h2>
             <p className="text-xl text-white mb-4 max-w-2xl mx-auto leading-relaxed">
-              Numerology is one of the 4 mystical arts and has been used by spiritual traditions for millennia. Numbers are woven into reality and represent archetypal forces that shadow the self. Harness the gnosis of time to assist your decision making and deepen the understanding of your life.
+              Numerology is one of the 4 mystical arts to come out of the western mystical tradition. Numbers are an integral part of the universe and are woven into the fabric of reality. 
+              Harness the gnosis of time to assist your decision making and deepen the understanding of your life.
             </p>
+            <div className="mb-6">
+              <a href="/numerology" className="inline-block px-6 py-3 bg-transparent border-2 border-[#4B2067] text-[#4B2067] font-semibold rounded-lg hover:bg-[#4B2067] hover:text-white transition-all duration-300 active:bg-[#4B2067] active:text-white">
+                Read more..
+              </a>
+            </div>
             <p className="text-xl text-gray-300 mb-6 max-w-2xl mx-auto leading-relaxed">
               Enter your birth date to discover your personal numerology and planetary assignments.
             </p>
