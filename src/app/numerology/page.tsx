@@ -20,16 +20,17 @@ export default function NumerologyPage() {
         <div className="mt-6">
           <div className="prose prose-invert max-w-none">
             <p className={`${gnosisBodyTextClass} text-yellow-200`}>
-            The TimeGnosis system you find on this website comes from my involvment in the Taroscopic Mystery School, from which I had the day interpretations. I found my old
+            The TimeGnosis system you find on this website comes from my involvment in the Taroscopic Mystery School. After many years I found the interpretations in my old
             notes and felt it was important to share this system with others. 
+            I kept the system running in my head for many years and found it was a powerful tool for understanding my journey through the world.
             Numerology has sibling traditions namely the Tarot, Astrology Kabbalah. Consider the 22 Major Arcana for example. 1 - 22 are represent within this system, 11 and 22 are higher harmonic numbers,
-            and 12 - 21 are reduced to their single digits. 
+            and 12 upwards are reduced to their single digits. 
             </p>
             <br></br>
             <p className={`${gnosisBodyTextClass} text-yellow-200`}>
             I have added also the Astrological Planets to give another dimension of character to the numbers. The Planetry assignments are not exact science, but the authors 
             interpretation. For example
-            number 6 is represented by Jupiter, but the Sun or Mercury may also have their say. 
+            number 6 is represented by Jupiter, but the Sun or Mercury have similar characteristics. 
             </p>
             
             <div className="mt-6 p-4 border border-gray-600 rounded-lg bg-gray-800/30">
@@ -42,17 +43,18 @@ export default function NumerologyPage() {
                 E.g birth date = 5th August = 8 + 5 = 13 = 4  <br></br>
                   <br></br>
                 4 + 2025 = (  2 + 0 + 2 + 5 = 9 ) = 4 <br></br>
-                9 + 4 = 13 ( 1 + 3 ) = 4   <br></br>
+                9 + 4 = 13 ( 1 + 3 ) = 4 <br></br>
 
-                4 is then the year number.   <br></br>  <br></br>Then you want to add 4 to current month.<br/>
+                <br></br>4 is then the year number.   <br></br>  <br></br>Then you want to add 4 to current month.<br/>
+                
                 E.g April = 4<br/>
-                4 + 4 = <br/>
+                4 + 4 = 8<br/>
                 <br></br>
                 8 is the month number.  <br></br>  <br></br>
 
                 Then you want to add 8 to current day.<br/>
                 E.g 15th of April = 15 + 8 = 23 = 5<br/>
-                <br></br>  <br></br>
+                <br></br> 
                 5 is the day number.
               </p>
             </div>
