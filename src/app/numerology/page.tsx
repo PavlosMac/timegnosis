@@ -37,23 +37,23 @@ export default function NumerologyPage() {
                 The calculation is simple.</p>
                 <br></br>
                 <p className={`${gnosisBodyTextClass} italic text-yellow-200`}>
-                Take the birth day and month and add them together. Then add this to the year.
+                Take the birth day and month and add them together. Then add this to the current year.
                 <br></br>
-                E.g 8th of January = 8 + 1 = 9  <br></br>
-                9 + 2025 = 34  <br></br>
-                3 + 4 = 7  <br></br>
+                E.g birth date = 5th August = 8 + 5 = 13 = 4  <br></br>
+                  <br></br>
+                4 + 2025 = (  2 + 0 + 2 + 5 = 9 ) = 4 <br></br>
+                9 + 4 = 13 ( 1 + 3 ) = 4   <br></br>
 
-                7 is then the year number.   <br></br>  <br></br>Then you want to add 7 to current month.<br/>
+                4 is then the year number.   <br></br>  <br></br>Then you want to add 4 to current month.<br/>
                 E.g April = 4<br/>
-                4 + 7 = 11<br/>
-                1 + 1 = 2
+                4 + 4 = <br/>
                 <br></br>
-                2 is then the month number.  <br></br>  <br></br>
+                8 is the month number.  <br></br>  <br></br>
 
-                Then you want to add 2 to current day.<br/>
-                E.g 15th of April = 15 + 2 = 17 = 8<br/>
+                Then you want to add 8 to current day.<br/>
+                E.g 15th of April = 15 + 8 = 23 = 5<br/>
                 <br></br>  <br></br>
-                8 is then the day number.
+                5 is the day number.
               </p>
             </div>
           </div>
