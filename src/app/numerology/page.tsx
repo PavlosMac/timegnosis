@@ -28,9 +28,8 @@ export default function NumerologyPage() {
             </p>
             <br></br>
             <p className={`${gnosisBodyTextClass} text-yellow-200`}>
-            I have added also the Astrological Planets to give another dimension of character to the numbers. The Planetry assignments are not exact science, but the authors 
-            interpretation. For example
-            number 6 is represented by Jupiter, but the Sun or Mercury have similar characteristics. 
+            I have added also the Astrological Planets to give another dimension of character to the numbers. The Planetry assignments are not exact science, but my interpretation 
+            after years of contemplation. For example number 6 is represented by Jupiter, but the Sun or Mercury have similar characteristics. 
             </p>
             
             <div className="mt-6 p-4 border border-gray-600 rounded-lg bg-gray-800/30">
@@ -42,10 +41,10 @@ export default function NumerologyPage() {
                 <br></br>
                 E.g birth date = 5th August = 8 + 5 = 13 = 4  <br></br>
                   <br></br>
-                4 + 2025 = (  2 + 0 + 2 + 5 = 9 ) = 4 <br></br>
-                9 + 4 = 13 ( 1 + 3 ) = 4 <br></br>
+                4 + 2025 = (  2 + 0 + 2 + 5 = 9 ) + 4 = 13 <br></br>
+                ( 1 + 3 ) = 4 <br></br>
 
-                <br></br>4 is then the year number.   <br></br>  <br></br>Then you want to add 4 to current month.<br/>
+                <br></br>4 is the year number.   <br></br>  <br></br>Then you want to add 4 to current month.<br/>
                 
                 E.g April = 4<br/>
                 4 + 4 = 8<br/>
