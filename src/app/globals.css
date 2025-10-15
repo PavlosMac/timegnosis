@@ -3,15 +3,15 @@
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
-  --color-dark-purple: #4B2067;
+  --color-dark-purple: #443ba4;
 }
 
 /* Mobile ochre theme */
 @media (max-width: 768px) {
   :root {
-    --background: #CC8E35;
+    --background: #6a329f;
     --foreground: #2d1810;
-    --color-dark-purple: #4B2067;
+    --color-dark-purple: #443ba4;
   }
   html {
     color-scheme: light;

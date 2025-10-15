@@ -142,7 +142,7 @@ export default function HomeClient() {
             {/* <Image src="/planets/astro.svg" alt="Background" fill className="object-cover w-full h-full scale-200" priority={false} style={{ objectFit: 'cover' }} /> */}
           </div>
           <div className="relative z-10 text-center">
-            <h2 className="text-3xl font-bold mb-4 text-[#4B2067]">
+            <h2 className="text-3xl font-bold mb-4 text-[#443ba4]">
               Personal Numerology
             </h2>
             <p className="text-xl text-white mb-4 max-w-2xl mx-auto leading-relaxed">
@@ -150,7 +150,7 @@ export default function HomeClient() {
               Harness the gnosis of time to assist your decision making and deepen the understanding of your life.
             </p>
             <div className="mb-6">
-              <a href="/numerology" className="inline-block px-6 py-3 bg-transparent border-2 border-[#4B2067] text-[#4B2067] font-semibold rounded-lg hover:bg-[#4B2067] hover:text-white transition-all duration-300 active:bg-[#4B2067] active:text-white">
+              <a href="/numerology" className="inline-block px-6 py-3 bg-transparent border-2 border-[#443ba4] text-[#443ba4] font-semibold rounded-lg hover:bg-[#443ba4] hover:text-white transition-all duration-300 active:bg-[#443ba4] active:text-white">
                 Read more..
               </a>
             </div>

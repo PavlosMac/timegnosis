@@ -100,7 +100,7 @@ export default function Planets() {
   return (
     <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 md:p-8 flex flex-col items-center">
       <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl p-6 border border-gray-700 shadow-2xl">
-        <h2 className="text-2xl font-bold text-center mb-4 text-[#4B2067]">
+        <h2 className="text-2xl font-bold text-center mb-4 text-[#443ba4]">
           Planetary Assignment
         </h2>
         <p className="text-lg text-gray-300 mb-6 max-w-2xl mx-auto text-center">
