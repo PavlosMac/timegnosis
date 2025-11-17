@@ -1,11 +1,5 @@
-import { ReactNode } from 'react';
-
-// Mock Image component for demo
-const Image = ({ src, alt, width, height, className }: { src: string; alt: string; width: number; height: number; className: string }) => (
-  <div className={`${className} bg-gray-700 flex items-center justify-center text-xs text-gray-400`} style={{width, height}}>
-    {alt}
-  </div>
-);
+import { ReactNode, createElement } from 'react';
+import Image from 'next/image';
 
 // Types
 interface BlogPostProps {
@@ -81,17 +75,16 @@ export function BlogParagraph({ children }: BlogParagraphProps) {
 }
 
 export function BlogHeading({ children, level = 2 }: BlogHeadingProps) {
-  const Tag = `h${level}`;
   const sizes = {
     2: 'text-3xl mt-12 mb-6',
     3: 'text-2xl mt-10 mb-5',
     4: 'text-xl mt-8 mb-4'
   };
   
-  return (
-    <Tag className={`${sizes[level]} font-bold text-white`}>
-      {children}
-    </Tag>
+  return createElement(
+    `h${level}`,
+    { className: `${sizes[level]} font-bold text-white` },
+    children
   );
 }
 
