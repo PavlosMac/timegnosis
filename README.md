@@ -110,3 +110,14 @@ https://cloud.mongodb.com/v2/67d704e2df34917462c982b4#/security/network/accessLi
 |   +---------------------------------------------------------+     |
 |                                                                   |
 +-------------------------------------------------------------------+
+
+
+
+YOUR RASPBERRY PI (Host)                 DOCKER CONTAINER (cloudflared)
+    +-----------------------------+            +-----------------------------+
+    | Path: /home/pi/.cloudflared |            | Path: /etc/cloudflared      |
+    |                             |   MAPPING  |                             |
+    | Contains:                   | =========> | Contains:                   |
+    |  - cert.pem                 |            |  - cert.pem                 |
+    |  - 810def...json            |            |  - 810def...json            |
+    +-----------------------------+            +-----------------------------+

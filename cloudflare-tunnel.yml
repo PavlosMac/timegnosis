@@ -1,5 +1,5 @@
 tunnel: pav-apps-tunnel
-credentials-file: /home/pi/.cloudflared/810def1a-cc80-42a2-8e18-f64583aa3b2d.json
+credentials-file: /etc/cloudflared/810def1a-cc80-42a2-8e18-f64583aa3b2d.json
 
 ingress:
   # This first rule points your domain to your Next.js app.
