@@ -54,3 +54,59 @@ https://cloud.mongodb.com/v2/67d704e2df34917462c982b4#/security/network/accessLi
 
 
 ## Add domain to robot.txt and sitemap.txt
+
+[ User's Browser ]
+            |
+            | 1. Request for "gnosisesoterica.com"
+            v
++---------------------------+
+|                           |
+|  CLOUDFLARE'S NETWORK     |  <-- Your domain's nameservers point here.
+| (The Internet)            |
+|                           |
++-----------+---------------+
+            |
+            | 2. Cloudflare finds your tunnel ("pav-apps-tunnel")
+            |    and sends the request DOWN the secure connection
+            |    that your Pi already established.
+            |
+(This connection bypasses your router's firewall)
+            |
+            v
++-------------------------------------------------------------------+
+| YOUR RASPBERRY PI (At Home)                                       |
+|                                                                   |
+|   +---------------------------------------------------------+     |
+|   | ROUTER (Firewall)                                       |     |
+|   |                                                         |     |
+|   |   [ ALL INCOMING PORTS ARE CLOSED AND SECURE 🔒 ]       |     |
+|   |                                                         |     |
+|   +---------------------------------------------------------+     |
+|                                                                   |
+|   +---------------------------------------------------------+     |
+|   | DOCKER ENVIRONMENT (on the Pi)                          |     |
+|   |                                                         |     |
+|   |   --- Private 'app-network' -------------------------   |     |
+|   |  |                                                   |  |     |
+|   |  |  +-----------------------+                        |  |     |
+|   |  |  | [cloudflared]         |  <--- 3. Request arrives  |  |     |
+|   |  |  | (Tunnel Container)    |      via the tunnel     |  |     |
+|   |  |  |                       |                         |  |     |
+|   |  |  | 4. Checks config.yml: |                         |  |     |
+|   |  |  | "gnosisesoterica.com" |                         |  |     |
+|   |  |  |  -> "http://nextjs-app:3000" |                    |  |     |
+|   |  |  +----------+------------+                        |  |     |
+|   |  |             |                                     |  |     |
+|   |  |             | 5. Forwards request internally        |  |     |
+|   |  |             v                                     |  |     |
+|   |  |  +----------+------------+                        |  |     |
+|   |  |  | [nextjs-app]          |                        |  |     |
+|   |  |  | (Your App Container)  |  <--- 6. App receives   |  |     |
+|   |  |  | (Listening on 3000)   |      request & replies|  |     |
+|   |  |  +-----------------------+                        |  |     |
+|   |  |                                                   |  |     |
+|   |   -----------------------------------------------------   |     |
+|   |                                                         |     |
+|   +---------------------------------------------------------+     |
+|                                                                   |
++-------------------------------------------------------------------+

@@ -1,0 +1,27 @@
+services:
+  timegnosis-next-app:
+    image: pavlos888/timegnosis-next-app:latest
+    container_name: timegnosis-next-app
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+    restart: unless-stopped
+    networks:
+      - app-network
+
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared-tunnel
+    restart: unless-stopped
+    command: tunnel --config /etc/cloudflared/config.yml run
+    volumes:
+      - ./cloudflare-tunnel.yml:/etc/cloudflared/config.yml
+      - ~/.cloudflared:/home/pi/.cloudflared
+    networks:
+      - app-network
+    depends_on:
+      - timegnosis-next-app
+    
+networks:
+  app-network:
+    driver: bridge
