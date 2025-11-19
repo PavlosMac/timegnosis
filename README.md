@@ -121,3 +121,10 @@ YOUR RASPBERRY PI (Host)                 DOCKER CONTAINER (cloudflared)
     |  - cert.pem                 |            |  - cert.pem                 |
     |  - 810def...json            |            |  - 810def...json            |
     +-----------------------------+            +-----------------------------+
+
+
+Start the app with 
+
+```bash
+docker-compose up -d --force-recreate
+```
