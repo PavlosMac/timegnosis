@@ -15,8 +15,7 @@ services:
     restart: unless-stopped
     command: tunnel --config /etc/cloudflared/config.yml run
     volumes:
-      - ./cloudflare-tunnel.yml:/etc/cloudflared/config.yml
-      - ~/.cloudflared:/home/pi/.cloudflared
+      - ./cloudflared-config:/etc/cloudflared
     networks:
       - app-network
     depends_on:
@@ -25,3 +24,4 @@ services:
 networks:
   app-network:
     driver: bridge
+
