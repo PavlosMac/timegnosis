@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Editor, EditorState, ContentState } from 'draft-js';
 import 'draft-js/dist/Draft.css';
+import BlogEditor from '@/components/BlogEditor';
 
 interface GnosisItem {
   id: number;
@@ -21,10 +22,28 @@ interface PlanetItem {
   body: string;
 }
 
-type Item = GnosisItem | PlanetItem;
+interface BlogContentBlock {
+  type: 'paragraph' | 'image';
+  text?: string;
+  src?: string;
+  alt?: string;
+  caption?: string;
+}
+
+interface BlogPost {
+  id: string;
+  title: string;
+  author: string;
+  date: string;
+  category: string;
+  readTime: number;
+  content: BlogContentBlock[];
+}
+
+type Item = GnosisItem | PlanetItem | BlogPost;
 
 const EditorPage = () => {
-  const [selectedFile, setSelectedFile] = useState<'gnosis' | 'planets'>('gnosis');
+  const [selectedFile, setSelectedFile] = useState<'gnosis' | 'planets' | 'blog'>('gnosis');
   const [items, setItems] = useState<Item[]>([]);
   const [selectedItemId, setSelectedItemId] = useState<string>('');
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
@@ -131,13 +150,49 @@ const EditorPage = () => {
     }
   };
 
+  const saveBlogPost = async (content: BlogContentBlock[]) => {
+    if (!selectedItemId) return;
+    
+    setSaving(true);
+    try {
+      const response = await fetch('/api/editor', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          file: 'blog',
+          id: selectedItemId,
+          content,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setMessage({ type: 'success', text: 'Blog post saved successfully!' });
+        setSelectedItem(data.item);
+        setTimeout(() => setMessage(null), 3000);
+      } else {
+        setMessage({ type: 'error', text: data.error || 'Failed to save blog post' });
+      }
+    } catch {
+      setMessage({ type: 'error', text: 'Failed to save blog post' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const getItemDisplayName = (item: Item): string => {
     if (selectedFile === 'gnosis') {
       const gnosisItem = item as GnosisItem;
       return gnosisItem.id !== undefined ? `${gnosisItem.id} - ${gnosisItem.title}` : gnosisItem.title || 'Unknown';
-    } else {
+    } else if (selectedFile === 'planets') {
       const planetItem = item as PlanetItem;
       return planetItem.title;
+    } else {
+      const blogPost = item as BlogPost;
+      return `${blogPost.id} - ${blogPost.title}`;
     }
   };
 
@@ -145,9 +200,12 @@ const EditorPage = () => {
     if (selectedFile === 'gnosis') {
       const gnosisItem = item as GnosisItem;
       return gnosisItem.id !== undefined ? gnosisItem.id.toString() : 'unknown';
-    } else {
+    } else if (selectedFile === 'planets') {
       const planetItem = item as PlanetItem;
       return planetItem.planet || 'unknown';
+    } else {
+      const blogPost = item as BlogPost;
+      return blogPost.id;
     }
   };
 
@@ -185,6 +243,16 @@ const EditorPage = () => {
               >
                 Planets Seed
               </button>
+              <button
+                onClick={() => setSelectedFile('blog')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  selectedFile === 'blog'
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-white/20 text-white/70 hover:bg-white/30'
+                }`}
+              >
+                Blog Posts
+              </button>
             </div>
           </div>
 
@@ -218,14 +286,22 @@ const EditorPage = () => {
           )}
 
           {/* Editor */}
-          {selectedItem && !loading && (
+          {selectedItem && !loading && selectedFile === 'blog' && (
+            <BlogEditor
+              post={selectedItem as BlogPost}
+              onSave={saveBlogPost}
+              saving={saving}
+            />
+          )}
+
+          {selectedItem && !loading && selectedFile !== 'blog' && (
             <div className="space-y-6">
               <div className="bg-white/5 rounded-lg p-4 border border-white/20">
                 <h3 className="text-white text-lg font-semibold mb-2">
                   {selectedItem.title}
                 </h3>
                 <div className="text-white/70 text-sm mb-4">
-                  Energy: {selectedItem.energy}
+                  {'energy' in selectedItem && `Energy: ${selectedItem.energy}`}
                   {selectedFile === 'gnosis' && (
                     <span className="ml-4">
                       Mode: {(selectedItem as GnosisItem).mode}

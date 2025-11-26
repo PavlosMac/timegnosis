@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { readFile, writeFile } from 'fs/promises';
 import path from 'path';
 
+export const dynamic = 'force-dynamic';
+
 interface GnosisItem {
   id: number;
   title: string;
@@ -19,8 +21,27 @@ interface PlanetItem {
   body: string;
 }
 
+interface BlogContentBlock {
+  type: 'paragraph' | 'image';
+  text?: string;
+  src?: string;
+  alt?: string;
+  caption?: string;
+}
+
+interface BlogPost {
+  id: string;
+  title: string;
+  author: string;
+  date: string;
+  category: string;
+  readTime: number;
+  content: BlogContentBlock[];
+}
+
 const GNOSIS_SEED_PATH = path.join(process.cwd(), 'gnosis-seed.json');
 const PLANETS_SEED_PATH = path.join(process.cwd(), 'planets-seed.json');
+const BLOG_POSTS_PATH = path.join(process.cwd(), 'src/app/blog-json/222.json');
 
 export async function GET(request: NextRequest) {
   try {
@@ -28,19 +49,24 @@ export async function GET(request: NextRequest) {
     const file = searchParams.get('file');
     const id = searchParams.get('id');
     
-    if (!file || !['gnosis', 'planets'].includes(file)) {
+    if (!file || !['gnosis', 'planets', 'blog'].includes(file)) {
       return NextResponse.json({ error: 'Invalid file parameter' }, { status: 400 });
     }
     
-    const filePath = file === 'gnosis' ? GNOSIS_SEED_PATH : PLANETS_SEED_PATH;
+    const filePath = file === 'gnosis' ? GNOSIS_SEED_PATH : file === 'planets' ? PLANETS_SEED_PATH : BLOG_POSTS_PATH;
     const fileContent = await readFile(filePath, 'utf8');
     const data = JSON.parse(fileContent);
     
     if (id) {
       // Return specific item
-      const item = file === 'gnosis' 
-        ? (data as GnosisItem[]).find((item) => item.id === parseInt(id))
-        : (data as PlanetItem[]).find((item) => item.planet === id);
+      let item;
+      if (file === 'gnosis') {
+        item = (data as GnosisItem[]).find((item) => item.id === parseInt(id));
+      } else if (file === 'planets') {
+        item = (data as PlanetItem[]).find((item) => item.planet === id);
+      } else {
+        item = (data as BlogPost[]).find((item) => item.id === id);
+      }
       
       if (!item) {
         return NextResponse.json({ error: 'Item not found' }, { status: 404 });
@@ -59,31 +85,46 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { file, id, body } = await request.json();
+    const { file, id, body, content } = await request.json();
     
-    if (!file || !['gnosis', 'planets'].includes(file)) {
+    if (!file || !['gnosis', 'planets', 'blog'].includes(file)) {
       return NextResponse.json({ error: 'Invalid file parameter' }, { status: 400 });
     }
     
-    if (!id || !body) {
-      return NextResponse.json({ error: 'Missing id or body' }, { status: 400 });
+    if (!id) {
+      return NextResponse.json({ error: 'Missing id' }, { status: 400 });
     }
     
-    const filePath = file === 'gnosis' ? GNOSIS_SEED_PATH : PLANETS_SEED_PATH;
+    const filePath = file === 'gnosis' ? GNOSIS_SEED_PATH : file === 'planets' ? PLANETS_SEED_PATH : BLOG_POSTS_PATH;
     const fileContent = await readFile(filePath, 'utf8');
     const data = JSON.parse(fileContent);
     
     // Find and update the item
-    const itemIndex = file === 'gnosis' 
-      ? (data as GnosisItem[]).findIndex((item) => item.id === parseInt(id))
-      : (data as PlanetItem[]).findIndex((item) => item.planet === id);
+    let itemIndex;
+    if (file === 'gnosis') {
+      itemIndex = (data as GnosisItem[]).findIndex((item) => item.id === parseInt(id));
+    } else if (file === 'planets') {
+      itemIndex = (data as PlanetItem[]).findIndex((item) => item.planet === id);
+    } else {
+      itemIndex = (data as BlogPost[]).findIndex((item) => item.id === id);
+    }
     
     if (itemIndex === -1) {
       return NextResponse.json({ error: 'Item not found' }, { status: 404 });
     }
     
-    // Update the body field
-    data[itemIndex].body = body;
+    // Update the content
+    if (file === 'blog') {
+      // For blog posts, update the entire content array
+      if (content) {
+        (data as BlogPost[])[itemIndex].content = content;
+      }
+    } else {
+      // For gnosis/planets, update the body field
+      if (body) {
+        data[itemIndex].body = body;
+      }
+    }
     
     // Write back to file
     await writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');

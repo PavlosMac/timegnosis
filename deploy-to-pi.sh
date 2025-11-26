@@ -9,7 +9,7 @@ TAG="latest"
 
 echo "🏗️  Building multi-platform image..."
 docker buildx build \
-  --platform linux/arm64 \
+  --platform linux/arm64 \ç
   --tag ${DOCKER_USERNAME}/${IMAGE_NAME}:${TAG} \
   --push \
   .
