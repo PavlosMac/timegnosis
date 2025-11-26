@@ -56,7 +56,7 @@ export default function HomeClient() {
       params.set('day', storedDay);
       router.replace(`/?${params.toString()}`, { scroll: false });
     }
-  }, []); // run once on mount
+  }, [router, searchParams]);
 
   // Numerology helpers
   const sumDigits = (num: number): number => {
