@@ -4,17 +4,6 @@ import React, { useState } from "react";
 import Reading from "@/app/tarot/components/Reading";
 import ShuffledDeck from "@/app/tarot/components/ShuffledDeck";
 import { TarotCardData } from "../models";
-import { TAROT_DECK } from "../utils/cards";
-
-
-function shuffleDeck(deck: TarotCardData[]): TarotCardData[] {
-  const arr = [...deck];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-}
 
 interface SelectedCard extends TarotCardData {
   idx: number;
