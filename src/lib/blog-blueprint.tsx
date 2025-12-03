@@ -26,6 +26,7 @@ interface BlogImageProps {
   caption?: string;
   width?: number;
   height?: number;
+  size?: number; // Width percentage (e.g., 20 for 20%)
 }
 
 interface BlogQuoteProps {
@@ -88,10 +89,16 @@ export function BlogHeading({ children, level = 2 }: BlogHeadingProps) {
   );
 }
 
-export function BlogImage({ src, alt, caption, width = 800, height = 500 }: BlogImageProps) {
+export function BlogImage({ src, alt, caption, width = 800, height = 500, size }: BlogImageProps) {
+  const containerStyle = size ? { width: `${size}%` } : {};
+  const containerClass = size ? 'mx-auto' : 'w-full';
+  
   return (
     <figure className="my-8">
-      <div className="rounded-lg overflow-hidden shadow-xl">
+      <div 
+        className={`rounded-lg overflow-hidden shadow-xl ${containerClass}`}
+        style={containerStyle}
+      >
         <Image 
           src={src} 
           alt={alt} 

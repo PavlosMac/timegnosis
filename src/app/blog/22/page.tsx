@@ -50,6 +50,7 @@ export default async function Blog22() {
                 src={block.src || ''}
                 alt={block.alt || ''}
                 caption={block.caption}
+                size={20}
               />
             );
           }
