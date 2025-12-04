@@ -8,6 +8,7 @@ interface BlogContentBlock {
   src?: string;
   alt?: string;
   caption?: string;
+  size?: number;
 }
 
 interface BlogPostData {
@@ -50,7 +51,7 @@ export default async function Blog22() {
                 src={block.src || ''}
                 alt={block.alt || ''}
                 caption={block.caption}
-                size={20}
+                size={block.size}
               />
             );
           }

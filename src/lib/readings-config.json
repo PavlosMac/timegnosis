@@ -1,0 +1,29 @@
+{
+    "readings": [
+        {
+            "name": "Single Card",
+            "description": "A single card reading",
+            "cards": 1
+        },
+        {
+            "name": "Past, Present, Future",
+            "description": "A three card reading",
+            "cards": 3
+        },
+        {
+            "name": "Fire, Water, Air, Earth Reading",
+            "description": "A four card reading",
+            "cards": 4
+        },
+        {
+            "name": "Open Question Reading",
+            "description": "Current situation, how to proceed",
+            "cards": 2,
+            "meta": {
+                "field": "input",
+                "placeholder": "What is the question?",
+                "button": "submit"
+            }
+        }
+    ]
+}

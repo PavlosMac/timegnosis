@@ -16,7 +16,8 @@
         "type": "image",
         "src": "/blog/222.jpg",
         "alt": "The numbers 221 and 222",
-        "caption": "When synchronicity speaks through numbers"
+        "caption": "When synchronicity speaks through numbers",
+        "size": 90
       },
       {
         "type": "paragraph",
@@ -35,7 +36,8 @@
         "type": "image",
         "src": "https://steve-p.org/cards/small/sm_RWSa-T-00.webp",
         "alt": "The Fool tarot card",
-        "caption": "The Fool - New beginnings, innocence"
+        "caption": "The Fool - New beginnings, innocence",
+        "size": 20
       },
       {
         "type": "paragraph",

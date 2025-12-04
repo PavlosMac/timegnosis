@@ -32,6 +32,7 @@ export default function NavBar() {
           <Image src="/planets/solar_eclipse.svg" alt="Solar Eclipse" width={96} height={96} className="absolute w-24 h-24" style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)', filter: 'drop-shadow(0 2px 12px #1e3a8a44)' }} priority={false} />
         </div>
         <Link href="/" className="hover:text-gray-300 text-xl mt-4 tracking-wider">TimeGnosis</Link>
+        <Link href="/tarot" className="hover:text-gray-300 text-xl mt-4 tracking-wider">Tarot</Link>
         {/* Blog Menu with Dropdown */}
           <div className="relative w-full max-w-xs">
             <button
