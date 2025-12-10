@@ -1,13 +1,11 @@
 {
   "mcpServers": {
-    "basic-memory": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": [
-        "basic-memory",
-        "mcp"
-      ],
-      "env": {}
-    }
+    // "next-devtools": {
+      // "command": "npx",
+      // "args": [
+      //   "-y",
+      //   "next-devtools-mcp@latest"
+      // ]
+    // }
   }
 }
