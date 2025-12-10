@@ -1,9 +1,63 @@
+// import TarotGame from "@/app/tarot/components/TarotGame";
+
+// export default function TarotPage() {
+//   return (
+//     <main className="min-h-screen flex flex-col items-center justify-start pt-10 bg-gradient-to-br from-yellow-100 to-indigo-100">
+//       <TarotGame />
+//     </main>
+//   );
+// }
+
+"use client";
 import TarotGame from "@/app/tarot/components/TarotGame";
+import { Cinzel, Crimson_Pro } from 'next/font/google';
+import './tarot.css';
+
+const cinzel = Cinzel({ 
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  variable: '--font-cinzel'
+});
+
+const crimsonPro = Crimson_Pro({ 
+  subsets: ['latin'],
+  weight: ['300', '400', '600'],
+  variable: '--font-crimson-pro'
+});
 
 export default function TarotPage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-start pt-10 bg-gradient-to-br from-yellow-100 to-indigo-100">
-      <TarotGame />
+    <main className={`min-h-screen relative overflow-hidden ${cinzel.variable} ${crimsonPro.variable}`}>
+      {/* Mystical starfield background */}
+      <div className="fixed inset-0 bg-gradient-to-b from-[#0a0015] via-[#1a0033] to-[#2d1b4e]">
+        {/* Animated stars */}
+        <div className="absolute inset-0 opacity-60">
+          {[...Array(100)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute w-1 h-1 bg-white rounded-full animate-twinkle"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${2 + Math.random() * 2}s`,
+              }}
+            />
+          ))}
+        </div>
+        
+        {/* Constellation overlay */}
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_30%_20%,rgba(212,175,55,0.15),transparent_50%)]" />
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_70%_60%,rgba(138,43,226,0.15),transparent_50%)]" />
+        
+        {/* Vignette */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.7)_100%)]" />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center justify-start pt-10 px-4">
+        <TarotGame />
+      </div>
     </main>
   );
 }
