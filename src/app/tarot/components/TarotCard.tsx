@@ -85,6 +85,12 @@ export default function TarotCard({ card, showMeaning = true, small = false }: T
             style={{ fontFamily: "'Cinzel', serif", textShadow: '0 0 10px rgba(212,175,55,0.3)' }}>
           {card.name}
         </h3>
+        {card.reversed && (
+          <p className={`text-center text-[#d4af37]/80 ${small ? 'text-[10px]' : 'text-xs'}`}
+             style={{ fontFamily: "'Cinzel', serif" }}>
+            (Reversed)
+          </p>
+        )}
         
         {/* Meaning */}
         {!small && showMeaning && (

@@ -1,119 +1,89 @@
-// "use client";
-// import React, { useState } from "react";
-
-// import Reading from "@/app/tarot/components/Reading";
-// import ShuffledDeck from "@/app/tarot/components/ShuffledDeck";
-// import { TarotCardData } from "../models";
-
-// interface SelectedCard extends TarotCardData {
-//   idx: number;
-//   reversed: boolean;
-// }
-
-// export default function TarotGame() {
-//   const [numCards, setNumCards] = useState<number>(3);
-//   // Deck state is now managed by ShuffledDeck
-//   // const [shuffledDeck, setShuffledDeck] = useState<TarotCardData[]>([]);
-//   const [selectedCards, setSelectedCards] = useState<SelectedCard[]>([]);
-//   const [gameStarted, setGameStarted] = useState<boolean>(false);
-
-//   const startGame = () => {
-//     setSelectedCards([]);
-//     setGameStarted(true);
-//   };
-
-//   // Selection now handled by ShuffledDeck
-//   const handleSelectCard = (card: SelectedCard) => {
-//     setSelectedCards((prev) => [...prev, card]);
-//   };
-
-//   return (
-//     <div className="relative w-full mx-auto overflow-hidden bg-gray-900/50 backdrop-blur-sm rounded-xl p-4 sm:p-8 border border-gray-700 shadow-2xl mt-8">
-//       {/* Subtle background SVG (planet or tarot motif) */}
-//       <div className="absolute inset-0 z-0 opacity-10 pointer-events-none select-none hidden md:block">
-//         <img src="/planets/astro.svg" alt="Background" className="object-cover w-full h-full scale-200" />
-//       </div>
-//       <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-center text-purple-500">
-//         Tarot Reading
-//       </h1>
-//       {!gameStarted && (
-//         <div className="flex flex-col items-center gap-4 mt-6">
-//           <label className="text-lg">How many cards for your reading?</label>
-//           <select
-//             className="border rounded px-2 py-1"
-//             value={numCards}
-//             onChange={(e) => setNumCards(Number(e.target.value))}
-//           >
-//             {[1, 3, 5, 7, 10].map((n) => (
-//               <option key={n} value={n}>{n}</option>
-//             ))}
-//           </select>
-//           <button
-//             className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition-all font-semibold"
-//             onClick={startGame}
-//           >
-//             Shuffle & Start
-//           </button>
-//         </div>
-//       )}
-//       {gameStarted && (
-//         <>
-//           <div className="mb-4 text-center mt-2">
-//             <span className="font-semibold">Select {numCards} card{numCards > 1 ? "s" : ""}:</span>
-//           </div>
-//           {/* Shuffled Deck at the top */}
-//           <div className="flex justify-center">
-//             <ShuffledDeck
-//               numCards={numCards}
-//               selectedCards={selectedCards}
-//               onSelectCard={handleSelectCard}
-//             />
-//           </div>
-//           {/* Reading component below the deck, showing selected cards as a small horizontal row */}
-//           {selectedCards.length > 0 && (
-//             <div className="mt-6 flex justify-center">
-//               <Reading selectedCards={selectedCards} />
-//             </div>
-//           )}
-//           {selectedCards.length === numCards && (
-//             <button
-//               className="mt-6 px-6 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition-all font-semibold mx-auto block"
-//               onClick={() => setGameStarted(false)}
-//             >
-//               New Reading
-//             </button>
-//           )}
-//         </>
-//       )}
-//     </div>
-//   );
-// }
-
 
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Reading from "@/app/tarot/components/Reading";
 import ShuffledDeck from "@/app/tarot/components/ShuffledDeck";
 import { TarotCardData } from "../models";
+import readingsConfig from "@/lib/readings-config.json";
+
+interface ReadingConfig {
+  name: string;
+  description: string;
+  cards: number;
+  positions: string[];
+  meta?: {
+    field: string;
+    placeholder: string;
+    button: string;
+  };
+}
 
 interface SelectedCard extends TarotCardData {
   idx: number;
   reversed: boolean;
 }
 
+interface ReadingResult {
+  readingType: string;
+  positions: Record<string, SelectedCard>;
+  question?: string;
+}
+
+const readings = readingsConfig.readings as ReadingConfig[];
+
 export default function TarotGame() {
-  const [numCards, setNumCards] = useState<number>(3);
+  const [selectedReading, setSelectedReading] = useState<ReadingConfig>(readings[1]); // Default to Past, Present, Future
+  const [userQuestion, setUserQuestion] = useState<string>("");
   const [selectedCards, setSelectedCards] = useState<SelectedCard[]>([]);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [completedReading, setCompletedReading] = useState<ReadingResult | null>(null);
+  const readingRef = useRef<HTMLDivElement>(null);
+
+  const numCards = selectedReading.cards;
 
   const startGame = () => {
     setSelectedCards([]);
+    setCompletedReading(null);
     setGameStarted(true);
   };
 
   const handleSelectCard = (card: SelectedCard) => {
     setSelectedCards((prev) => [...prev, card]);
   };
+
+  // Auto-capture reading when all cards are selected
+  useEffect(() => {
+    if (selectedCards.length === numCards && numCards > 0 && !completedReading) {
+      // Map each card to its position label
+      const positions = selectedReading.positions.reduce((acc, position, idx) => {
+        if (selectedCards[idx]) {
+          acc[position] = selectedCards[idx];
+        }
+        return acc;
+      }, {} as Record<string, SelectedCard>);
+
+      const result: ReadingResult = {
+        readingType: selectedReading.name,
+        positions,
+        ...(userQuestion && { question: userQuestion }),
+      };
+      setCompletedReading(result);
+      console.log("Reading captured:", result);
+    }
+  }, [selectedCards, numCards, completedReading, selectedReading, userQuestion]);
+
+  // Scroll to reading when it's completed
+  useEffect(() => {
+    if (completedReading && readingRef.current) {
+      const timer = setTimeout(() => {
+        readingRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+  }, [completedReading]);
 
   return (
     <div className="relative w-full max-w-6xl mx-auto overflow-hidden rounded-xl border-2 border-[#d4af37]/30 shadow-2xl"
@@ -150,23 +120,43 @@ export default function TarotGame() {
           <div className="flex flex-col items-center gap-6 mt-8 py-8">
             <label className="text-xl text-[#e6d5b8] tracking-wide"
                    style={{ fontFamily: "'Crimson Pro', serif" }}>
-              How many cards shall guide your reading?
+              Choose your reading type
             </label>
-            
+
             <select
               className="border-2 border-[#d4af37]/50 rounded-lg px-6 py-3 bg-[#1a0033]/80 text-[#e6d5b8] text-lg backdrop-blur-sm
                          focus:outline-none focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 transition-all cursor-pointer"
               style={{ fontFamily: "'Crimson Pro', serif" }}
-              value={numCards}
-              onChange={(e) => setNumCards(Number(e.target.value))}
+              value={selectedReading.name}
+              onChange={(e) => {
+                const reading = readings.find(r => r.name === e.target.value);
+                if (reading) setSelectedReading(reading);
+              }}
             >
-              {[1, 3, 5, 7, 10].map((n) => (
-                <option key={n} value={n} className="bg-[#1a0033]">
-                  {n} {n === 1 ? 'Card' : 'Cards'}
+              {readings.map((reading) => (
+                <option key={reading.name} value={reading.name} className="bg-[#1a0033]">
+                  {reading.name} ({reading.cards} {reading.cards === 1 ? 'Card' : 'Cards'})
                 </option>
               ))}
             </select>
-            
+
+            <p className="text-[#e6d5b8]/70 text-sm text-center max-w-md"
+               style={{ fontFamily: "'Crimson Pro', serif" }}>
+              {selectedReading.description}
+            </p>
+
+            {selectedReading.meta?.field === "input" && (
+              <input
+                type="text"
+                placeholder={selectedReading.meta.placeholder}
+                value={userQuestion}
+                onChange={(e) => setUserQuestion(e.target.value)}
+                className="w-full max-w-md border-2 border-[#d4af37]/50 rounded-lg px-4 py-3 bg-[#1a0033]/80 text-[#e6d5b8] text-lg backdrop-blur-sm
+                           focus:outline-none focus:border-[#d4af37] focus:ring-2 focus:ring-[#d4af37]/30 transition-all placeholder:text-[#e6d5b8]/50"
+                style={{ fontFamily: "'Crimson Pro', serif" }}
+              />
+            )}
+
             <button
               className="mt-6 px-10 py-4 bg-gradient-to-br from-[#d4af37] to-[#b8942f] text-[#1a0033] rounded-lg 
                          shadow-lg hover:shadow-[#d4af37]/50 transition-all duration-300 font-bold text-lg
@@ -199,8 +189,8 @@ export default function TarotGame() {
             
             {/* Reading component */}
             {selectedCards.length > 0 && (
-              <div className="mt-10 flex justify-center animate-fadeIn">
-                <Reading selectedCards={selectedCards} />
+              <div ref={readingRef} className="mt-10 flex justify-center animate-fadeIn">
+                <Reading selectedCards={selectedCards} positions={selectedReading.positions} />
               </div>
             )}
             

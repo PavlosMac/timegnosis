@@ -32,9 +32,10 @@ interface SelectedCard extends TarotCardData {
 
 interface ReadingProps {
   selectedCards: SelectedCard[];
+  positions: string[];
 }
 
-const Reading: React.FC<ReadingProps> = ({ selectedCards }) => {
+const Reading: React.FC<ReadingProps> = ({ selectedCards, positions }) => {
   return (
     <div className="w-full">
       {/* Title */}
@@ -54,18 +55,13 @@ const Reading: React.FC<ReadingProps> = ({ selectedCards }) => {
             className="reading-card-reveal"
             style={{ animationDelay: `${i * 0.3}s` }}
           >
-            {/* Position label for multi-card spreads */}
-            {selectedCards.length > 1 && (
-              <div className="text-center mb-2">
-                <span className="text-xs text-[#d4af37]/70 tracking-widest"
-                      style={{ fontFamily: "'Cinzel', serif" }}>
-                  {i === 0 && selectedCards.length === 3 && 'PAST'}
-                  {i === 1 && selectedCards.length === 3 && 'PRESENT'}
-                  {i === 2 && selectedCards.length === 3 && 'FUTURE'}
-                  {selectedCards.length !== 3 && `CARD ${i + 1}`}
-                </span>
-              </div>
-            )}
+            {/* Position label */}
+            <div className="text-center mb-2">
+              <span className="text-xs text-[#d4af37]/70 tracking-widest"
+                    style={{ fontFamily: "'Cinzel', serif" }}>
+                {positions[i]?.toUpperCase()}
+              </span>
+            </div>
             
             <TarotCard card={card} small={false} showMeaning={true} />
           </div>

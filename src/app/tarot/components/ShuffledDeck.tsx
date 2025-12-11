@@ -61,6 +61,7 @@
 import React, { useEffect, useState } from "react";
 import { TarotCardData } from "../models";
 import { TAROT_DECK } from "../utils/cards";
+import { secureShuffleArray, getSecureRandomBoolean } from "@/lib/crypto-random";
 
 interface SelectedCard extends TarotCardData {
   idx: number;
@@ -73,26 +74,17 @@ interface ShuffledDeckProps {
   onSelectCard: (card: SelectedCard) => void;
 }
 
-const shuffleDeck = (deck: TarotCardData[]): TarotCardData[] => {
-  const arr = [...deck];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  return arr;
-};
-
 export default function ShuffledDeck({ numCards, selectedCards, onSelectCard }: ShuffledDeckProps) {
   const [shuffledDeck, setShuffledDeck] = useState<TarotCardData[]>([]);
 
   useEffect(() => {
-    setShuffledDeck(shuffleDeck(TAROT_DECK));
+    setShuffledDeck(secureShuffleArray(TAROT_DECK));
   }, [numCards]);
 
   const handleSelect = (idx: number) => {
     if (selectedCards.length >= numCards) return;
     if (selectedCards.find((c) => c.idx === idx)) return;
-    const reversed = Math.random() < 0.5;
+    const reversed = getSecureRandomBoolean();
     onSelectCard({ ...shuffledDeck[idx], idx, reversed });
   };
 

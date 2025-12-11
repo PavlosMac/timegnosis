@@ -3,22 +3,26 @@
         {
             "name": "Single Card",
             "description": "A single card reading",
-            "cards": 1
+            "cards": 1,
+            "positions": ["Insight"]
         },
         {
             "name": "Past, Present, Future",
             "description": "A three card reading",
-            "cards": 3
+            "cards": 3,
+            "positions": ["Past", "Present", "Future"]
         },
         {
             "name": "Fire, Water, Air, Earth Reading",
             "description": "A four card reading",
-            "cards": 4
+            "cards": 4,
+            "positions": ["Fire", "Water", "Air", "Earth"]
         },
         {
             "name": "Open Question Reading",
             "description": "Current situation, how to proceed",
             "cards": 2,
+            "positions": ["Current Situation", "How to Proceed"],
             "meta": {
                 "field": "input",
                 "placeholder": "What is the question?",
