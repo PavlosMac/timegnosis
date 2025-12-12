@@ -140,7 +140,7 @@ export default function TarotGame() {
               ))}
             </select>
 
-            <p className="text-[#e6d5b8]/70 text-sm text-center max-w-md"
+            <p className="text-[#e6d5b8]/70 text-xl text-center max-w-md"
                style={{ fontFamily: "'Crimson Pro', serif" }}>
               {selectedReading.description}
             </p>

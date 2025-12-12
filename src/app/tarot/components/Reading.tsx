@@ -1,25 +1,3 @@
-// import React from "react";
-// import TarotCard from "./TarotCard";
-// import { TarotCardData } from "../models";
-
-// interface SelectedCard extends TarotCardData {
-//   idx: number;
-//   reversed: boolean;
-// }
-
-// interface ReadingProps {
-//   selectedCards: SelectedCard[];
-// }
-
-// const Reading: React.FC<ReadingProps> = ({ selectedCards }) => (
-//   <div className="flex flex-row gap-2 justify-center items-center">
-//     {selectedCards.map((card, i) => (
-//       <TarotCard key={i} card={card} small={true} />
-//     ))}
-//   </div>
-// );
-
-// export default Reading;
 
 import React from "react";
 import TarotCard from "./TarotCard";
@@ -48,11 +26,11 @@ const Reading: React.FC<ReadingProps> = ({ selectedCards, positions }) => {
       </div>
       
       {/* Cards display */}
-      <div className="flex flex-wrap gap-6 justify-center items-start px-4">
+      <div className="flex flex-row gap-6 justify-center items-start px-4 overflow-x-auto">
         {selectedCards.map((card, i) => (
-          <div 
+          <div
             key={i}
-            className="reading-card-reveal"
+            className="reading-card-reveal w-[200px] flex-shrink-0"
             style={{ animationDelay: `${i * 0.3}s` }}
           >
             {/* Position label */}
@@ -62,7 +40,7 @@ const Reading: React.FC<ReadingProps> = ({ selectedCards, positions }) => {
                 {positions[i]?.toUpperCase()}
               </span>
             </div>
-            
+
             <TarotCard card={card} small={false} showMeaning={true} />
           </div>
         ))}

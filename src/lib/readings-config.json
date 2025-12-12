@@ -20,7 +20,7 @@
         },
         {
             "name": "Open Question Reading",
-            "description": "Current situation, how to proceed",
+            "description": "Current situation | How to proceed?",
             "cards": 2,
             "positions": ["Current Situation", "How to Proceed"],
             "meta": {
