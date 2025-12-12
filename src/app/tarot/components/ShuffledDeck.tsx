@@ -96,7 +96,7 @@ export default function ShuffledDeck({ numCards, selectedCards, onSelectCard }: 
           return (
             <button
               key={idx}
-              className={`ankh-card-back relative group ${isSelected ? 'selected' : ''}`}
+              className={`relative group ${isSelected ? 'selected' : ''}`}
               onClick={() => handleSelect(idx)}
               disabled={!!isSelected || selectedCards.length >= numCards}
               aria-label={`Pick card ${idx + 1}`}
