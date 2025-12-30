@@ -2,9 +2,15 @@
     "readings": [
         {
             "name": "Single Card",
-            "description": "A single card reading",
+            "description": "A single card reading for an open question",
             "cards": 1,
-            "positions": ["Insight"]
+            "positions": ["Answer"],
+            "showQuestion": true,
+            "meta": {
+                "field": "input",
+                "placeholder": "What question would you like answered?",
+                "button": "submit"
+            }
         },
         {
             "name": "Past, Present, Future",
@@ -23,6 +29,7 @@
             "description": "Current situation | How to proceed?",
             "cards": 2,
             "positions": ["Current Situation", "How to Proceed"],
+            "showQuestion": true,
             "meta": {
                 "field": "input",
                 "placeholder": "What is the question?",

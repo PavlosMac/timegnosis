@@ -11,26 +11,42 @@ interface SelectedCard extends TarotCardData {
 interface ReadingProps {
   selectedCards: SelectedCard[];
   positions: string[];
+  question?: string;
 }
 
-const Reading: React.FC<ReadingProps> = ({ selectedCards, positions }) => {
+const Reading: React.FC<ReadingProps> = ({ selectedCards, positions, question }) => {
   return (
     <div className="w-full">
+      {/* Question display */}
+      {question && (
+        <div className="text-center mb-6">
+          <span className="text-xs text-[#d4af37]/70 tracking-widest uppercase"
+                style={{ fontFamily: "'Cinzel', serif" }}>
+            Your Question
+          </span>
+          <p className="text-xl sm:text-2xl text-[#e6d5b8] mt-2 italic max-w-2xl mx-auto px-4"
+             style={{ fontFamily: "'Crimson Pro', serif" }}>
+            &ldquo;{question}&rdquo;
+          </p>
+          <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-[#d4af37]/50 to-transparent mx-auto mt-4" />
+        </div>
+      )}
+
       {/* Title */}
-      <div className="text-center mb-8">
+      {/* <div className="text-center mb-8">
         <h2 className="text-2xl sm:text-3xl font-bold text-[#d4af37] tracking-wider mb-2"
             style={{ fontFamily: "'Cinzel', serif", textShadow: '0 0 20px rgba(212,175,55,0.5)' }}>
           Your Reading
         </h2>
         <div className="w-32 h-0.5 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto" />
-      </div>
+      </div> */}
       
       {/* Cards display */}
       <div className="flex flex-row gap-6 justify-center items-start px-4 overflow-x-auto">
         {selectedCards.map((card, i) => (
           <div
             key={i}
-            className="reading-card-reveal w-[200px] flex-shrink-0"
+            className="reading-card-reveal flex flex-col items-center flex-shrink-0"
             style={{ animationDelay: `${i * 0.3}s` }}
           >
             {/* Position label */}
@@ -57,7 +73,7 @@ const Reading: React.FC<ReadingProps> = ({ selectedCards, positions }) => {
       <div className="text-center mt-6 px-4">
         <p className="text-[#e6d5b8]/70 text-sm italic max-w-2xl mx-auto"
            style={{ fontFamily: "'Crimson Pro', serif" }}>
-          The cards have spoken. Reflect upon their wisdom and let their guidance illuminate your path forward.
+          Now you have a rich, pictographic answer to your question. Meditate on the cards and let them guide you forward.
         </p>
       </div>
     </div>

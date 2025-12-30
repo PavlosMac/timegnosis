@@ -11,6 +11,7 @@ interface ReadingConfig {
   description: string;
   cards: number;
   positions: string[];
+  showQuestion?: boolean;
   meta?: {
     field: string;
     placeholder: string;
@@ -190,7 +191,11 @@ export default function TarotGame() {
             {/* Reading component */}
             {selectedCards.length > 0 && (
               <div ref={readingRef} className="mt-10 flex justify-center animate-fadeIn">
-                <Reading selectedCards={selectedCards} positions={selectedReading.positions} />
+                <Reading
+                  selectedCards={selectedCards}
+                  positions={selectedReading.positions}
+                  question={selectedReading.showQuestion ? userQuestion : undefined}
+                />
               </div>
             )}
             

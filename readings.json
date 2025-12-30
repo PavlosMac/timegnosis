@@ -13,12 +13,13 @@
         "cards": 2,
         "reading": {
             "Present": [],
-            "How to Proceed?": []
+            "How to Proceed": []
         }
     },
     "single_card": {
         "description": "Single card reading - open question",
         "cards": 1,
+        "showQuestion": true,
         "reading": {
             "Answer": []
         }
