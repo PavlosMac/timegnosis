@@ -35,6 +35,12 @@
                 "placeholder": "What is the question?",
                 "button": "submit"
             }
+        },
+        {
+            "name": "Tree of Life",
+            "description": "An 11 card Kabbalah card reading",
+            "cards": 11,
+            "positions": ["Kether", "Chokmah", "Binah", " Chesed", "Geburah", "Tiphereth", "Netzach", "Hod", "Yesod", "Malkuth", "Daath"]
         }
     ]
 }

@@ -109,7 +109,7 @@ export default function TarotGame() {
       <div className="relative z-10 p-6 sm:p-12">
         <h1 className="text-4xl sm:text-6xl font-bold mb-2 text-center text-[#d4af37] tracking-wider"
             style={{ fontFamily: "'Cinzel', serif", textShadow: '0 0 20px rgba(212,175,55,0.5)' }}>
-          Tarot Reading
+          Reading Oracle
         </h1>
         
         <p className="text-center text-[#d4af37]/70 mb-8 text-sm sm:text-base tracking-wide"
