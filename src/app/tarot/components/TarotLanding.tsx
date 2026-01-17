@@ -11,14 +11,23 @@ const TarotLanding: React.FC<TarotLandingProps> = ({ onNavigate }) => {
       {/* Header */}
       <div className="text-center mb-16">
         <h1
-          className="text-6xl sm:text-8xl lg:text-9xl font-bold text-[#d4af37] tracking-[0.2em] mb-4"
+          className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-[#d4af37] tracking-[0.15em] sm:tracking-[0.2em]"
           style={{
             fontFamily: "'Cinzel', serif",
             textShadow: "0 0 40px rgba(212,175,55,0.4), 0 4px 20px rgba(0,0,0,0.5)",
           }}
         >
-          Tarot Divination
+          Tarot
         </h1>
+        <h2
+          className="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-semibold text-[#d4af37]/80 tracking-[0.15em] sm:tracking-[0.3em] mt-1"
+          style={{
+            fontFamily: "'Cinzel', serif",
+            textShadow: "0 0 30px rgba(212,175,55,0.3)",
+          }}
+        >
+          Divination
+        </h2>
 
         {/* Decorative line with ankh */}
         <div className="flex items-center justify-center gap-4 mt-6">
