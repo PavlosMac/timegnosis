@@ -1,8 +1,9 @@
 
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Reading from "@/app/tarot/components/Reading";
 import ShuffledDeck from "@/app/tarot/components/ShuffledDeck";
+import ShuffleAnimation from "@/app/tarot/components/ShuffleAnimation";
 import { TarotCardData } from "../models";
 import readingsConfig from "@/lib/readings-config.json";
 
@@ -37,6 +38,7 @@ export default function TarotGame() {
   const [userQuestion, setUserQuestion] = useState<string>("");
   const [selectedCards, setSelectedCards] = useState<SelectedCard[]>([]);
   const [gameStarted, setGameStarted] = useState<boolean>(false);
+  const [isShuffling, setIsShuffling] = useState<boolean>(false);
   const [completedReading, setCompletedReading] = useState<ReadingResult | null>(null);
   const readingRef = useRef<HTMLDivElement>(null);
 
@@ -45,11 +47,23 @@ export default function TarotGame() {
   const startGame = () => {
     setSelectedCards([]);
     setCompletedReading(null);
-    setGameStarted(true);
+    setIsShuffling(true);
   };
+
+  const handleShuffleComplete = useCallback(() => {
+    setIsShuffling(false);
+    setGameStarted(true);
+  }, []);
 
   const handleSelectCard = (card: SelectedCard) => {
     setSelectedCards((prev) => [...prev, card]);
+  };
+
+  const handleNewReading = () => {
+    setGameStarted(false);
+    setIsShuffling(false);
+    setSelectedCards([]);
+    setCompletedReading(null);
   };
 
   // Auto-capture reading when all cards are selected
@@ -92,32 +106,33 @@ export default function TarotGame() {
            background: 'linear-gradient(135deg, rgba(26,0,51,0.95) 0%, rgba(45,27,78,0.95) 100%)',
            backdropFilter: 'blur(10px)',
          }}>
-      
+
       {/* Ornate corner decorations */}
       <div className="absolute top-0 left-0 w-24 h-24 border-t-2 border-l-2 border-[#d4af37]/50 rounded-tl-xl" />
       <div className="absolute top-0 right-0 w-24 h-24 border-t-2 border-r-2 border-[#d4af37]/50 rounded-tr-xl" />
       <div className="absolute bottom-0 left-0 w-24 h-24 border-b-2 border-l-2 border-[#d4af37]/50 rounded-bl-xl" />
       <div className="absolute bottom-0 right-0 w-24 h-24 border-b-2 border-r-2 border-[#d4af37]/50 rounded-br-xl" />
-      
+
       {/* Mystical glow effect */}
       <div className="absolute inset-0 opacity-30 pointer-events-none"
            style={{
              background: 'radial-gradient(circle at 50% 50%, rgba(212,175,55,0.15), transparent 70%)'
            }} />
-      
+
       {/* Content */}
       <div className="relative z-10 p-6 sm:p-12">
         <h1 className="text-4xl sm:text-6xl font-bold mb-2 text-center text-[#d4af37] tracking-wider"
             style={{ fontFamily: "'Cinzel', serif", textShadow: '0 0 20px rgba(212,175,55,0.5)' }}>
           Reading Oracle
         </h1>
-        
+
         <p className="text-center text-[#d4af37]/70 mb-8 text-sm sm:text-base tracking-wide"
            style={{ fontFamily: "'Crimson Pro', serif" }}>
           ✦ Unveil the Mysteries of Your Path ✦
         </p>
-        
-        {!gameStarted && (
+
+        {/* Pre-game selection screen */}
+        {!gameStarted && !isShuffling && (
           <div className="flex flex-col items-center gap-6 mt-8 py-8">
             <label className="text-xl text-[#e6d5b8] tracking-wide"
                    style={{ fontFamily: "'Crimson Pro', serif" }}>
@@ -159,7 +174,7 @@ export default function TarotGame() {
             )}
 
             <button
-              className="mt-6 px-10 py-4 bg-gradient-to-br from-[#d4af37] to-[#b8942f] text-[#1a0033] rounded-lg 
+              className="mt-6 px-10 py-4 bg-gradient-to-br from-[#d4af37] to-[#b8942f] text-[#1a0033] rounded-lg
                          shadow-lg hover:shadow-[#d4af37]/50 transition-all duration-300 font-bold text-lg
                          hover:scale-105 active:scale-95 border border-[#d4af37]/50"
               style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.1em' }}
@@ -169,8 +184,14 @@ export default function TarotGame() {
             </button>
           </div>
         )}
-        
-        {gameStarted && (
+
+        {/* Shuffle Animation */}
+        {isShuffling && (
+          <ShuffleAnimation onComplete={handleShuffleComplete} />
+        )}
+
+        {/* Game in progress - deck and card selection */}
+        {gameStarted && !isShuffling && (
           <>
             <div className="mb-6 text-center">
               <span className="font-semibold text-[#e6d5b8] text-lg tracking-wide"
@@ -178,16 +199,16 @@ export default function TarotGame() {
                 Select {numCards} card{numCards > 1 ? 's' : ''} from the sacred deck
               </span>
             </div>
-            
+
             {/* Shuffled Deck */}
-            <div className="flex justify-center mb-8">
+            <div className="flex justify-center mb-8 animate-fadeIn">
               <ShuffledDeck
                 numCards={numCards}
                 selectedCards={selectedCards}
                 onSelectCard={handleSelectCard}
               />
             </div>
-            
+
             {/* Reading component */}
             {selectedCards.length > 0 && (
               <div ref={readingRef} className="mt-10 flex justify-center animate-fadeIn">
@@ -198,14 +219,14 @@ export default function TarotGame() {
                 />
               </div>
             )}
-            
+
             {selectedCards.length === numCards && (
               <button
-                className="mt-10 px-10 py-4 bg-gradient-to-br from-[#d4af37] to-[#b8942f] text-[#1a0033] rounded-lg 
+                className="mt-10 px-10 py-4 bg-gradient-to-br from-[#d4af37] to-[#b8942f] text-[#1a0033] rounded-lg
                            shadow-lg hover:shadow-[#d4af37]/50 transition-all duration-300 font-bold text-lg
                            hover:scale-105 active:scale-95 mx-auto block border border-[#d4af37]/50"
                 style={{ fontFamily: "'Cinzel', serif", letterSpacing: '0.1em' }}
-                onClick={() => setGameStarted(false)}
+                onClick={handleNewReading}
               >
                 ✦ New Reading ✦
               </button>

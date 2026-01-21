@@ -1,5 +1,5 @@
 ---
-name: mystical-tarot-design
+name: tarot
 description: Create mystical, medieval-themed interfaces with Egyptian and Tarot aesthetics. Use for fortune-telling apps, spiritual content, mystical dashboards, or any interface requiring an atmospheric, otherworldly feel. Features starfield backgrounds, golden hieroglyphs, ornate borders, and ethereal animations.
 ---
 

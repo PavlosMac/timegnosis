@@ -1,11 +1,8 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 
-interface TarotLandingProps {
-  onNavigate: (section: string) => void;
-}
-
-const TarotLanding: React.FC<TarotLandingProps> = ({ onNavigate }) => {
+const TarotLanding: React.FC = () => {
   return (
     <div className="w-full max-w-5xl mx-auto px-4 py-8">
       {/* Header */}
@@ -58,8 +55,8 @@ const TarotLanding: React.FC<TarotLandingProps> = ({ onNavigate }) => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Your Tarot Chart - Article */}
-          <button
-            onClick={() => onNavigate("chart")}
+          <Link
+            href="/tarot/chart"
             className="group relative overflow-hidden rounded-xl border border-[#d4af37]/30
                        bg-gradient-to-br from-[#1a0033]/90 to-[#2d1b4e]/90
                        backdrop-blur-sm p-8 text-left transition-all duration-500
@@ -98,11 +95,11 @@ const TarotLanding: React.FC<TarotLandingProps> = ({ onNavigate }) => {
                 Article
               </span>
             </div>
-          </button>
+          </Link>
 
           {/* How to use the Oracle - Article */}
-          <button
-            onClick={() => onNavigate("guide")}
+          <Link
+            href="/tarot/guide"
             className="group relative overflow-hidden rounded-xl border border-[#d4af37]/30
                        bg-gradient-to-br from-[#1a0033]/90 to-[#2d1b4e]/90
                        backdrop-blur-sm p-8 text-left transition-all duration-500
@@ -141,7 +138,7 @@ const TarotLanding: React.FC<TarotLandingProps> = ({ onNavigate }) => {
                 Article
               </span>
             </div>
-          </button>
+          </Link>
         </div>
       </div>
 
@@ -166,8 +163,8 @@ const TarotLanding: React.FC<TarotLandingProps> = ({ onNavigate }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
           {/* Significators - Interactive Card Portal */}
-          <button
-            onClick={() => onNavigate("significators")}
+          <Link
+            href="/tarot/significators"
             className="group relative overflow-hidden rounded-2xl
                        bg-gradient-to-br from-[#0a0015] via-[#1a0033] to-[#2d1b4e]
                        p-1 transition-all duration-700
@@ -241,11 +238,11 @@ const TarotLanding: React.FC<TarotLandingProps> = ({ onNavigate }) => {
                 <span className="text-lg group-hover:translate-x-2 transition-transform duration-300">→</span>
               </div>
             </div>
-          </button>
+          </Link>
 
           {/* Reading Oracle - The Grand Portal */}
-          <button
-            onClick={() => onNavigate("reading")}
+          <Link
+            href="/tarot/reading"
             className="group relative overflow-hidden rounded-2xl
                        bg-gradient-to-br from-[#0a0015] via-[#1a0033] to-[#2d1b4e]
                        p-1 transition-all duration-700
@@ -339,7 +336,7 @@ const TarotLanding: React.FC<TarotLandingProps> = ({ onNavigate }) => {
                                  group-hover:translate-x-2 transition-all duration-300">→</span>
               </div>
             </div>
-          </button>
+          </Link>
         </div>
       </div>
 
