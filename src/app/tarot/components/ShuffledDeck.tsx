@@ -102,14 +102,15 @@ export default function ShuffledDeck({ numCards, selectedCards, onSelectCard }: 
               aria-label={`Pick card ${idx + 1}`}
               style={{ animationDelay: `${idx * 0.05}s` }}
             >
-              {/* Card glow on hover */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#d4af37] via-[#8a2be2] to-[#d4af37] 
-                              rounded-lg opacity-0 group-hover:opacity-70 blur transition-all duration-300" />
+              {/* Card glow on hover/active */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#d4af37] via-[#8a2be2] to-[#d4af37]
+                              rounded-lg opacity-0 group-hover:opacity-70 group-active:opacity-90 blur transition-all duration-300" />
               
               {/* Card face */}
-              <div className="relative w-14 h-24 sm:w-16 sm:h-28 bg-gradient-to-br from-[#1a0033] to-[#2d1b4e] 
+              <div className="relative w-14 h-24 sm:w-16 sm:h-28 bg-gradient-to-br from-[#1a0033] to-[#2d1b4e]
                               rounded-lg border-2 border-[#d4af37]/60 shadow-xl overflow-hidden
-                              transition-all duration-300 group-hover:scale-110 group-hover:border-[#d4af37]">
+                              transition-all duration-300 group-hover:scale-110 group-hover:border-[#d4af37]
+                              group-active:scale-95 group-active:border-[#ffd700] group-active:shadow-[0_0_20px_rgba(212,175,55,0.6)]">
                 
                 {/* Subtle border pattern */}
                 <div className="absolute inset-0">
@@ -119,7 +120,7 @@ export default function ShuffledDeck({ numCards, selectedCards, onSelectCard }: 
                 </div>
                 
                 {/* Central Ankh */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-60 group-hover:opacity-80 transition-opacity">
+                <div className="absolute inset-0 flex items-center justify-center opacity-60 group-hover:opacity-80 group-active:opacity-100 transition-opacity">
                   <svg className="w-10 h-16 sm:w-12 sm:h-20" viewBox="0 0 40 64" fill="none">
                     {/* Ankh loop */}
                     <circle cx="20" cy="14" r="10" stroke="rgba(212,175,55,0.7)" strokeWidth="2.5" fill="none"/>
@@ -139,8 +140,8 @@ export default function ShuffledDeck({ numCards, selectedCards, onSelectCard }: 
                 <div className="absolute bottom-2 right-2 text-[#d4af37]/40 text-xs">✦</div>
                 
                 {/* Shimmer effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#d4af37]/10 to-transparent 
-                                opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#d4af37]/10 to-transparent
+                                opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500" />
               </div>
             </button>
           );

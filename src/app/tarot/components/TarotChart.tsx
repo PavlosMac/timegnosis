@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import Link from "next/link";
 import TarotCard from "./TarotCard";
 import { TAROT_DECK, TAROT_MAP } from "../utils/cards";
 
@@ -247,6 +248,33 @@ const TarotChart: React.FC = () => {
           </p>
         </div>
       </Section>
+
+      {/* CTA to Significators Calculator */}
+      <div className="text-center mt-12 mb-8">
+        <div className="w-32 h-px bg-gradient-to-r from-transparent via-[#d4af37]/50 to-transparent mx-auto mb-8" />
+        <p
+          className="text-[#e6d5b8]/80 text-lg sm:text-xl mb-6 max-w-2xl mx-auto"
+          style={{ fontFamily: "'Crimson Pro', serif" }}
+        >
+          Ready to discover your own Personal Significators?
+        </p>
+        <Link
+          href="/tarot/significators"
+          className="inline-flex items-center gap-3 px-8 py-4 rounded-lg
+                    border border-[#d4af37]/40 bg-gradient-to-r from-[#d4af37]/10 to-transparent
+                    hover:border-[#d4af37] hover:bg-[#d4af37]/20
+                    transition-all duration-500"
+        >
+          <span
+            className="text-sm text-[#d4af37] tracking-widest uppercase
+                       hover:text-[#ffd700] transition-colors"
+            style={{ fontFamily: "'Cinzel', serif" }}
+          >
+            Calculate Your Significators
+          </span>
+          <span className="text-xl text-[#d4af37]">→</span>
+        </Link>
+      </div>
 
       {/* Footer decoration */}
       <div className="mt-12 text-center">
