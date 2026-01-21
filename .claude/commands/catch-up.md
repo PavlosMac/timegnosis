@@ -1,0 +1,1 @@
+Use git diff main --stat && git diff main to understand the current changes and status of an implementation.
