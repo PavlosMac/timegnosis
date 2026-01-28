@@ -1,6 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { readFile, writeFile } from 'fs/promises';
 import path from 'path';
+import sanitizeHtml from 'sanitize-html';
+
+// Sanitization config - allow basic HTML formatting but strip dangerous content
+const sanitizeConfig: sanitizeHtml.IOptions = {
+  allowedTags: ['b', 'i', 'em', 'strong', 'p', 'br', 'ul', 'ol', 'li', 'a', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote', 'span'],
+  allowedAttributes: {
+    'a': ['href', 'title'],
+    'span': ['class'],
+  },
+  allowedSchemes: ['http', 'https', 'mailto'],
+  disallowedTagsMode: 'discard',
+};
+
+// Sanitize a string value
+function sanitizeContent(content: string): string {
+  return sanitizeHtml(content, sanitizeConfig);
+}
 
 export const dynamic = 'force-dynamic';
 
@@ -113,16 +130,29 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Item not found' }, { status: 404 });
     }
     
-    // Update the content
+    // Update the content (sanitized to prevent XSS)
     if (file === 'blog') {
-      // For blog posts, update the entire content array
+      // For blog posts, update the entire content array with sanitized text
       if (content) {
-        (data as BlogPost[])[itemIndex].content = content;
+        const sanitizedContent = (content as BlogContentBlock[]).map(block => {
+          if (block.type === 'paragraph' && block.text) {
+            return { ...block, text: sanitizeContent(block.text) };
+          }
+          if (block.type === 'image') {
+            return {
+              ...block,
+              alt: block.alt ? sanitizeContent(block.alt) : block.alt,
+              caption: block.caption ? sanitizeContent(block.caption) : block.caption,
+            };
+          }
+          return block;
+        });
+        (data as BlogPost[])[itemIndex].content = sanitizedContent;
       }
     } else {
-      // For gnosis/planets, update the body field
+      // For gnosis/planets, update the body field with sanitized content
       if (body) {
-        data[itemIndex].body = body;
+        data[itemIndex].body = sanitizeContent(body);
       }
     }
     

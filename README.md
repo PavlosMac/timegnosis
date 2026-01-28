@@ -41,3 +41,14 @@ The app runs in Docker on a Raspberry Pi, accessed via Cloudflare Tunnel. No por
 ## Caching
 
 See [CACHING.md](./CACHING.md) for caching strategy details.
+
+
+## Project-memory
+https://github.com/SpillwaveSolutions/project-memory
+See [SKILL.md](./SKILL.md) for project-memory details.
+
+## Ctags + Hooks
+
+Use ctags to generate a markdown index of your code structure (files/classes/methods)
+Inject this automatically on Pre/PostToolUse hooks
+Reduces hallucination by keeping the LLM aware of existing code
