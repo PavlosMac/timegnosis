@@ -57,4 +57,12 @@ This file stores project configuration, constants, and frequently-needed non-sen
 - Next.js Docs: https://nextjs.org/docs
 - Tailwind CSS: https://tailwindcss.com/docs
 
+## Code Indexing
+
+**ctags:**
+- Used for indexing classes and functions across the codebase
+- Config: `.ctags.d/config.tags`
+- Output: `tags` file in project root (git-ignored)
+- Regenerate: `ctags -R .` (or per custom config)
+
 <!-- Add new key facts below this line -->
