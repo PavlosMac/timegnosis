@@ -488,6 +488,7 @@
 - `Work Log` (chapter, line 1)
 
 ### docs/project_notes/key_facts.md
+- `Code Indexing` (section, line 60)
 - `Data Architecture` (section, line 30)
 - `Important URLs` (section, line 54)
 - `Key Facts` (chapter, line 1)

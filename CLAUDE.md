@@ -22,27 +22,16 @@ npm start
 npm run lint
 ```
 
-## Architecture
+## Code style
 
-### Data Architecture
-The application supports two data sources:
-1. **Local JSON files** (current implementation):
-   - `gnosis-seed.json` - Contains numerology content for days, months, and years
-   - `planets-seed.json` - Contains planetary information and associations
-2. **MongoDB** (legacy/fallback):
-   - Mongoose models in `src/models/` for Gnosis and Planet collections
-   - Connection utilities in `src/mongo/`
-
-### Key Components
-
-- **HomeClient** (`src/components/HomeClient.tsx`): Main client component handling date input and numerology calculations
-- **Numerology Logic**: Personal day/month/year calculations using digit reduction (except master numbers 11, 22)
-- **Dynamic Pages**: 
-  - `/day/[id]` - Personal day readings
-  - `/month/[id]` - Personal month readings  
-  - `/year/[id]` - Personal year readings
-  - `/planet/[name]` - Planetary information
-- **Editor** (`src/app/editor/page.tsx`): Draft.js-based content management for JSON seed files
+### General
+- Follow TypeScript strict mode
+- Use functional components with TypeScript interfaces
+- Prefer composition over inheritance
+- Keep components small and focused
+- use es6 syntax and features
+- use es6 fat arrow functions
+- use es6 destructuring
 
 ### State Management
 - URL parameters for sharing numerology calculations
@@ -94,3 +83,94 @@ This project maintains institutional knowledge in `docs/project_notes/` for cons
 **When user requests memory updates:**
 - Update the appropriate memory file (bugs, decisions, key_facts, or issues)
 - Follow the established format and style (bullet lists, dates, concise entries)
+
+
+## Next.js 
+Follow nextjs standards for using server or client components.
+
+## Next.js Data Fetching
+
+Follow Next.js 15+ data fetching patterns:
+
+### Server Components
+```typescript
+// With fetch API (not cached by default)
+async function Page() {
+  const data = await fetch('https://api.example.com/data', {
+    cache: 'no-store' // opt into dynamic rendering
+  })
+  const result = await data.json()
+  return <div>{result}</div>
+}
+
+// With ORM/database
+async function Page() {
+  const posts = await db.select().from(posts)
+  return <ul>{posts.map(p => <li key={p.id}>{p.title}</li>)}</ul>
+}
+```
+
+### Client Components
+```typescript
+// With use() hook - stream from server
+'use client'
+import { use } from 'react'
+
+function Posts({ posts }: { posts: Promise<Post[]> }) {
+  const allPosts = use(posts) // unwrap promise
+  return <ul>{allPosts.map(p => <li key={p.id}>{p.title}</li>)}</ul>
+}
+
+// Parent Server Component passes promise (don't await)
+function Page() {
+  const posts = getPosts() // don't await
+  return (
+    <Suspense fallback={<Loading />}>
+      <Posts posts={posts} />
+    </Suspense>
+  )
+}
+```
+
+### Streaming
+```typescript
+// Option 1: loading.js - streams entire page
+// app/blog/loading.tsx
+export default function Loading() {
+  return <Skeleton />
+}
+
+// Option 2: <Suspense> - granular streaming
+<Suspense fallback={<Skeleton />}>
+  <BlogList />
+</Suspense>
+```
+
+### Patterns
+```typescript
+// Parallel fetching
+const [artist, albums] = await Promise.all([
+  getArtist(id),
+  getAlbums(id)
+])
+
+// Sequential (when dependent)
+const artist = await getArtist(id)
+const playlists = await getPlaylists(artist.id)
+
+// Preloading
+const preload = (id) => void getItem(id)
+preload(id) // start loading early
+const isAvailable = await checkAvailable()
+```
+
+### Deduplication
+```typescript
+// For fetch - automatic request memoization
+// For ORM/database - use React cache
+import { cache } from 'react'
+
+export const getPost = cache(async (id: string) => {
+  return await db.query.posts.findFirst({ where: eq(posts.id, id) })
+})
+```
