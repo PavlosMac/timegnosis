@@ -70,12 +70,6 @@ const AnimatedCardSection: React.FC<AnimatedCardSectionProps> = ({
       {displayCards.map((card, i) => (
         <div key={`${card.idx}-${i}`} className="flex flex-col items-center">
           <TarotCard card={card} small={false} showMeaning={false} />
-          <span
-            className="text-xs text-[#d4af37]/60 mt-2 tracking-wide"
-            style={{ fontFamily: "'Cinzel', serif" }}
-          >
-            {card.name}
-          </span>
         </div>
       ))}
     </div>
@@ -241,10 +235,6 @@ const TarotChart: React.FC = () => {
             Apparent &ldquo;positive&rdquo; or &ldquo;negative&rdquo; imagery does not determine character or worth.
             When understood correctly, Significators transform Tarot from a generalized
             fortune-telling tool into a precise and deeply personal system of insight.
-          </p>
-          <p className="text-lg sm:text-xl italic text-center text-[#d4af37]/80 mt-8">
-            The cards above refresh every 30 seconds, revealing different aspects
-            of the Taroscopic System. Watch as the numerological connections unfold.
           </p>
         </div>
       </Section>

@@ -13,6 +13,7 @@ interface ReadingProps {
   selectedCards: SelectedCard[];
   positions: string[];
   question?: string;
+  isComplete?: boolean;
 }
 
 // Detect if this is a Tree of Life reading based on positions
@@ -38,6 +39,7 @@ const Reading: React.FC<ReadingProps> = ({
   selectedCards,
   positions,
   question,
+  isComplete = false,
 }) => {
   const useKabbalahLayout = isTreeOfLife(positions);
 
@@ -84,7 +86,7 @@ const Reading: React.FC<ReadingProps> = ({
                   </span>
                 </div>
 
-                <TarotCard card={card} small={false} showMeaning={true} />
+                <TarotCard card={card} small={false} showMeaning={isComplete} />
               </div>
             ))}
           </div>
