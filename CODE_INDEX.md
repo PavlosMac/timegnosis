@@ -321,8 +321,19 @@
 ## Other
 
 ### .claude/settings.local.json
+- `0` (object, line 10)
+- `0` (object, line 7)
 - `0` (string, line 3)
+- `1` (object, line 14)
+- `UserPromptSubmit` (array, line 6)
+- `command` (string, line 16)
+- `command` (string, line 12)
 - `disabledMcpjsonServers` (array, line 2)
+- `hooks` (array, line 9)
+- `hooks` (object, line 5)
+- `matcher` (string, line 8)
+- `type` (string, line 11)
+- `type` (string, line 15)
 
 ### .claude/skills/tarot/SKILL.md
 - `Atmospheric Backgrounds` (section, line 109)
@@ -488,6 +499,7 @@
 - `Work Log` (chapter, line 1)
 
 ### docs/project_notes/key_facts.md
+- `Code Indexing` (section, line 60)
 - `Data Architecture` (section, line 30)
 - `Important URLs` (section, line 54)
 - `Key Facts` (chapter, line 1)
