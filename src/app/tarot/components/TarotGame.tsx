@@ -40,6 +40,7 @@ export default function TarotGame() {
   const [gameStarted, setGameStarted] = useState<boolean>(false);
   const [isShuffling, setIsShuffling] = useState<boolean>(false);
   const [completedReading, setCompletedReading] = useState<ReadingResult | null>(null);
+  const deckRef = useRef<HTMLDivElement>(null);
   const readingRef = useRef<HTMLDivElement>(null);
 
   const numCards = selectedReading.cards;
@@ -86,6 +87,16 @@ export default function TarotGame() {
       console.log("Reading captured:", result);
     }
   }, [selectedCards, numCards, completedReading, selectedReading, userQuestion]);
+
+  // Scroll the deck into view when the spread appears
+  useEffect(() => {
+    if (gameStarted && deckRef.current) {
+      const timer = setTimeout(() => {
+        deckRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 300);
+      return () => clearTimeout(timer);
+    }
+  }, [gameStarted]);
 
   // Scroll to reading when it's completed
   useEffect(() => {
@@ -193,7 +204,7 @@ export default function TarotGame() {
         {/* Game in progress - deck and card selection */}
         {gameStarted && !isShuffling && (
           <>
-            <div className="mb-6 text-center">
+            <div ref={deckRef} className="mb-6 text-center">
               <span className="font-semibold text-[#e6d5b8] text-lg tracking-wide"
                     style={{ fontFamily: "'Crimson Pro', serif" }}>
                 Select {numCards} card{numCards > 1 ? 's' : ''} from the sacred deck
@@ -216,6 +227,7 @@ export default function TarotGame() {
                   selectedCards={selectedCards}
                   positions={selectedReading.positions}
                   question={selectedReading.showQuestion ? userQuestion : undefined}
+                  isComplete={selectedCards.length === numCards}
                 />
               </div>
             )}

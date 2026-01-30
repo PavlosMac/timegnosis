@@ -89,59 +89,67 @@ export default function ShuffledDeck({ numCards, selectedCards, onSelectCard }: 
   };
 
   return (
-    <div className="w-full overflow-x-auto pb-4 px-2">
-      <div className="grid grid-cols-6 sm:grid-cols-10 lg:grid-cols-13 gap-2 justify-items-center min-w-fit mx-auto">
+    <div className="w-full px-2">
+      <div className="grid grid-cols-6 sm:grid-cols-10 lg:grid-cols-13 gap-[clamp(2px,0.4vw,8px)] justify-items-center mx-auto">
         {shuffledDeck.slice(0, 78).map((card, idx) => {
-          const isSelected = selectedCards.find((c) => c.idx === idx);
+          const selected = selectedCards.find((c) => c.idx === idx);
           return (
             <button
               key={idx}
-              className={`relative group ${isSelected ? 'selected' : ''}`}
+              className={`relative group ${selected ? 'selected' : ''}`}
               onClick={() => handleSelect(idx)}
-              disabled={!!isSelected || selectedCards.length >= numCards}
+              disabled={!!selected || selectedCards.length >= numCards}
               aria-label={`Pick card ${idx + 1}`}
-              style={{ animationDelay: `${idx * 0.05}s` }}
+              style={{ animationDelay: `${idx * 0.05}s`, perspective: '600px' }}
             >
               {/* Card glow on hover/active */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-[#d4af37] via-[#8a2be2] to-[#d4af37]
-                              rounded-lg opacity-0 group-hover:opacity-70 group-active:opacity-90 blur transition-all duration-300" />
-              
-              {/* Card face */}
-              <div className="relative w-14 h-24 sm:w-16 sm:h-28 bg-gradient-to-br from-[#1a0033] to-[#2d1b4e]
-                              rounded-lg border-2 border-[#d4af37]/60 shadow-xl overflow-hidden
-                              transition-all duration-300 group-hover:scale-110 group-hover:border-[#d4af37]
-                              group-active:scale-95 group-active:border-[#ffd700] group-active:shadow-[0_0_20px_rgba(212,175,55,0.6)]">
-                
-                {/* Subtle border pattern */}
-                <div className="absolute inset-0">
-                  {/* Top/bottom decorative lines */}
-                  <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent" />
+              {!selected && (
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-[#d4af37] via-[#8a2be2] to-[#d4af37]
+                                rounded-lg opacity-0 group-hover:opacity-70 group-active:opacity-90 blur transition-all duration-300" />
+              )}
+
+              {/* Flip container */}
+              <div className={`relative card-flip-inner ${selected ? 'card-flipped' : ''}`}
+                   style={{ width: 'clamp(40px, 5.5vw, 64px)', height: 'clamp(68px, 9.5vw, 112px)' }}>
+                {/* Back face (ankh) */}
+                <div className="card-flip-face card-flip-back absolute inset-0 bg-gradient-to-br from-[#1a0033] to-[#2d1b4e]
+                                rounded-lg border-2 border-[#d4af37]/60 shadow-xl overflow-hidden
+                                transition-all duration-300 group-hover:scale-110 group-hover:border-[#d4af37]
+                                group-active:scale-95 group-active:border-[#ffd700] group-active:shadow-[0_0_20px_rgba(212,175,55,0.6)]">
+
+                  <div className="absolute inset-0">
+                    <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent" />
+                  </div>
+
+                  <div className="absolute inset-0 flex items-center justify-center opacity-60 group-hover:opacity-80 group-active:opacity-100 transition-opacity">
+                    <svg className="w-[60%] h-[70%]" viewBox="0 0 40 64" fill="none">
+                      <circle cx="20" cy="14" r="10" stroke="rgba(212,175,55,0.7)" strokeWidth="2.5" fill="none"/>
+                      <line x1="20" y1="24" x2="20" y2="60" stroke="rgba(212,175,55,0.7)" strokeWidth="3"/>
+                      <line x1="6" y1="32" x2="34" y2="32" stroke="rgba(212,175,55,0.7)" strokeWidth="3"/>
+                      <circle cx="20" cy="14" r="10" stroke="rgba(212,175,55,0.2)" strokeWidth="1" fill="rgba(212,175,55,0.05)"/>
+                    </svg>
+                  </div>
+
+                  <div className="absolute top-1 left-1 text-[#d4af37]/40 text-[0.5em]">✦</div>
+                  <div className="absolute top-1 right-1 text-[#d4af37]/40 text-[0.5em]">✦</div>
+                  <div className="absolute bottom-1 left-1 text-[#d4af37]/40 text-[0.5em]">✦</div>
+                  <div className="absolute bottom-1 right-1 text-[#d4af37]/40 text-[0.5em]">✦</div>
+
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#d4af37]/10 to-transparent
+                                  opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500" />
                 </div>
-                
-                {/* Central Ankh */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-60 group-hover:opacity-80 group-active:opacity-100 transition-opacity">
-                  <svg className="w-10 h-16 sm:w-12 sm:h-20" viewBox="0 0 40 64" fill="none">
-                    {/* Ankh loop */}
-                    <circle cx="20" cy="14" r="10" stroke="rgba(212,175,55,0.7)" strokeWidth="2.5" fill="none"/>
-                    {/* Vertical line */}
-                    <line x1="20" y1="24" x2="20" y2="60" stroke="rgba(212,175,55,0.7)" strokeWidth="3"/>
-                    {/* Horizontal crossbar */}
-                    <line x1="6" y1="32" x2="34" y2="32" stroke="rgba(212,175,55,0.7)" strokeWidth="3"/>
-                    {/* Inner glow */}
-                    <circle cx="20" cy="14" r="10" stroke="rgba(212,175,55,0.2)" strokeWidth="1" fill="rgba(212,175,55,0.05)"/>
-                  </svg>
+
+                {/* Front face (card image) */}
+                <div className="card-flip-face card-flip-front absolute inset-0 rounded-lg overflow-hidden border-2 border-[#d4af37] shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                  {selected && (
+                    <img
+                      src={selected.imageUrl}
+                      alt={selected.name}
+                      className={`w-full h-full object-cover ${selected.reversed ? 'rotate-180' : ''}`}
+                    />
+                  )}
                 </div>
-                
-                {/* Corner stars */}
-                <div className="absolute top-2 left-2 text-[#d4af37]/40 text-xs">✦</div>
-                <div className="absolute top-2 right-2 text-[#d4af37]/40 text-xs">✦</div>
-                <div className="absolute bottom-2 left-2 text-[#d4af37]/40 text-xs">✦</div>
-                <div className="absolute bottom-2 right-2 text-[#d4af37]/40 text-xs">✦</div>
-                
-                {/* Shimmer effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-[#d4af37]/10 to-transparent
-                                opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-500" />
               </div>
             </button>
           );
