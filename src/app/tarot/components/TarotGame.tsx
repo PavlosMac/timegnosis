@@ -3,9 +3,24 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Reading from "@/app/tarot/components/Reading";
 import ShuffledDeck from "@/app/tarot/components/ShuffledDeck";
+import ShuffledDeckMobile from "@/app/tarot/components/ShuffledDeckMobile";
 import ShuffleAnimation from "@/app/tarot/components/ShuffleAnimation";
 import { TarotCardData } from "../models";
 import readingsConfig from "@/lib/readings-config.json";
+
+// Hook to detect mobile screen
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 640);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return isMobile;
+};
 
 interface ReadingConfig {
   name: string;
@@ -42,6 +57,7 @@ export default function TarotGame() {
   const [completedReading, setCompletedReading] = useState<ReadingResult | null>(null);
   const deckRef = useRef<HTMLDivElement>(null);
   const readingRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   const numCards = selectedReading.cards;
 
@@ -131,13 +147,13 @@ export default function TarotGame() {
            }} />
 
       {/* Content */}
-      <div className="relative z-10 p-6 sm:p-12">
-        <h1 className="text-4xl sm:text-6xl font-bold mb-2 text-center text-[#d4af37] tracking-wider"
+      <div className={`relative z-10 ${gameStarted && !isShuffling ? 'p-1 sm:p-12' : 'p-6 sm:p-12'}`}>
+        <h1 className={`text-4xl sm:text-6xl font-bold mb-2 text-center text-[#d4af37] tracking-wider ${gameStarted && !isShuffling ? 'hidden sm:block' : ''}`}
             style={{ fontFamily: "'Cinzel', serif", textShadow: '0 0 20px rgba(212,175,55,0.5)' }}>
           Reading Oracle
         </h1>
 
-        <p className="text-center text-[#d4af37]/70 mb-8 text-sm sm:text-base tracking-wide"
+        <p className={`text-center text-[#d4af37]/70 mb-8 text-sm sm:text-base tracking-wide ${gameStarted && !isShuffling ? 'hidden sm:block' : ''}`}
            style={{ fontFamily: "'Crimson Pro', serif" }}>
           ✦ Unveil the Mysteries of Your Path ✦
         </p>
@@ -204,20 +220,28 @@ export default function TarotGame() {
         {/* Game in progress - deck and card selection */}
         {gameStarted && !isShuffling && (
           <>
-            <div ref={deckRef} className="mb-6 text-center">
+            <div ref={deckRef} className="mb-1 sm:mb-6 text-center hidden sm:block">
               <span className="font-semibold text-[#e6d5b8] text-lg tracking-wide"
                     style={{ fontFamily: "'Crimson Pro', serif" }}>
                 Select {numCards} card{numCards > 1 ? 's' : ''} from the sacred deck
               </span>
             </div>
 
-            {/* Shuffled Deck */}
-            <div className="flex justify-center mb-8 animate-fadeIn">
-              <ShuffledDeck
-                numCards={numCards}
-                selectedCards={selectedCards}
-                onSelectCard={handleSelectCard}
-              />
+            {/* Shuffled Deck - conditionally render mobile or desktop version */}
+            <div className="flex justify-center mb-2 sm:mb-8 animate-fadeIn">
+              {isMobile ? (
+                <ShuffledDeckMobile
+                  numCards={numCards}
+                  selectedCards={selectedCards}
+                  onSelectCard={handleSelectCard}
+                />
+              ) : (
+                <ShuffledDeck
+                  numCards={numCards}
+                  selectedCards={selectedCards}
+                  onSelectCard={handleSelectCard}
+                />
+              )}
             </div>
 
             {/* Reading component */}

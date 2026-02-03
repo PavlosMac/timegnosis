@@ -50,7 +50,7 @@ export default function ReadingPage() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-start pt-10 px-4 pb-10">
+      <div className="relative z-10 flex flex-col items-center justify-start pt-12 sm:pt-10 px-1 sm:px-4 pb-4 sm:pb-10">
         {/* Back button */}
         <Link
           href="/tarot"
