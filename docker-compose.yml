@@ -7,20 +7,7 @@ services:
     restart: unless-stopped
     networks:
       - app-network
-
-
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: cloudflared-tunnel
-    restart: unless-stopped
-    command: tunnel --config /etc/cloudflared/config.yml run
-    volumes:
-      - ./cloudflared-config:/etc/cloudflared
-    networks:
-      - app-network
-    depends_on:
-      - timegnosis-next-app
     
 networks:
   app-network:
-    driver: bridge
+    external: true
