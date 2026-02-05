@@ -1,44 +1,468 @@
 @import "tailwindcss";
 
+/* ============================================
+   MYSTICAL TAROT DESIGN SYSTEM
+   Fortune teller's parlor aesthetic
+   ============================================ */
+
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --color-dark-purple: #443ba4;
+  /* Deep purples - Primary backgrounds */
+  --mystical-deep-purple: #1a0033;
+  --mystical-medium-purple: #2d1b4e;
+  --mystical-light-purple: #4a2d7a;
+
+  /* Gold - Sacred accent */
+  --mystical-gold: #d4af37;
+  --mystical-gold-light: #e6d5b8;
+  --mystical-gold-dark: #b8942f;
+
+  /* Mystic accents */
+  --mystical-violet: #8a2be2;
+
+  /* Text colors */
+  --text-primary: #e6d5b8;
+  --text-secondary: rgba(230, 213, 184, 0.8);
+  --text-tertiary: rgba(230, 213, 184, 0.6);
+
+  /* Background */
+  --background: #1a0033;
+  --foreground: #e6d5b8;
+
+  /* Starfield gradient */
+  --starfield-top: #0a0015;
+  --starfield-middle: #1a0033;
+  --starfield-bottom: #2d1b4e;
 }
 
-/* Mobile ochre theme */
-@media (max-width: 768px) {
-  :root {
-    --background: #6a329f;
-    --foreground: #2d1810;
-    --color-dark-purple: #443ba4;
-  }
-  html {
-    color-scheme: light;
-  }
-}
-
-/* Desktop dark theme */
-@media (min-width: 769px) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --color-dark-purple: #7e34af;
-  }
-  html {
-    color-scheme: dark;
-  }
+html {
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-cinzel: var(--font-cinzel);
+  --font-crimson: var(--font-crimson-pro);
 }
 
 body {
-  background: var(--background);
+  background: linear-gradient(to bottom,
+    var(--starfield-top),
+    var(--starfield-middle),
+    var(--starfield-bottom));
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Crimson Pro', serif;
+  min-height: 100vh;
+}
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+
+/* Star twinkling effect */
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+/* Floating elements animation */
+@keyframes cardFloat {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Fade in with upward motion */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pulsing glow effect */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.6),
+                0 0 30px rgba(212, 175, 55, 0.3);
+  }
+}
+
+/* Text glow pulsing */
+@keyframes textGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.6),
+                 0 0 30px rgba(212, 175, 55, 0.4);
+  }
+}
+
+/* 3D card reveal */
+@keyframes revealCard {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotateY(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg);
+  }
+}
+
+/* Gentle rotation for mystical symbols */
+@keyframes mysticalRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Text glow with gold */
+.mystical-text-glow {
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+.mystical-text-glow-strong {
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4),
+               0 0 20px rgba(212, 175, 55, 0.3),
+               0 0 40px rgba(212, 175, 55, 0.2);
+}
+
+/* Gold border styling */
+.mystical-border {
+  border: 2px solid rgba(212, 175, 55, 0.5);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.2),
+              inset 0 0 15px rgba(212, 175, 55, 0.1);
+}
+
+.mystical-border-glow {
+  border: 2px solid rgba(212, 175, 55, 0.6);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+/* Ornate corner patterns */
+.ornate-corners {
+  position: relative;
+}
+
+.ornate-corners::before,
+.ornate-corners::after {
+  content: '';
+  position: absolute;
+  width: 3rem;
+  height: 3rem;
+  border-color: rgba(212, 175, 55, 0.5);
+  pointer-events: none;
+}
+
+.ornate-corners::before {
+  top: 0;
+  left: 0;
+  border-top: 2px solid;
+  border-left: 2px solid;
+  border-top-left-radius: 0.75rem;
+}
+
+.ornate-corners::after {
+  top: 0;
+  right: 0;
+  border-top: 2px solid;
+  border-right: 2px solid;
+  border-top-right-radius: 0.75rem;
+}
+
+/* Bottom corners require child elements or additional pseudo-elements */
+.ornate-corners-bottom::before,
+.ornate-corners-bottom::after {
+  content: '';
+  position: absolute;
+  width: 3rem;
+  height: 3rem;
+  border-color: rgba(212, 175, 55, 0.5);
+  pointer-events: none;
+}
+
+.ornate-corners-bottom::before {
+  bottom: 0;
+  left: 0;
+  border-bottom: 2px solid;
+  border-left: 2px solid;
+  border-bottom-left-radius: 0.75rem;
+}
+
+.ornate-corners-bottom::after {
+  bottom: 0;
+  right: 0;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+  border-bottom-right-radius: 0.75rem;
+}
+
+/* Large ornate corners for desktop */
+@media (min-width: 768px) {
+  .ornate-corners::before,
+  .ornate-corners::after {
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .ornate-corners-bottom::before,
+  .ornate-corners-bottom::after {
+    width: 6rem;
+    height: 6rem;
+  }
+}
+
+/* ============================================
+   MYSTICAL CONTAINER STYLES
+   ============================================ */
+
+.mystical-container {
+  background: linear-gradient(135deg,
+    rgba(26, 0, 51, 0.98) 0%,
+    rgba(45, 27, 78, 0.98) 100%);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 0.75rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  /* GPU acceleration for smooth scrolling */
+  transform: translateZ(0);
+}
+
+.mystical-card {
+  background: linear-gradient(135deg,
+    rgba(26, 0, 51, 0.85) 0%,
+    rgba(45, 27, 78, 0.85) 100%);
+  border: 2px solid rgba(212, 175, 55, 0.6);
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease-out, border-color 0.3s ease-out, box-shadow 0.3s ease-out;
+  /* GPU acceleration */
+  transform: translateZ(0);
+}
+
+.mystical-card:hover {
+  transform: scale(1.05) translateY(-5px);
+  border-color: #d4af37;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+}
+
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
+
+.mystical-button {
+  background: linear-gradient(135deg, #d4af37, #b8942f);
+  color: #1a0033;
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 0.5rem;
+  padding: 0.75rem 2rem;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  transition: all 0.3s ease-out;
+}
+
+.mystical-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px rgba(212, 175, 55, 0.5);
+}
+
+.mystical-button:active {
+  transform: scale(0.95);
+}
+
+/* ============================================
+   TYPOGRAPHY STYLES
+   ============================================ */
+
+.mystical-heading {
+  font-family: 'Cinzel', serif;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--mystical-gold);
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+}
+
+.mystical-subheading {
+  font-family: 'Cinzel', serif;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-primary);
+}
+
+.mystical-body {
+  font-family: 'Crimson Pro', serif;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+}
+
+.mystical-flavor {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   ANIMATION UTILITIES
+   ============================================ */
+
+.animate-twinkle {
+  animation: twinkle 3s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: cardFloat 3s ease-in-out infinite;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-text-glow {
+  animation: textGlow 2s ease-in-out infinite;
+}
+
+.animate-reveal {
+  animation: revealCard 0.8s ease-out backwards;
+}
+
+.animate-mystical-rotate {
+  animation: mysticalRotate 60s linear infinite;
+}
+
+/* ============================================
+   VIGNETTE OVERLAY
+   ============================================ */
+
+.vignette {
+  background: radial-gradient(ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.7) 100%);
+  pointer-events: none;
+  /* GPU layer for fixed overlays */
+  will-change: auto;
+  transform: translateZ(0);
+}
+
+/* ============================================
+   CONSTELLATION OVERLAYS
+   ============================================ */
+
+.constellation-gold {
+  background: radial-gradient(circle at 30% 20%,
+    rgba(212, 175, 55, 0.15),
+    transparent 50%);
+  pointer-events: none;
+  transform: translateZ(0);
+}
+
+.constellation-violet {
+  background: radial-gradient(circle at 70% 60%,
+    rgba(138, 43, 226, 0.15),
+    transparent 50%);
+  pointer-events: none;
+  transform: translateZ(0);
+}
+
+/* ============================================
+   DECORATIVE DIVIDERS
+   ============================================ */
+
+.mystical-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.mystical-divider::before,
+.mystical-divider::after {
+  content: '';
+  width: 3rem;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(212, 175, 55, 0.5));
+}
+
+.mystical-divider::after {
+  background: linear-gradient(to left, transparent, rgba(212, 175, 55, 0.5));
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+  .mystical-heading {
+    font-size: 1.5rem;
+  }
+
+  /* Reduce animation complexity on mobile */
+  .mystical-card:hover {
+    transform: scale(1.02);
+  }
+}
+
+/* ============================================
+   REDUCED MOTION PREFERENCES
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-twinkle,
+  .animate-float,
+  .animate-glow,
+  .animate-text-glow,
+  .animate-mystical-rotate {
+    animation: none;
+  }
+
+  .animate-fade-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .animate-reveal {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .mystical-card:hover {
+    transform: none;
+  }
+
+  .mystical-button:hover,
+  .mystical-button:active {
+    transform: none;
+  }
 }
