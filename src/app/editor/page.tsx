@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { Editor, EditorState, ContentState } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import BlogEditor from '@/components/BlogEditor';
@@ -52,7 +52,17 @@ const EditorPage = () => {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
+  // Refs for cleanup to prevent memory leaks
+  const messageTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const abortControllerRef = useRef<AbortController | null>(null);
+
   const loadItems = useCallback(async () => {
+    // Cancel any pending request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
+
     setLoading(true);
     // Clear previous state immediately
     setItems([]);
@@ -60,17 +70,23 @@ const EditorPage = () => {
     setSelectedItem(null);
     setEditorState(EditorState.createEmpty());
     setMessage(null);
-    
+
     try {
-      const response = await fetch(`/api/editor?file=${selectedFile}`);
+      const response = await fetch(`/api/editor?file=${selectedFile}`, {
+        signal: abortControllerRef.current.signal
+      });
       const data = await response.json();
-      
+
       if (response.ok) {
         setItems(data.items);
       } else {
         setMessage({ type: 'error', text: data.error || 'Failed to load items' });
       }
-    } catch {
+    } catch (error) {
+      // Don't show error message if request was aborted
+      if (error instanceof Error && error.name === 'AbortError') {
+        return;
+      }
       setMessage({ type: 'error', text: 'Failed to load items' });
     } finally {
       setLoading(false);
@@ -79,12 +95,20 @@ const EditorPage = () => {
 
   const loadItem = useCallback(async () => {
     if (!selectedItemId) return;
-    
+
+    // Cancel any pending request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    abortControllerRef.current = new AbortController();
+
     setLoading(true);
     try {
-      const response = await fetch(`/api/editor?file=${selectedFile}&id=${selectedItemId}`);
+      const response = await fetch(`/api/editor?file=${selectedFile}&id=${selectedItemId}`, {
+        signal: abortControllerRef.current.signal
+      });
       const data = await response.json();
-      
+
       if (response.ok) {
         setSelectedItem(data.item);
         // Initialize editor with the body content
@@ -94,7 +118,11 @@ const EditorPage = () => {
       } else {
         setMessage({ type: 'error', text: data.error || 'Failed to load item' });
       }
-    } catch {
+    } catch (error) {
+      // Don't show error message if request was aborted
+      if (error instanceof Error && error.name === 'AbortError') {
+        return;
+      }
       setMessage({ type: 'error', text: 'Failed to load item' });
     } finally {
       setLoading(false);
@@ -112,6 +140,18 @@ const EditorPage = () => {
       loadItem();
     }
   }, [selectedItemId, selectedFile, loadItem]);
+
+  // Cleanup on unmount to prevent memory leaks
+  useEffect(() => {
+    return () => {
+      if (messageTimeoutRef.current) {
+        clearTimeout(messageTimeoutRef.current);
+      }
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
 
   const saveItem = async () => {
     if (!selectedItem || !selectedItemId) return;
@@ -138,8 +178,11 @@ const EditorPage = () => {
       if (response.ok) {
         setMessage({ type: 'success', text: 'Item saved successfully!' });
         setSelectedItem(data.item);
-        // Auto-hide success message after 3 seconds
-        setTimeout(() => setMessage(null), 3000);
+        // Auto-hide success message after 3 seconds (with cleanup)
+        if (messageTimeoutRef.current) {
+          clearTimeout(messageTimeoutRef.current);
+        }
+        messageTimeoutRef.current = setTimeout(() => setMessage(null), 3000);
       } else {
         setMessage({ type: 'error', text: data.error || 'Failed to save item' });
       }
@@ -172,7 +215,11 @@ const EditorPage = () => {
       if (response.ok) {
         setMessage({ type: 'success', text: 'Blog post saved successfully!' });
         setSelectedItem(data.item);
-        setTimeout(() => setMessage(null), 3000);
+        // Auto-hide success message after 3 seconds (with cleanup)
+        if (messageTimeoutRef.current) {
+          clearTimeout(messageTimeoutRef.current);
+        }
+        messageTimeoutRef.current = setTimeout(() => setMessage(null), 3000);
       } else {
         setMessage({ type: 'error', text: data.error || 'Failed to save blog post' });
       }

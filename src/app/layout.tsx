@@ -1,16 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Cinzel, Crimson_Pro } from "next/font/google";
 import Image from 'next/image';
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
   subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const crimsonPro = Crimson_Pro({
+  variable: "--font-crimson-pro",
   subsets: ["latin"],
+  weight: ["300", "400", "600"],
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -26,18 +31,41 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${cinzel.variable} ${crimsonPro.variable} antialiased`}
       >
-        <div className="relative min-h-screen w-full overflow-x-hidden" style={{backgroundColor: 'var(--background)'}}>
-          {/* Subtle astrology wheel background */}
+        {/* Mystical starfield background - single GPU-accelerated layer */}
+        <div
+          className="fixed inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, #0a0015, #1a0033, #2d1b4e)',
+            transform: 'translateZ(0)'
+          }}
+        >
+          {/* Combined overlays as single pseudo-layer for performance */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background: `
+                radial-gradient(circle at 30% 20%, rgba(212, 175, 55, 0.12), transparent 50%),
+                radial-gradient(circle at 70% 60%, rgba(138, 43, 226, 0.12), transparent 50%),
+                radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.6) 100%)
+              `,
+              transform: 'translateZ(0)',
+              pointerEvents: 'none'
+            }}
+          />
+        </div>
+
+        <div className="relative min-h-screen w-full overflow-x-hidden">
+          {/* Subtle astrology wheel background - static for performance */}
           <Image
             src="/planets/astro_wheel.svg"
             alt="Astro Wheel Background"
             fill
-            className="hidden lg:block pointer-events-none select-none fixed top-0 left-0 z-0 opacity-70 w-[70vw] h-auto max-w-none"
+            className="hidden lg:block pointer-events-none select-none fixed top-0 left-0 z-0 opacity-40 w-[70vw] h-auto max-w-none"
             aria-hidden="true"
             priority={false}
-            style={{ objectFit: 'contain' }}
+            style={{ objectFit: 'contain', transform: 'translateZ(0)' }}
           />
           <div className="relative z-10">
             {children}

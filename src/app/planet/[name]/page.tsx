@@ -1,5 +1,6 @@
 import { fetchPlanetByName } from '@/lib/fetchLocalPlanets';
 import StaticPlanet from '@/components/StaticPlanet';
+import Link from 'next/link';
 
 const planets = [
   { name: "mercury", color: "green-500", energy: 8, file: "/planets/Mercury.svg" },
@@ -37,20 +38,126 @@ export default async function PlanetPage({ params }: { params: Params }) {
 
   if (!planet) return null;
 
-  console.log('Loading planet SVG:', planet.file);
-
   return (
-    <div className="max-w-4xl mx-auto p-8">
-      <div className="relative bg-gray-900/30 backdrop-blur-sm rounded-xl p-6 border border-gray-700 shadow-2xl overflow-hidden">
-        <div className="relative z-10">
-          <div className="flex items-center justify-center mb-2">
+    <div className="min-h-screen relative">
+      {/* Atmospheric vignette backdrop */}
+      <div className="fixed inset-0 vignette z-0" />
 
-            <h1 className="text-3xl font-bold text-white">{data.title}</h1>
+      {/* Constellation overlays for atmosphere */}
+      <div className="fixed inset-0 constellation-gold opacity-30 z-0" />
+      <div className="fixed inset-0 constellation-violet opacity-20 z-0" />
+
+      {/* Main content */}
+      <div className="relative z-10 max-w-4xl mx-auto p-4 sm:p-8 animate-fade-in">
+        {/* Back navigation */}
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-[var(--mystical-gold)] hover:text-[var(--mystical-gold-light)]
+                     transition-colors duration-300 mb-6 mystical-body"
+        >
+          <span className="text-sm">&#8592;</span>
+          <span>Return to the Cosmos</span>
+        </Link>
+
+        {/* Mystical container with ornate corners */}
+        <div className="mystical-container ornate-corners relative overflow-hidden">
+          {/* Bottom ornate corners - implemented as child div */}
+          <div className="ornate-corners-bottom absolute inset-0 pointer-events-none" />
+
+          {/* Corner star decorations */}
+          <div className="absolute top-4 left-4 text-[var(--mystical-gold)] text-lg opacity-60">&#10022;</div>
+          <div className="absolute top-4 right-4 text-[var(--mystical-gold)] text-lg opacity-60">&#10022;</div>
+          <div className="absolute bottom-4 left-4 text-[var(--mystical-gold)] text-lg opacity-60">&#10022;</div>
+          <div className="absolute bottom-4 right-4 text-[var(--mystical-gold)] text-lg opacity-60">&#10022;</div>
+
+          {/* Inner mystical glow */}
+          <div
+            className="absolute inset-0 opacity-30 pointer-events-none"
+            style={{
+              background: 'radial-gradient(circle at 50% 30%, rgba(212,175,55,0.2), transparent 60%)'
+            }}
+          />
+
+          {/* Content wrapper */}
+          <div className="relative z-10 p-6 sm:p-10 md:p-12">
+            {/* Planet title */}
+            <div className="text-center mb-8">
+              <h1 className="mystical-heading text-3xl sm:text-4xl md:text-5xl uppercase animate-text-glow">
+                {data.title}
+              </h1>
+
+              {/* Decorative divider */}
+              <div className="mystical-divider mt-4">
+                <span className="text-[var(--mystical-gold)] text-xl">&#10022;</span>
+              </div>
+            </div>
+
+            {/* Planet icon with mystical glow */}
+            <div className="flex justify-center mb-8">
+              <div className="relative">
+                {/* Outer glow ring */}
+                <div
+                  className="absolute -inset-4 rounded-full animate-glow"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(212,175,55,0.3) 0%, transparent 70%)'
+                  }}
+                />
+                {/* Secondary glow pulse */}
+                <div
+                  className="absolute -inset-8 rounded-full opacity-50"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(138,43,226,0.2) 0%, transparent 60%)'
+                  }}
+                />
+                {/* Planet component */}
+                <div className="relative z-10">
+                  <StaticPlanet energy={data.energy} />
+                </div>
+              </div>
+            </div>
+
+            {/* Energy number badge */}
+            <div className="flex justify-center mb-8">
+              <div className="mystical-border px-6 py-2 rounded-full">
+                <span className="mystical-subheading text-sm uppercase tracking-widest">
+                  Sacred Number: <span className="text-[var(--mystical-gold)]">{data.energy}</span>
+                </span>
+              </div>
+            </div>
+
+            {/* Decorative divider */}
+            <div className="mystical-divider my-8">
+              <span className="text-[var(--mystical-gold)] text-lg">&#8226; &#10022; &#8226;</span>
+            </div>
+
+            {/* Planet description */}
+            <div className="max-w-2xl mx-auto">
+              <p className="mystical-body text-lg sm:text-xl leading-relaxed text-center whitespace-pre-wrap">
+                {data.body}
+              </p>
+            </div>
+
+            {/* Bottom decorative element */}
+            <div className="mt-10 flex justify-center">
+              <div className="flex items-center gap-3 opacity-60">
+                <div className="w-16 h-px bg-gradient-to-r from-transparent to-[var(--mystical-gold)]" />
+                <svg className="w-6 h-10 text-[var(--mystical-gold)]" viewBox="0 0 40 64" fill="none">
+                  {/* Ankh symbol */}
+                  <circle cx="20" cy="14" r="8" stroke="currentColor" strokeWidth="2" fill="none" opacity="0.7"/>
+                  <line x1="20" y1="22" x2="20" y2="56" stroke="currentColor" strokeWidth="2.5" opacity="0.7"/>
+                  <line x1="8" y1="32" x2="32" y2="32" stroke="currentColor" strokeWidth="2.5" opacity="0.7"/>
+                </svg>
+                <div className="w-16 h-px bg-gradient-to-l from-transparent to-[var(--mystical-gold)]" />
+              </div>
+            </div>
           </div>
-          <StaticPlanet energy={data.energy} />
-          <div className="prose prose-invert max-w-none mt-6">
-            <p className="text-gray-100 whitespace-pre-wrap leading-relaxed">{data.body}</p>
-          </div>
+        </div>
+
+        {/* Footer mystical text */}
+        <div className="text-center mt-8">
+          <p className="mystical-flavor text-sm opacity-60">
+            "As above, so below; as within, so without."
+          </p>
         </div>
       </div>
     </div>
