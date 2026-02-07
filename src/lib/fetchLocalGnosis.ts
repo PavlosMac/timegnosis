@@ -12,26 +12,21 @@ interface GnosisItem {
 
 const GNOSIS_SEED_PATH = path.join(process.cwd(), 'gnosis-seed.json');
 
-export async function fetchGnosis(energy: number, mode: string): Promise<GnosisItem> {
+export const fetchGnosis = async (energy: number, mode: string): Promise<GnosisItem | null> => {
   try {
     const fileContent = await readFile(GNOSIS_SEED_PATH, 'utf8');
     const data: GnosisItem[] = JSON.parse(fileContent);
-    
+
     // Find item matching energy and mode
     const item = data.find(item => item.energy === energy && item.mode === mode);
-    
-    if (!item) {
-      throw new Error(`No gnosis data found for energy ${energy} and mode ${mode}`);
-    }
-    
-    return item;
+
+    return item || null;
   } catch (error) {
-    console.error('Error fetching local gnosis data:', error);
+    console.error('Error reading gnosis seed file:', error);
     throw error;
   }
-}
+};
 
-export async function fetchMonthGnosis(monthId: number): Promise<GnosisItem> {
-  // For month pages, we use the same fetchGnosis function with mode "month"
+export const fetchMonthGnosis = async (monthId: number): Promise<GnosisItem | null> => {
   return fetchGnosis(monthId, 'month');
-}
+};

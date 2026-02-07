@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { fetchPlanetByName } from '@/lib/fetchLocalPlanets';
 import StaticPlanet from '@/components/StaticPlanet';
 import Link from 'next/link';
@@ -21,6 +22,9 @@ type Params = Promise<{ name: string }>
 export async function generateMetadata({ params }: { params: Params }) {
   const resolvedParams = await params;
   const data = await fetchPlanetByName(resolvedParams.name);
+  if (!data) {
+    return { title: "Not Found | TimeGnosis" };
+  }
   return {
     title: data.title || `${resolvedParams.name} | TimeGnosis`,
     description: data.body?.slice(0, 160) || `Astrology and numerology for planet ${resolvedParams.name}`,
@@ -36,7 +40,9 @@ export default async function PlanetPage({ params }: { params: Params }) {
   const data = await fetchPlanetByName(resolvedParams.name);
   const planet = planets.find(p => p.name === resolvedParams.name.toLowerCase());
 
-  if (!planet) return null;
+  if (!data || !planet) {
+    notFound();
+  }
 
   return (
     <div className="min-h-screen relative">

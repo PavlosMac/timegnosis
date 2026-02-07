@@ -1,13 +1,17 @@
 export const dynamic = "force-static";
+import { notFound } from "next/navigation";
 import StaticPlanet from "@/components/StaticPlanet";
 import { fetchMonthGnosis } from "@/lib/fetchLocalGnosis";
 
 type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Props) {
-  const resolvedParams = await Promise.resolve(params);
+  const resolvedParams = await params;
   const monthId = parseInt(resolvedParams.id, 10);
   const data = await fetchMonthGnosis(monthId);
+  if (!data) {
+    return { title: "Not Found | TimeGnosis" };
+  }
   return {
     title: data.title || `Month ${resolvedParams.id} | TimeGnosis`,
     description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for month energy ${resolvedParams.id}`,
@@ -19,12 +23,12 @@ export async function generateMetadata({ params }: Props) {
 }
 
 export default async function MonthPage({ params }: Props) {
-  const resolvedParams = await Promise.resolve(params);
+  const resolvedParams = await params;
   const monthId = parseInt(resolvedParams.id, 10);
   const data = await fetchMonthGnosis(monthId);
 
-  if (!monthId) {
-    return <div className="text-[#e6d5b8]">Loading...</div>;
+  if (!data) {
+    notFound();
   }
 
   return (

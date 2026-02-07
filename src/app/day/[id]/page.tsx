@@ -1,4 +1,5 @@
 export const dynamic = "force-static";
+import { notFound } from "next/navigation";
 import StaticPlanet from "@/components/StaticPlanet";
 import { fetchGnosis } from "@/lib/fetchLocalGnosis";
 
@@ -8,6 +9,9 @@ export async function generateMetadata({ params }: Props) {
   const resolvedParams = await params;
   const energy = parseInt(resolvedParams.id, 10);
   const data = await fetchGnosis(energy, "day");
+  if (!data) {
+    return { title: "Not Found | TimeGnosis" };
+  }
   return {
     title: data.title || `Day ${resolvedParams.id} | TimeGnosis`,
     description: data.subtitle || data.body?.slice(0, 160) || `Numerology and astrology for day energy ${resolvedParams.id}`,
@@ -23,8 +27,8 @@ export default async function DayPage({ params }: Props) {
   const energy = parseInt(resolvedParams.id, 10);
   const data = await fetchGnosis(energy, "day");
 
-  if (!energy) {
-    return <div className="text-[#e6d5b8]">Loading...</div>;
+  if (!data) {
+    notFound();
   }
 
   return (

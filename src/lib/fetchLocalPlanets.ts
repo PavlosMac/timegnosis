@@ -11,43 +11,35 @@ interface PlanetItem {
 
 const PLANETS_SEED_PATH = path.join(process.cwd(), 'planets-seed.json');
 
-export async function fetchPlanetByName(planetName: string): Promise<PlanetItem> {
+export const fetchPlanetByName = async (planetName: string): Promise<PlanetItem | null> => {
   try {
     const fileContent = await readFile(PLANETS_SEED_PATH, 'utf8');
     const data: PlanetItem[] = JSON.parse(fileContent);
-    
+
     // Find planet by name (case insensitive)
     const planet = data.find(item => item.planet.toLowerCase() === planetName.toLowerCase());
-    
-    if (!planet) {
-      throw new Error(`No planet data found for ${planetName}`);
-    }
-    
-    return planet;
+
+    return planet || null;
   } catch (error) {
-    console.error('Error fetching local planet data:', error);
+    console.error('Error reading planets seed file:', error);
     throw error;
   }
-}
+};
 
-export async function fetchPlanetByEnergy(energy: number): Promise<PlanetItem> {
+export const fetchPlanetByEnergy = async (energy: number): Promise<PlanetItem | null> => {
   try {
     const fileContent = await readFile(PLANETS_SEED_PATH, 'utf8');
     const data: PlanetItem[] = JSON.parse(fileContent);
-    
+
     // Find planet by energy value
     const planet = data.find(item => item.energy === energy);
-    
-    if (!planet) {
-      throw new Error(`No planet data found for energy ${energy}`);
-    }
-    
-    return planet;
+
+    return planet || null;
   } catch (error) {
-    console.error('Error fetching local planet data:', error);
+    console.error('Error reading planets seed file:', error);
     throw error;
   }
-}
+};
 
 export async function getAllPlanets(): Promise<PlanetItem[]> {
   try {

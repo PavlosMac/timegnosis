@@ -141,4 +141,28 @@ Each decision should include:
 - Errors are caught at lookup time with clear messages
 - Slightly more verbose code but much safer
 
+### ADR-007: Graceful 404 Handling for Missing Content (2026-02)
+
+**Context:**
+- Missing gnosis/planet data caused uncaught errors in production
+- Error logs filled with "No gnosis data found for energy X and mode Y"
+- User experience was poor when data was missing (page crashes)
+
+**Decision:**
+- Fetch functions return `null` instead of throwing for missing data
+- Pages call `notFound()` when data is null, triggering styled 404 page
+- Created mystical-themed `src/app/not-found.tsx`
+- Keep throwing for actual errors (file read failures)
+
+**Alternatives Considered:**
+- Try/catch in pages -> Rejected: repetitive, harder to maintain
+- Error boundaries -> Rejected: doesn't give proper 404 status code
+- Return empty/default data -> Rejected: misleading to users
+
+**Consequences:**
+- Clean 404 pages with proper HTTP status for missing content
+- No error spam in logs for expected missing data scenarios
+- `generateMetadata` gracefully handles missing data
+- Consistent error handling across all dynamic routes
+
 <!-- Add new decision entries below this line -->
